@@ -87,6 +87,6 @@
 <br>
 
 ## 🧑‍💻 Author
-  **JellytoCodes** 
-  Created as part of a 2025 semester-end solo project. 
-  **Thanks To. 강상용 교수님** 
+  **JellytoCodes**  
+  Created as part of a 2025 semester-end solo project.  
+  **Thanks To. 강상용 교수님**  
