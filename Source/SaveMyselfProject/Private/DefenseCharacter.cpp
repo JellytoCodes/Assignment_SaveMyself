@@ -17,7 +17,7 @@ ADefenseCharacter::ADefenseCharacter()
 	//카메라 시점 설정
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.f;
+	CameraBoom->TargetArmLength = 500.f;
 	CameraBoom->bUsePawnControlRotation = true;
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -104,8 +104,8 @@ void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 
 	if(Controller != nullptr)
 	{
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		AddControllerYawInput(LookAxisVector.X * LookSensitivity);
+		AddControllerPitchInput(-(LookAxisVector.Y * LookSensitivity));
 	}
 }
 

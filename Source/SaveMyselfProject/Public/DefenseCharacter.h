@@ -41,6 +41,14 @@ class SAVEMYSELFPROJECT_API ADefenseCharacter : public ACharacter
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_Inventory;
 
+	//변수 세팅
+	//인벤토리 열기/닫기 설정
+	bool bIsInventory = false;
+
+	//카메라 뷰 속도 조정
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "ture"))
+	float LookSensitivity = .5f;
+
 public:
 	// Sets default values for this character's properties
 	ADefenseCharacter();
@@ -56,8 +64,6 @@ protected:
 	void Fire(const FInputActionValue& value);
 	void Inventory(const FInputActionValue& value);
 
-	//인벤토리 열기/닫기 설정
-	bool bIsInventory = false;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
