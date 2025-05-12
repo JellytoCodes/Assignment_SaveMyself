@@ -1,3 +1,5 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -15,35 +17,35 @@ enum class EItemTypes : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FItemDataRow : public FTableRowBase
+struct FItemMasterDataRow : public FTableRowBase
 {
 	GENERATED_BODY()
 	
-	//ITEM ID 지정
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName ItemID;
+	//ITEM Index 지정
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
+	int32 ItemID;
 
 	//ID Name 지정
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	FText DisplayName;
 
 	//Item 설명
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText Discription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
+	FText Description;
 
 	//ItemType 설정
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	EItemTypes ItemType;
 
 	//ItemIcon 설정
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	UTexture2D* ItemIcon;
 
 	//PlayerItem외 참조 불가하도록 제한
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	TSubclassOf<APlayerItem> ItemClass;
 
 	//아이템 무게 설정
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	float ItemWeight = 0.f;
 };

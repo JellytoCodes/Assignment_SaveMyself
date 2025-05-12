@@ -3,14 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "GameFramework/Actor.h"
 #include "PlayerItem.generated.h"
+
+struct FItemDataRow;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API APlayerItem : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	// Sets default values for this actor's properties
 	APlayerItem();
@@ -19,8 +22,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class USphereComponent* SphereCollision;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class UStaticMeshComponent* ItemMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
+	UDataTable* ItemMasterData;
 };

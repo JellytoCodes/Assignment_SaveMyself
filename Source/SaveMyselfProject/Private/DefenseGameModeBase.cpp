@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "DefenseGameModeBase.h"
 #include "DefenseCharacter.h"
 #include "Kismet/GameplayStatics.h"

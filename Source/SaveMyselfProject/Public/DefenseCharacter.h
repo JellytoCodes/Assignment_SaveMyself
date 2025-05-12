@@ -4,11 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ItemMasterTable.h"
+#include "WeaponItemTable.h"
 #include "DefenseCharacter.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+struct FItemMasterDataRow;
+struct FWeaponDataRow;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API ADefenseCharacter : public ACharacter
@@ -63,6 +67,13 @@ protected:
 	void Interact(const FInputActionValue& value);
 	void Fire(const FInputActionValue& value);
 	void Inventory(const FInputActionValue& value);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataTable")
+	class UDataTable*	ItemMasterDataTable;
+	
+	FWeaponDataRow*		ItemWeaponDataRow;
+
+	TMap<FName, const FItemMasterDataRow*> ItemMasterDataMap;
 
 public:	
 	// Called every frame

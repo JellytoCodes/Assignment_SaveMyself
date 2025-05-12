@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "DefenseCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Engine/DataTable.h"
+#include "WeaponItem.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -53,6 +54,17 @@ void ADefenseCharacter::BeginPlay()
 		if(UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			SubSystem->AddMappingContext(IMC_Default, 0);
+		}
+	}
+
+	TArray<FName> RowNames = ItemMasterDataTable->GetRowNames();
+
+	for(const FName& RowName : RowNames)
+	{
+		const FItemMasterDataRow* Row = ItemMasterDataTable->FindRow<FItemMasterDataRow>(RowName, "ItemInit");
+		if(Row)
+		{
+			ItemMasterDataMap.Add(RowName, Row);
 		}
 	}
 }
@@ -112,11 +124,27 @@ void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 void ADefenseCharacter::Interact(const FInputActionValue &value)
 {
 	UE_LOG(LogTemp, Log, TEXT("Interact!"));
+
 }
 
 void ADefenseCharacter::Fire(const FInputActionValue &value)
 {
-	UE_LOG(LogTemp, Log, TEXT("Fire"));
+	//무기 스폰 테스트용
+	FName WeaponID = "Weapon001";
+	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[WeaponID];
+
+	if(ItemMasterDataRow->ItemType == EItemTypes::Weapon)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Fire"));
+	
+		const auto WeaponSpawnLocation = GetMesh()->GetComponentLocation();
+		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
+		auto WeaponSpawnPrams = FActorSpawnParameters();
+
+		WeaponSpawnPrams.Owner = this;
+		WeaponSpawnPrams.Instigator = GetInstigator();
+		GetWorld()->SpawnActor<AWeaponItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
+	}
 }
 
 void ADefenseCharacter::Inventory(const FInputActionValue &value)
