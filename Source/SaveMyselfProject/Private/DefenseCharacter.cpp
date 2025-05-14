@@ -6,6 +6,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/DataTable.h"
 #include "WeaponItem.h"
+#include "StructureItem.h"
+#include "TrapItem.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PlayerItem.h"
@@ -88,8 +90,20 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ADefenseCharacter::Move);
 		EnhancedInputComponent->BindAction(IA_LookNTurn, ETriggerEvent::Triggered, this, &ADefenseCharacter::LookNTurn);
 		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Triggered, this, &ADefenseCharacter::Interact);
-		EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Triggered, this, &ADefenseCharacter::Fire);
-		EnhancedInputComponent->BindAction(IA_Inventory, ETriggerEvent::Triggered, this, &ADefenseCharacter::Inventory);
+		EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &ADefenseCharacter::SpwanPlayerItem);
+
+		//-----------------------아이템 키 바인드-----------------------//
+		EnhancedInputComponent->BindAction(IA_Inventory, ETriggerEvent::Started, this, &ADefenseCharacter::Inventory);
+		EnhancedInputComponent->BindAction(IA_QuickSlot01, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot01);
+		EnhancedInputComponent->BindAction(IA_QuickSlot02, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot02);
+		EnhancedInputComponent->BindAction(IA_QuickSlot03, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot03);
+		EnhancedInputComponent->BindAction(IA_QuickSlot04, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot04);
+		EnhancedInputComponent->BindAction(IA_QuickSlot05, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot05);
+		EnhancedInputComponent->BindAction(IA_QuickSlot06, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot06);
+		EnhancedInputComponent->BindAction(IA_QuickSlot07, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot07);
+		EnhancedInputComponent->BindAction(IA_QuickSlot08, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot08);
+		EnhancedInputComponent->BindAction(IA_QuickSlot09, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot09);
+		EnhancedInputComponent->BindAction(IA_QuickSlot10, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot10);
 	}
 }
 
@@ -125,15 +139,18 @@ void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 void ADefenseCharacter::Interact(const FInputActionValue &value)
 {
 	UE_LOG(LogTemp, Log, TEXT("Interact!"));
-
 }
 
-void ADefenseCharacter::Fire(const FInputActionValue &value)
+void ADefenseCharacter::SpwanPlayerItem(const FInputActionValue &value)
 {
-	//무기 스폰 테스트용
-	FName WeaponID = "Weapon001";
-	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[WeaponID];
+	if(PlayerItemID == NAME_None)
+	{
+		UE_LOG(LogTemp, Log, TEXT("None Item"));
+		return;
+	}
+	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[PlayerItemID];
 
+	//Weapon Item일 경우 무기 발사
 	if(ItemMasterDataRow->ItemType == EItemTypes::Weapon)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Fire"));
@@ -145,6 +162,34 @@ void ADefenseCharacter::Fire(const FInputActionValue &value)
 		WeaponSpawnPrams.Owner = this;
 		WeaponSpawnPrams.Instigator = GetInstigator();
 		GetWorld()->SpawnActor<AWeaponItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
+	}
+
+	//Structure Item일 경우 플레이어 전방 기준으로 구조물 설치
+	else if(ItemMasterDataRow->ItemType == EItemTypes::Structure)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Structure"));
+		
+		const auto WeaponSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
+		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
+		auto WeaponSpawnPrams = FActorSpawnParameters();
+
+		WeaponSpawnPrams.Owner = this;
+		WeaponSpawnPrams.Instigator = GetInstigator();
+		GetWorld()->SpawnActor<AStructureItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
+	}
+
+	//Trap Item일 경우 플레이어 전방 기준으로 구조물 설치
+	else if(ItemMasterDataRow->ItemType == EItemTypes::Trap)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Trap"));
+		
+		const auto WeaponSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
+		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
+		auto WeaponSpawnPrams = FActorSpawnParameters();
+
+		WeaponSpawnPrams.Owner = this;
+		WeaponSpawnPrams.Instigator = GetInstigator();
+		GetWorld()->SpawnActor<ATrapItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
 	}
 }
 
@@ -162,3 +207,23 @@ void ADefenseCharacter::Inventory(const FInputActionValue &value)
 	}
 }
 
+void ADefenseCharacter::SelectQuickSlot(int32 Index)
+{
+	UE_LOG(LogTemp, Log, TEXT("Quick Slot : %d"), Index);
+	//스폰 테스트용
+	if(Index == 1)
+	{
+		PlayerItemID = "Weapon001";
+		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[PlayerItemID]->ItemType);
+	}
+	else if(Index == 2)
+	{
+		PlayerItemID = "Structure001";
+		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[PlayerItemID]->ItemType);
+	}
+	else if(Index == 3)
+	{
+		PlayerItemID = "Trap001";
+		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[PlayerItemID]->ItemType);
+	}
+}

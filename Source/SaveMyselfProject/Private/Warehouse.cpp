@@ -1,20 +1,27 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "PlayerItem.h"
+
+#include "Warehouse.h"
 
 // Sets default values
-APlayerItem::APlayerItem()
+AWarehouse::AWarehouse()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
+	PrimaryActorTick.bCanEverTick = true;
 
 }
 
 // Called when the game starts or when spawned
-void APlayerItem::BeginPlay()
+void AWarehouse::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+// Called every frame
+void AWarehouse::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 
 }
+

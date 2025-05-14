@@ -2,6 +2,7 @@
 
 #include "WeaponItem.h"
 #include "PlayerItem.h"
+#include "ItemMasterTable.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -78,9 +79,3 @@ void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AAct
 		Destroy();
 	}
 }
-
-FVector AWeaponItem::GetLocalOffSet()
-{
-	return APlayerItem::LocalOffset;
-}
-

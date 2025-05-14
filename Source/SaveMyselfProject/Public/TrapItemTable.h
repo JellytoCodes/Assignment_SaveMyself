@@ -28,4 +28,7 @@ struct FTrapDataRow : public FTableRowBase
 	//Æ®·¦ ¼³Ä¡ ÄðÅ¸ÀÓ
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxCoolTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ETrapType TrapType;
 };
