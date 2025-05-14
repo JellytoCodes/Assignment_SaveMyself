@@ -48,4 +48,8 @@ struct FItemMasterDataRow : public FTableRowBase
 	//아이템 무게 설정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	float ItemWeight = 0.f;
+
+	//플레이어 기준으로 아이템을 스폰하기 위한 설정
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
+	FVector LocalOffSet = FVector(0.f, 0.f, 0.f);
 };

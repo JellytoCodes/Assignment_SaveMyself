@@ -8,6 +8,7 @@
 #include "WeaponItem.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PlayerItem.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -136,8 +137,8 @@ void ADefenseCharacter::Fire(const FInputActionValue &value)
 	if(ItemMasterDataRow->ItemType == EItemTypes::Weapon)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Fire"));
-	
-		const auto WeaponSpawnLocation = GetMesh()->GetComponentLocation();
+		
+		const auto WeaponSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
 		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
 		auto WeaponSpawnPrams = FActorSpawnParameters();
 

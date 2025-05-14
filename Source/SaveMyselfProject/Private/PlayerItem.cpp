@@ -18,3 +18,8 @@ void APlayerItem::BeginPlay()
 	
 
 }
+
+FVector APlayerItem::GetLocalOffSet()
+{
+	return LocalOffset;
+}

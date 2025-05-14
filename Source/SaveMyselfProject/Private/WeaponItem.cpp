@@ -11,14 +11,15 @@ AWeaponItem::AWeaponItem()
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("Collision");
 	SphereCollision->SetGenerateOverlapEvents(true);
 	SphereCollision->SetSphereRadius(10.f);
-	SphereCollision->BodyInstance.SetCollisionProfileName("BlockAll");
-	
+	SphereCollision->BodyInstance.SetCollisionProfileName("Projectile");
+	SphereCollision->SetCollisionResponseToAllChannels(ECR_Block);
+	SphereCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	RootComponent = SphereCollision;
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	ItemMesh->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f));
+	ItemMesh->SetRelativeLocationAndRotation(FVector(-40.f, 0.f, 0.f), FRotator(-90.f, 0.f, 0.f));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> WeaponMesh(TEXT(""));
 	
 	if(WeaponMesh.Succeeded())
@@ -37,6 +38,8 @@ AWeaponItem::AWeaponItem()
 
 void AWeaponItem::BeginPlay()
 {
+	Super::BeginPlay();
+
 	FItemMasterDataRow* MasterDataRow = ItemMasterData->FindRow<FItemMasterDataRow>(ItemMasterID, TEXT("LookUpItemMasterData"));
 	if(MasterDataRow)
 	{
@@ -57,6 +60,8 @@ void AWeaponItem::BeginPlay()
 	}
 
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeaponItem::OnWeaponOverlap);
+	ProjectileMovement->Velocity = GetActorForwardVector() * ProjectileMovement->InitialSpeed;
+
 	FTimerHandle deathTimer;
 	GetWorld()->GetTimerManager().SetTimer(deathTimer, FTimerDelegate::CreateLambda([this]()->void
 	{
@@ -73,3 +78,9 @@ void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AAct
 		Destroy();
 	}
 }
+
+FVector AWeaponItem::GetLocalOffSet()
+{
+	return APlayerItem::LocalOffset;
+}
+

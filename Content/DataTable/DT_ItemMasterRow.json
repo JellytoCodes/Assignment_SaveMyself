@@ -1,0 +1,13 @@
+[
+	{
+		"Name": "Weapon001",
+		"ItemID": 1001,
+		"DisplayName": "NSLOCTEXT(\"[7EDD75ADDD837F9BAB65F5B558485C82]\", \"37C482F34544DF838DAB54B8D242B82F\", \"Knife\")",
+		"Description": "NSLOCTEXT(\"[7EDD75ADDD837F9BAB65F5B558485C82]\", \"6FB60AA44F365F17E8E57A8E183064F9\", \"Normal Knife\")",
+		"ItemType": "Weapon",
+		"ItemIcon": "None",
+		"ItemClass": "/Script/Engine.BlueprintGeneratedClass'/Game/Blueprints/WeaponItem/BP_WeaponItem_Knife.BP_WeaponItem_Knife_C'",
+		"ItemWeight": 1,
+		"LocalOffSet" : {"X": 150, "Y": 50, "Z" : 25}
+	}
+]

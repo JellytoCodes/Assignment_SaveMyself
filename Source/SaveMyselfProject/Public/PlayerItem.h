@@ -33,4 +33,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
 	UDataTable* ItemMasterData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
+	FVector LocalOffset = FVector(150.f, 50.f, 25.f);
+
+public :
+	virtual FVector GetLocalOffSet();
 };
