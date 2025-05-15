@@ -26,9 +26,6 @@ protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
 	FName ItemWeaponID = NAME_None;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	UDataTable* WeaponData;
-
 public :
 	UFUNCTION()
 	void OnWeaponOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

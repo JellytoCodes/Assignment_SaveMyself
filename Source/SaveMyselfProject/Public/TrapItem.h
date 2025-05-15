@@ -7,9 +7,6 @@
 #include "TrapItemTable.h"
 #include "TrapItem.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SAVEMYSELFPROJECT_API ATrapItem : public APlayerItem
 {
@@ -28,9 +25,6 @@ protected :
 	//ItemTrapDataTable 식별 ID
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
 	FName ItemTrapID = NAME_None;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	UDataTable* TrapData;
 
 public :
 	//적이 트랩 밟을 시 처리하기 위한 Overlap

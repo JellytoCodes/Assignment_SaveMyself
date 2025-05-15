@@ -35,24 +35,7 @@ void AWeaponItem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FItemMasterDataRow* MasterDataRow = ItemMasterData->FindRow<FItemMasterDataRow>(ItemMasterID, TEXT("LookUpItemMasterData"));
-	if(MasterDataRow)
-	{
-		UE_LOG(LogTemp, Log, TEXT("ItemID : %s"), *MasterDataRow->ItemID.ToString());
-		UE_LOG(LogTemp, Log, TEXT("DisplayName : %s"), *MasterDataRow->DisplayName.ToString());
-		UE_LOG(LogTemp, Log, TEXT("Description : %s"), *MasterDataRow->Description.ToString());
-		UE_LOG(LogTemp, Log, TEXT("ItemType(intiger) : %d"), MasterDataRow->ItemType);
-		UE_LOG(LogTemp, Log, TEXT("ItemWeight : %2lf"), MasterDataRow->ItemWeight);
-	}
-
-	FWeaponDataRow* WeaponDataRow = WeaponData->FindRow<FWeaponDataRow>(ItemWeaponID, TEXT("LookUpItemWeaponData"));
-	if(WeaponDataRow)
-	{
-		UE_LOG(LogTemp, Log, TEXT("WeaponName : %s"), *WeaponDataRow->WeaponName.ToString());
-		UE_LOG(LogTemp, Log, TEXT("WeaponDamage : %2lf"), WeaponDataRow->WeaponDamage);
-		UE_LOG(LogTemp, Log, TEXT("MaxCoolTime : %2lf"), WeaponDataRow->MaxCoolTime);
-		UE_LOG(LogTemp, Log, TEXT("DamageType(intiger) : %d"), WeaponDataRow->DamageType);		
-	}
+	UE_LOG(LogTemp, Log, TEXT("Spawned WeaponItem"));
 
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeaponItem::OnWeaponOverlap);
 	ProjectileMovement->Velocity = GetActorForwardVector() * ProjectileMovement->InitialSpeed;

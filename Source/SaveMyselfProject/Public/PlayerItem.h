@@ -24,6 +24,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class USphereComponent* SphereCollision;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class UBoxComponent* BoxCollision;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UStaticMeshComponent* ItemMesh;
@@ -31,6 +34,4 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UProjectileMovementComponent* ProjectileMovement;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	UDataTable* ItemMasterData;
 };

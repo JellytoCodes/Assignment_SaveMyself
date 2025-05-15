@@ -168,13 +168,13 @@ void ADefenseCharacter::SpwanPlayerItem(const FInputActionValue &value)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Structure"));
 		
-		const auto WeaponSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
-		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
-		auto WeaponSpawnPrams = FActorSpawnParameters();
+		const auto StructureSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
+		const auto StructureSpawnRotation = GetMesh()->GetComponentRotation();
+		auto StructureSpawnPrams = FActorSpawnParameters();
 
-		WeaponSpawnPrams.Owner = this;
-		WeaponSpawnPrams.Instigator = GetInstigator();
-		GetWorld()->SpawnActor<AStructureItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
+		StructureSpawnPrams.Owner = this;
+		StructureSpawnPrams.Instigator = GetInstigator();
+		GetWorld()->SpawnActor<AStructureItem>(ItemMasterDataRow->ItemClass, StructureSpawnLocation, StructureSpawnRotation, StructureSpawnPrams);
 	}
 
 	//Trap Item일 경우 플레이어 전방 기준으로 구조물 설치
@@ -182,13 +182,13 @@ void ADefenseCharacter::SpwanPlayerItem(const FInputActionValue &value)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Trap"));
 		
-		const auto WeaponSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
-		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
-		auto WeaponSpawnPrams = FActorSpawnParameters();
+		const auto TrapSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
+		const auto TrapSpawnRotation = GetMesh()->GetComponentRotation();
+		auto TrapSpawnPrams = FActorSpawnParameters();
 
-		WeaponSpawnPrams.Owner = this;
-		WeaponSpawnPrams.Instigator = GetInstigator();
-		GetWorld()->SpawnActor<ATrapItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
+		TrapSpawnPrams.Owner = this;
+		TrapSpawnPrams.Instigator = GetInstigator();
+		GetWorld()->SpawnActor<ATrapItem>(ItemMasterDataRow->ItemClass, TrapSpawnLocation, TrapSpawnRotation, TrapSpawnPrams);
 	}
 }
 

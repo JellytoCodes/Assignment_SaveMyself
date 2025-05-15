@@ -23,15 +23,16 @@ protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Componentes")
 	class UBoxComponent* BoxCollision;
 
-	//창고 인벤토리
+	bool bIsStorageEntrance = false;
+
+public :
+
+	//창고 위젯
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Storage")
 	TSubclassOf<UStorageWidget> StorageWidgetClass;
 
 	UStorageWidget* StorageWidgetInstance;
 
-	bool bIsStorageEntrance = false;
-
-public :
 	//창고 들어가기
 	UFUNCTION()
 	void OnWarehouseEntranceOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

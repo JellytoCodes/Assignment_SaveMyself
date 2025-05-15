@@ -26,24 +26,7 @@ void ATrapItem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FItemMasterDataRow* MasterDataRow = ItemMasterData->FindRow<FItemMasterDataRow>(ItemMasterID, TEXT("LookUpItemMasterData"));
-	if(MasterDataRow)
-	{
-		UE_LOG(LogTemp, Log, TEXT("ItemID : %s"), *MasterDataRow->ItemID.ToString());
-		UE_LOG(LogTemp, Log, TEXT("DisplayName : %s"), *MasterDataRow->DisplayName.ToString());
-		UE_LOG(LogTemp, Log, TEXT("Description : %s"), *MasterDataRow->Description.ToString());
-		UE_LOG(LogTemp, Log, TEXT("ItemType(intiger) : %d"), MasterDataRow->ItemType);
-		UE_LOG(LogTemp, Log, TEXT("ItemWeight : %2lf"), MasterDataRow->ItemWeight);
-	}
-
-	FTrapDataRow* TrapDataRow = TrapData->FindRow<FTrapDataRow>(ItemTrapID, TEXT("LookUpItemTrapData"));
-	if(TrapData)
-	{
-		UE_LOG(LogTemp, Log, TEXT("TrapName : %s"), *TrapDataRow->TrapName.ToString());
-		UE_LOG(LogTemp, Log, TEXT("TrapDamage : %2lf"), TrapDataRow->TrapEffect);
-		UE_LOG(LogTemp, Log, TEXT("MaxCoolTime : %2lf"), TrapDataRow->MaxCoolTime);
-		UE_LOG(LogTemp, Log, TEXT("DamageType(intiger) : %d"), TrapDataRow->TrapType);		
-	}
+	UE_LOG(LogTemp, Log, TEXT("Spawned TrapItem"));
 
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ATrapItem::OnTrapOverlap);
 }

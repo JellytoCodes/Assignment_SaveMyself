@@ -25,7 +25,4 @@ protected :
 	//ItemTrapDataTable ½Äº° ID
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
 	FName ItemStructureID = NAME_None;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	UDataTable* StructureData;
 };
