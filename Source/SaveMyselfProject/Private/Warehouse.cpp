@@ -27,19 +27,47 @@ void AWarehouse::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AWarehouse::OnWarehouseOverlap);
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AWarehouse::OnWarehouseEntranceOverlap);
+	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AWarehouse::OnWarehouseExitOverlap);
 
 	StorageWidgetInstance = CreateWidget<UStorageWidget>(GetWorld(), StorageWidgetClass);
 
 }
 
-void AWarehouse::OnWarehouseOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+	ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(OtherActor);
+	if(pPlayer)
+	{		
+		//Cast 체크용 Log
+		UE_LOG(LogTemp, Log, TEXT("Warehouse Entrance"));
+
+		FTimerHandle OpenTimer;
+		//생성 오류 방지
+		GetWorld()->GetTimerManager().SetTimer(OpenTimer, [&]
+		{
+			StorageWidgetInstance->AddToViewport();
+			bIsStorageEntrance = true;
+		}, 0.2f, false);
+		
+		
+	}
+}
+
+void AWarehouse::OnWarehouseExitOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
 	ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(OtherActor);
 	if(pPlayer)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Warehouse Open"));
-		StorageWidgetInstance->AddToViewport();
-		bIsStorageEntrance = true;
+		//Cast 체크용 Log
+		UE_LOG(LogTemp, Log, TEXT("Warehouse Exit"));
+
+		FTimerHandle CloseTimer;
+		//삭제 오류 방지
+		GetWorld()->GetTimerManager().SetTimer(CloseTimer, [&]
+		{
+			StorageWidgetInstance->RemoveFromParent();
+			bIsStorageEntrance = false;
+		}, 0.2f, false);
 	}
 }

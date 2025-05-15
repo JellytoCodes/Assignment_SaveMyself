@@ -21,12 +21,6 @@ AWeaponItem::AWeaponItem()
 	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	ItemMesh->SetRelativeLocationAndRotation(FVector(-40.f, 0.f, 0.f), FRotator(-90.f, 0.f, 0.f));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> WeaponMesh(TEXT(""));
-	
-	if(WeaponMesh.Succeeded())
-	{
-		ItemMesh->SetStaticMesh(WeaponMesh.Object);
-	}
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
 	ProjectileMovement->UpdatedComponent = SphereCollision;
@@ -44,7 +38,7 @@ void AWeaponItem::BeginPlay()
 	FItemMasterDataRow* MasterDataRow = ItemMasterData->FindRow<FItemMasterDataRow>(ItemMasterID, TEXT("LookUpItemMasterData"));
 	if(MasterDataRow)
 	{
-		UE_LOG(LogTemp, Log, TEXT("ItemID : %d"), MasterDataRow->ItemID);
+		UE_LOG(LogTemp, Log, TEXT("ItemID : %s"), *MasterDataRow->ItemID.ToString());
 		UE_LOG(LogTemp, Log, TEXT("DisplayName : %s"), *MasterDataRow->DisplayName.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Description : %s"), *MasterDataRow->Description.ToString());
 		UE_LOG(LogTemp, Log, TEXT("ItemType(intiger) : %d"), MasterDataRow->ItemType);

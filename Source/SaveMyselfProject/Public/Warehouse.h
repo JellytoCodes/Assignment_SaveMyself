@@ -23,6 +23,7 @@ protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Componentes")
 	class UBoxComponent* BoxCollision;
 
+	//창고 인벤토리
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Storage")
 	TSubclassOf<UStorageWidget> StorageWidgetClass;
 
@@ -31,9 +32,14 @@ protected :
 	bool bIsStorageEntrance = false;
 
 public :
+	//창고 들어가기
 	UFUNCTION()
-	void OnWarehouseOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnWarehouseEntranceOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	//창고 진입 여부 체크
+	//창고 나가기
+	UFUNCTION()
+	void OnWarehouseExitOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	//창고 진입 여부 체크 (키 바인딩 비활성화 용도)
 	bool GetStorageEntrance() { return bIsStorageEntrance; }
 };

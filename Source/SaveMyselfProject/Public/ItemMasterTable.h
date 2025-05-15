@@ -23,7 +23,7 @@ struct FItemMasterDataRow : public FTableRowBase
 	
 	//ITEM Index 지정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
-	int32 ItemID;
+	FName ItemID;
 
 	//ID Name 지정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")

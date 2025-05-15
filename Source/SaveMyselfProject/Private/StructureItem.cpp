@@ -2,6 +2,7 @@
 
 #include "StructureItem.h"
 #include "ItemMasterTable.h"
+#include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AStructureItem::AStructureItem()
@@ -10,12 +11,7 @@ AStructureItem::AStructureItem()
 	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	ItemMesh->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> StructureMesh(TEXT(""));
-	
-	if(StructureMesh.Succeeded())
-	{
-		ItemMesh->SetStaticMesh(StructureMesh.Object);
-	}
+	RootComponent = ItemMesh;
 }
 
 void AStructureItem::BeginPlay()
@@ -25,7 +21,7 @@ void AStructureItem::BeginPlay()
 	FItemMasterDataRow* MasterDataRow = ItemMasterData->FindRow<FItemMasterDataRow>(ItemMasterID, TEXT("LookUpItemMasterData"));
 	if(MasterDataRow)
 	{
-		UE_LOG(LogTemp, Log, TEXT("ItemID : %d"), MasterDataRow->ItemID);
+		UE_LOG(LogTemp, Log, TEXT("ItemID : %s"), *MasterDataRow->ItemID.ToString());
 		UE_LOG(LogTemp, Log, TEXT("DisplayName : %s"), *MasterDataRow->DisplayName.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Description : %s"), *MasterDataRow->Description.ToString());
 		UE_LOG(LogTemp, Log, TEXT("ItemType(intiger) : %d"), MasterDataRow->ItemType);
