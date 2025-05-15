@@ -19,6 +19,7 @@ class SAVEMYSELFPROJECT_API ADefenseCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+//-----------------------Defaults 셋업-----------------------//
 public:
 	ADefenseCharacter();
 	virtual void Tick(float DeltaTime) override;
@@ -35,7 +36,6 @@ private :
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "ture"))
 	class UCameraComponent* FollowCamera;
 
-	//플레이어 키 할당
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputMappingContext* IMC_Default;
 
@@ -60,17 +60,12 @@ protected :
 	void Move(const FInputActionValue& value);
 	void LookNTurn(const FInputActionValue& value);
 	void Interact(const FInputActionValue& value);
+
 	//아이템 스폰을 위한 기능 (상세설명 정의 부분 참조)
 	void SpwanPlayerItem(const FInputActionValue& value);
-	void Inventory(const FInputActionValue& value);
-
 
 //-----------------------아이템 기능 셋업-----------------------//
 protected : 
-	//인벤토리 ON/OFF
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
-	UInputAction* IA_Inventory;
-
 	//퀵슬롯 키 할당
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_QuickSlot01;
@@ -116,9 +111,6 @@ protected :
 
 	//퀵슬롯 키 바인드 마스터
 	void SelectQuickSlot(int32 Index);
-
-	//인벤토리 열기/닫기 설정
-	bool bIsInventory = false;
 
 	FName PlayerItemID = NAME_None;
 

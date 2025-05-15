@@ -1,27 +1,45 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Warehouse.h"
+#include "Components/BoxComponent.h"
+#include "StorageWidget.h"
+#include "DefenseCharacter.h"
 
-// Sets default values
 AWarehouse::AWarehouse()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
+	BoxCollision->SetGenerateOverlapEvents(true);
+	BoxCollision->SetRelativeScale3D(FVector(9.f, 15.f, 1.f));
+	BoxCollision->BodyInstance.SetCollisionProfileName("Trigger");
+	RootComponent = BoxCollision;
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> storageWidgetBP(TEXT("/Game/WidgetBP/WBP_StorageWidget.WBP_StorageWidget_C"));
+	if(storageWidgetBP.Succeeded())
+	{
+		StorageWidgetClass = storageWidgetBP.Class;
+	}
 }
 
 // Called when the game starts or when spawned
 void AWarehouse::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AWarehouse::OnWarehouseOverlap);
+
+	StorageWidgetInstance = CreateWidget<UStorageWidget>(GetWorld(), StorageWidgetClass);
+
 }
 
-// Called every frame
-void AWarehouse::Tick(float DeltaTime)
+void AWarehouse::OnWarehouseOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	Super::Tick(DeltaTime);
-
+	ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(OtherActor);
+	if(pPlayer)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Warehouse Open"));
+		StorageWidgetInstance->AddToViewport();
+		bIsStorageEntrance = true;
+	}
 }
-

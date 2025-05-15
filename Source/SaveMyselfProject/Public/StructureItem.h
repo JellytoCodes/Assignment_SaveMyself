@@ -7,9 +7,6 @@
 #include "StructureItemTable.h"
 #include "StructureItem.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SAVEMYSELFPROJECT_API AStructureItem : public APlayerItem
 {

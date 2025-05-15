@@ -13,5 +13,7 @@ UCLASS()
 class SAVEMYSELFPROJECT_API UStorageWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected :
 	
 };

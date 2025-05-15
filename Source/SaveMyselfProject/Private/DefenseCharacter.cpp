@@ -93,7 +93,6 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &ADefenseCharacter::SpwanPlayerItem);
 
 		//-----------------------아이템 키 바인드-----------------------//
-		EnhancedInputComponent->BindAction(IA_Inventory, ETriggerEvent::Started, this, &ADefenseCharacter::Inventory);
 		EnhancedInputComponent->BindAction(IA_QuickSlot01, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot01);
 		EnhancedInputComponent->BindAction(IA_QuickSlot02, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot02);
 		EnhancedInputComponent->BindAction(IA_QuickSlot03, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot03);
@@ -190,20 +189,6 @@ void ADefenseCharacter::SpwanPlayerItem(const FInputActionValue &value)
 		WeaponSpawnPrams.Owner = this;
 		WeaponSpawnPrams.Instigator = GetInstigator();
 		GetWorld()->SpawnActor<ATrapItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
-	}
-}
-
-void ADefenseCharacter::Inventory(const FInputActionValue &value)
-{
-	if(!bIsInventory)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Inventory Open"));
-		bIsInventory = !bIsInventory;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Inventory Close"));
-		bIsInventory = !bIsInventory;
 	}
 }
 
