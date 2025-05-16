@@ -11,6 +11,18 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "ItemSubsystem.generated.h"
 
+USTRUCT(BlueprintType)
+struct FStorageArray
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName ItemID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Quantity;
+};
+
 class UDataTable;
 
 UCLASS()

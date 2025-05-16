@@ -26,4 +26,15 @@ void AStructureItem::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Log, TEXT("Spawned StructureItem"));
+
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AStructureItem::OnStructureOverlap);
+}
+
+void AStructureItem::OnStructureOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+	if(OtherActor == this)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Do Not There Building"));
+		Destroy();
+	}
 }

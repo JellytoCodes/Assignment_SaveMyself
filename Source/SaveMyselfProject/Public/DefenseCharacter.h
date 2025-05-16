@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "ItemMasterTable.h"
 #include "WeaponItemTable.h"
+#include "ItemSubsystem.h"
 #include "DefenseCharacter.generated.h"
 
 class UInputMappingContext;
@@ -62,7 +63,7 @@ protected :
 	void Interact(const FInputActionValue& value);
 
 	//아이템 스폰을 위한 기능 (상세설명 정의 부분 참조)
-	void SpwanPlayerItem(const FInputActionValue& value);
+	void SpwanPlayerItem();
 
 //-----------------------아이템 기능 셋업-----------------------//
 protected : 
@@ -116,6 +117,12 @@ protected :
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataTable")
 	class UDataTable*	ItemMasterDataTable;	
-
 	TMap<FName, const FItemMasterDataRow*> ItemMasterDataMap;
+
+public :
+	void bEntranceShowMouseCursor();
+	void bExitHideMouseCursor();
+
+	bool bMouseCursorUsed = false;
+
 };

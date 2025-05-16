@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ItemSubsystem.h"
 #include "StorageWidget.generated.h"
 
 class UStorageSlot;
 class UWrapBox;
+
 UCLASS()
 class SAVEMYSELFPROJECT_API UStorageWidget : public UUserWidget
 {
@@ -15,8 +17,13 @@ class SAVEMYSELFPROJECT_API UStorageWidget : public UUserWidget
 
 protected :
 	UPROPERTY(EditDefaultsOnly, Category = "StorageSlot")
-	TSubclassOf<UStorageSlot> ItemSlotWidgetClass;
+	TSubclassOf<UStorageSlot> itemSlotWidgetClass;
 
 	UPROPERTY(meta = (BindWidget))
-	UWrapBox* StorageWrapBox;
+	UWrapBox* storageWrapBox;
+
+public :
+
+	UFUNCTION(BlueprintCallable)
+	void AddItemStorage(const TArray<FStorageArray>& InData);
 };

@@ -2,23 +2,30 @@
 
 
 #include "StorageSlot.h"
+#include "StorageWidget.h"
 #include "Components/Image.h"
-#include "Components/ButtonSlot.h"
+#include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UStorageSlot::NativeConstruct()
 {
 	Super::NativeConstruct();
+	if(ItemButton)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
+		ItemButton->OnClicked.AddDynamic(this, &UStorageSlot::OnItemButtonClicked);
+	}
 }
 
 void UStorageSlot::OnItemButtonClicked()
 {
-	
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 }
 
 void UStorageSlot::SetItemData(const FStorageArray& InData)
 {
+	UE_LOG(LogTemp, Log, TEXT("SetItemData"));
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 	if(!ItemDB) return;
 
@@ -28,6 +35,8 @@ void UStorageSlot::SetItemData(const FStorageArray& InData)
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
 	else if(ItemImage)						ItemImage->SetBrushFromTexture(nullptr);
 
+	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
 	//아이템 수량
 	if(ItemCountText)						ItemCountText->SetText(FText::AsNumber(InData.Quantity));
+	UE_LOG(LogTemp, Log, TEXT("SetItemData Successed"));
 }

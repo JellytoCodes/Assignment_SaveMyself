@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ItemSubsystem.h"
 #include "Warehouse.generated.h"
 
 class UStorageWidget;
@@ -43,4 +44,7 @@ public :
 
 	//창고 진입 여부 체크 (키 바인딩 비활성화 용도)
 	bool GetStorageEntrance() { return bIsStorageEntrance; }
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataTable")
+	TArray<FStorageArray> fInData;
 };

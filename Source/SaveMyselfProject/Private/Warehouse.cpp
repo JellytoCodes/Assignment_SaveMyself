@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "StorageWidget.h"
 #include "DefenseCharacter.h"
+#include "ItemSubsystem.h"
 
 AWarehouse::AWarehouse()
 {
@@ -31,7 +32,14 @@ void AWarehouse::BeginPlay()
 	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AWarehouse::OnWarehouseExitOverlap);
 
 	StorageWidgetInstance = CreateWidget<UStorageWidget>(GetWorld(), StorageWidgetClass);
-
+	if(StorageWidgetInstance)
+	{
+		StorageWidgetInstance->AddItemStorage(fInData);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("StorageWidgetInstance Nullptr!"));
+	}
 }
 
 void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
@@ -42,15 +50,15 @@ void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedCompo
 		//Cast 체크용 Log
 		UE_LOG(LogTemp, Log, TEXT("Warehouse Entrance"));
 
+		//버튼 클릭을 위한 마우스 활성화
+		pPlayer->bEntranceShowMouseCursor();
+
 		FTimerHandle OpenTimer;
 		//생성 오류 방지
 		GetWorld()->GetTimerManager().SetTimer(OpenTimer, [&]
 		{
-			StorageWidgetInstance->AddToViewport();
-			bIsStorageEntrance = true;
-		}, 0.2f, false);
-		
-		
+			StorageWidgetInstance->AddToViewport();			
+		}, 0.2f, false);		
 	}
 }
 
@@ -66,8 +74,10 @@ void AWarehouse::OnWarehouseExitOverlap(UPrimitiveComponent *OverlappedComponent
 		//삭제 오류 방지
 		GetWorld()->GetTimerManager().SetTimer(CloseTimer, [&]
 		{
-			StorageWidgetInstance->RemoveFromParent();
-			bIsStorageEntrance = false;
+			StorageWidgetInstance->RemoveFromParent();			
 		}, 0.2f, false);
+
+		//창고 나간 후 마우스 비활성화
+		pPlayer->bExitHideMouseCursor();
 	}
 }

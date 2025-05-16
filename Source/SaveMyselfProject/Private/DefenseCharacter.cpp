@@ -11,6 +11,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PlayerItem.h"
+#include "StorageWidget.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -126,6 +127,7 @@ void ADefenseCharacter::Move(const FInputActionValue &value)
 
 void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 {
+	if(bMouseCursorUsed) return;
 	const auto LookAxisVector = value.Get<FVector2D>();
 
 	if(Controller != nullptr)
@@ -140,8 +142,11 @@ void ADefenseCharacter::Interact(const FInputActionValue &value)
 	UE_LOG(LogTemp, Log, TEXT("Interact!"));
 }
 
-void ADefenseCharacter::SpwanPlayerItem(const FInputActionValue &value)
+void ADefenseCharacter::SpwanPlayerItem()
 {
+	if(bMouseCursorUsed) return;
+
+	//크래시 방지
 	if(PlayerItemID == NAME_None)
 	{
 		UE_LOG(LogTemp, Log, TEXT("None Item"));
@@ -189,6 +194,26 @@ void ADefenseCharacter::SpwanPlayerItem(const FInputActionValue &value)
 		TrapSpawnPrams.Owner = this;
 		TrapSpawnPrams.Instigator = GetInstigator();
 		GetWorld()->SpawnActor<ATrapItem>(ItemMasterDataRow->ItemClass, TrapSpawnLocation, TrapSpawnRotation, TrapSpawnPrams);
+	}
+}
+
+void ADefenseCharacter::bEntranceShowMouseCursor()
+{
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	if(playerController)
+	{
+		playerController->bShowMouseCursor = true;
+		bMouseCursorUsed = true;
+	}
+}
+
+void ADefenseCharacter::bExitHideMouseCursor()
+{
+	APlayerController* playerController = Cast<APlayerController>(GetController());
+	if(playerController)
+	{
+		playerController->bShowMouseCursor = false;
+		bMouseCursorUsed = false;
 	}
 }
 
