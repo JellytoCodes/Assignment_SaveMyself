@@ -5,16 +5,14 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "ItemSubsystem.h"
-#include "StorageSlot.generated.h"
+#include "PlayerQuickSlot.generated.h"
 
 class UTextBlock;
 class UImage;
 class UButton;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemSlotDelegate, UStorageSlot*, pStorageSlot);
-
 UCLASS()
-class SAVEMYSELFPROJECT_API UStorageSlot : public UUserWidget
+class SAVEMYSELFPROJECT_API UPlayerQuickSlot : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -33,16 +31,15 @@ public :
 	UImage* ItemCountImage;
 	UPROPERTY(meta = (BindWidget))	
 	UTextBlock* ItemCountText;
-
 	UPROPERTY(meta = (BindWidget))
 	UButton* ItemButton;
 
 	const FItemMasterDataRow* ItemSlotData;
 
 	FStorageArray StorageArr;
-
-	FItemSlotDelegate ItemSlotDelegate;
 	
+	int32 curQuickQuantity;
+
 	void SetItemData(const FStorageArray& InData);
 	FStorageArray& GetItemData() { return StorageArr; }
 };

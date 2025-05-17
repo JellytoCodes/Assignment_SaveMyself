@@ -22,8 +22,14 @@ protected :
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* storageWrapBox;
 
+	UPROPERTY(EditDefaultsOnly, Category = "QuickSlot")
+	class UQuickSlotWidget* QuickSlotWidgetInstance;
+
 public :
 
 	UFUNCTION(BlueprintCallable)
 	void AddItemStorage(const TArray<FStorageArray>& InData);
+
+	UFUNCTION()
+	void ItemRegist(UStorageSlot* pSlotData);
 };

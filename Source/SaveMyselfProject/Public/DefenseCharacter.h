@@ -11,6 +11,8 @@
 
 class UInputMappingContext;
 class UInputAction;
+class UQuickSlotWidget;
+class UStorageSlot;
 struct FInputActionValue;
 struct FItemMasterDataRow;
 struct FWeaponDataRow;
@@ -62,11 +64,8 @@ protected :
 	void LookNTurn(const FInputActionValue& value);
 	void Interact(const FInputActionValue& value);
 
-	//아이템 스폰을 위한 기능 (상세설명 정의 부분 참조)
-	void SpwanPlayerItem();
-
 //-----------------------아이템 기능 셋업-----------------------//
-protected : 
+private : 
 	//퀵슬롯 키 할당
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_QuickSlot01;
@@ -113,10 +112,14 @@ protected :
 	//퀵슬롯 키 바인드 마스터
 	void SelectQuickSlot(int32 Index);
 
-	FName PlayerItemID = NAME_None;
+	//아이템 스폰 (상세설명 정의 부분 참조)
+	void SpwanPlayerItem();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataTable")
-	class UDataTable*	ItemMasterDataTable;	
+	FName playerItemID = NAME_None;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataTable", meta = (AllowPrivateAccess = "ture"))
+	class UDataTable*	ItemMasterDataTable;
+
 	TMap<FName, const FItemMasterDataRow*> ItemMasterDataMap;
 
 public :
@@ -124,5 +127,17 @@ public :
 	void bExitHideMouseCursor();
 
 	bool bMouseCursorUsed = false;
+
+	//퀵슬롯 Widget
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "ture"))
+	TSubclassOf<UQuickSlotWidget> quickSlotWidgetClass;
+
+	UFUNCTION()
+	void BindStorageSlot(UStorageSlot* StorageSlot);
+	
+	UFUNCTION()
+	void QuickSlotHandling(UStorageSlot* ClickedSlot);
+
+	UQuickSlotWidget* quickSlotWidgetInstance;
 
 };

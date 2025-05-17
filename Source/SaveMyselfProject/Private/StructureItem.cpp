@@ -32,7 +32,7 @@ void AStructureItem::BeginPlay()
 
 void AStructureItem::OnStructureOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	if(OtherActor == this)
+	if(OtherActor)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Do Not There Building"));
 		Destroy();

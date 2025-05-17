@@ -16,7 +16,7 @@ AWarehouse::AWarehouse()
 	BoxCollision->BodyInstance.SetCollisionProfileName("Trigger");
 	RootComponent = BoxCollision;
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> storageWidgetBP(TEXT("/Game/WidgetBP/WBP_StorageWidget.WBP_StorageWidget_C"));
+	static ConstructorHelpers::FClassFinder<UStorageWidget> storageWidgetBP(TEXT("/Game/WidgetBP/WBP_StorageWidget.WBP_StorageWidget_C"));
 	if(storageWidgetBP.Succeeded())
 	{
 		StorageWidgetClass = storageWidgetBP.Class;
@@ -40,6 +40,8 @@ void AWarehouse::BeginPlay()
 	{
 		UE_LOG(LogTemp, Log, TEXT("StorageWidgetInstance Nullptr!"));
 	}
+	StorageWidgetInstance->AddToViewport();
+	StorageWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
@@ -57,7 +59,7 @@ void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedCompo
 		//생성 오류 방지
 		GetWorld()->GetTimerManager().SetTimer(OpenTimer, [&]
 		{
-			StorageWidgetInstance->AddToViewport();			
+			StorageWidgetInstance->SetVisibility(ESlateVisibility::Visible);
 		}, 0.2f, false);		
 	}
 }
@@ -74,7 +76,7 @@ void AWarehouse::OnWarehouseExitOverlap(UPrimitiveComponent *OverlappedComponent
 		//삭제 오류 방지
 		GetWorld()->GetTimerManager().SetTimer(CloseTimer, [&]
 		{
-			StorageWidgetInstance->RemoveFromParent();			
+			StorageWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);	
 		}, 0.2f, false);
 
 		//창고 나간 후 마우스 비활성화

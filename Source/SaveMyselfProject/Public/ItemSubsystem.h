@@ -20,6 +20,9 @@ struct FStorageArray
 	FName ItemID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText DisplayName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Quantity;
 };
 

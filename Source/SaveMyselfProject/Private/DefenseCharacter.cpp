@@ -11,7 +11,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PlayerItem.h"
+#include "StorageSlot.h"
 #include "StorageWidget.h"
+#include "QuickSlotWidget.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -35,7 +37,7 @@ ADefenseCharacter::ADefenseCharacter()
 	bUseControllerRotationYaw	= false;
 
 	//플레이어 바디 설정
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> PlayerMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Asset/KayKit/Characters/barbarian.barbarian'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> PlayerMesh(TEXT("/Game/Asset/KayKit/Characters/barbarian.barbarian"));
 	if(PlayerMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(PlayerMesh.Object);
@@ -46,6 +48,13 @@ ADefenseCharacter::ADefenseCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+	//플레이어 퀵슬롯 설정
+	static ConstructorHelpers::FClassFinder<UQuickSlotWidget> quickSlotWidgetBP(TEXT("/Game/WidgetBP/WBP_QuickSlotWidget.WBP_QuickSlotWidget_C"));
+	if(quickSlotWidgetBP.Succeeded())
+	{
+		quickSlotWidgetClass = quickSlotWidgetBP.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -71,6 +80,9 @@ void ADefenseCharacter::BeginPlay()
 			ItemMasterDataMap.Add(RowName, Row);
 		}
 	}
+
+	quickSlotWidgetInstance = CreateWidget<UQuickSlotWidget>(GetWorld(), quickSlotWidgetClass);
+	if(quickSlotWidgetInstance) quickSlotWidgetInstance->AddToViewport();
 }
 
 // Called every frame
@@ -147,12 +159,12 @@ void ADefenseCharacter::SpwanPlayerItem()
 	if(bMouseCursorUsed) return;
 
 	//크래시 방지
-	if(PlayerItemID == NAME_None)
+	if(playerItemID == NAME_None)
 	{
 		UE_LOG(LogTemp, Log, TEXT("None Item"));
 		return;
 	}
-	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[PlayerItemID];
+	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[playerItemID];
 
 	//Weapon Item일 경우 무기 발사
 	if(ItemMasterDataRow->ItemType == EItemTypes::Weapon)
@@ -217,23 +229,39 @@ void ADefenseCharacter::bExitHideMouseCursor()
 	}
 }
 
+void ADefenseCharacter::BindStorageSlot(UStorageSlot *StorageSlot)
+{
+	if(StorageSlot)
+	{
+		StorageSlot->ItemSlotDelegate.AddDynamic(this, &ADefenseCharacter::QuickSlotHandling);
+	}
+}
+
+void ADefenseCharacter::QuickSlotHandling(UStorageSlot *ClickedSlot)
+{
+	if(quickSlotWidgetInstance)
+	{
+		quickSlotWidgetInstance->AddItemQuickSlot(ClickedSlot);
+	}
+}
+
 void ADefenseCharacter::SelectQuickSlot(int32 Index)
 {
 	UE_LOG(LogTemp, Log, TEXT("Quick Slot : %d"), Index);
 	//스폰 테스트용
 	if(Index == 1)
 	{
-		PlayerItemID = "Weapon001";
-		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[PlayerItemID]->ItemType);
+		playerItemID = "Weapon001";
+		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[playerItemID]->ItemType);
 	}
 	else if(Index == 2)
 	{
-		PlayerItemID = "Structure001";
-		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[PlayerItemID]->ItemType);
+		playerItemID = "Structure001";
+		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[playerItemID]->ItemType);
 	}
 	else if(Index == 3)
 	{
-		PlayerItemID = "Trap001";
-		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[PlayerItemID]->ItemType);
+		playerItemID = "Trap001";
+		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[playerItemID]->ItemType);
 	}
 }
