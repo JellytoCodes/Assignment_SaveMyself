@@ -22,17 +22,20 @@
 
 ## 📌 CASE 2 : QuickSlotWrapBox가 nullptr로 바뀌는 문제 (2025.05)  
 &nbsp;**⚠️ 문제 상황**  
-&nbsp;&nbsp;&nbsp;&nbsp; → AddItemQuickSlot() 호출 시점에서 QuickSlotWrapBox == nullptr 발생
-&nbsp;&nbsp;&nbsp;&nbsp; → PIE 첫 실행 시 정상이나 창고에서 Button 클릭 시 nullptr로 접근
+&nbsp;&nbsp;&nbsp;&nbsp; → AddItemQuickSlot() 호출 시점에서 QuickSlotWrapBox == nullptr 발생  
+&nbsp;&nbsp;&nbsp;&nbsp; → PIE 첫 실행 시 정상이나 창고에서 Button 클릭 시 nullptr로 접근  
 
 &nbsp;**🔍 원인 분석**  
-&nbsp;&nbsp;&nbsp;&nbsp; → Delegate 바인딩 위치 문제에 따른 오류
-&nbsp;&nbsp;&nbsp;&nbsp; → 출력은 DefenseCharacter에서 담당하나 Delegate 바인딩은 StorageWidget에서 수신
+&nbsp;&nbsp;&nbsp;&nbsp; → Delegate 바인딩 위치 문제에 따른 오류  
+&nbsp;&nbsp;&nbsp;&nbsp; → 출력은 DefenseCharacter에서 담당하나 Delegate 바인딩은 StorageWidget에서 수신  
 
 &nbsp;**🛠️ 해결 방안**  
-&nbsp;&nbsp;&nbsp;&nbsp; → Delegate 바인딩 구조 변경
-&nbsp;&nbsp;&nbsp;&nbsp; → DefenseCharacter에서 QuickSlot에 Item을 추가하는 함수 및 해당 함수를 Delegate에 바인딩하는 함수를 추가
-&nbsp;&nbsp;&nbsp;&nbsp; → 최종적으로 StorageSlot→Player→QuickSlotWidget으로 흐르는 구조로 변경
+&nbsp;&nbsp;&nbsp;&nbsp; → Delegate 바인딩 구조 변경  
+&nbsp;&nbsp;&nbsp;&nbsp; → DefenseCharacter에서 QuickSlot에 Item을 추가하는 함수 및 해당 함수를 Delegate에 바인딩하는 함수를 추가  
+&nbsp;&nbsp;&nbsp;&nbsp; → 최종적으로 StorageSlot→Player→QuickSlotWidget으로 구조 변경  
 
-&nbsp;**📈 개선 방안** 
-&nbsp;&nbsp;&nbsp;&nbsp; → Delegate를 등록하는 클래스와 출력되는 UI 인스턴스를 관리하는 클래스는 반드시 동일한 인스턴스 기반에서 연결될 수 있도록 설계
+&nbsp;**📈 개선 방안**  
+&nbsp;&nbsp;&nbsp;&nbsp; → Delegate를 등록하는 클래스와 출력되는 UI 인스턴스를 관리하는 클래스는 반드시 동일한 인스턴스 기반에서 연결될 수 있도록 설계  
+
+<br>
+
