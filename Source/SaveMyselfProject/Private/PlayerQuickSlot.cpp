@@ -41,3 +41,15 @@ void UPlayerQuickSlot::SetItemData(const FStorageArray& InData)
 
 	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
 }
+
+bool UPlayerQuickSlot::DecreaseQuantity()
+{
+	if (curQuickQuantity > 0)
+	{
+		curQuickQuantity--;
+		ItemCountText->SetText(FText::AsNumber(curQuickQuantity));
+		return curQuickQuantity == 0; // 0이면 true 반환 → 제거 신호
+	}
+
+	return false;
+}

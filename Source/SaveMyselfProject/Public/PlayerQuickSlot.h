@@ -21,25 +21,24 @@ protected :
 
 	UFUNCTION()
 	void OnItemButtonClicked();
-
-public :
-	UPROPERTY(meta = (BindWidget))	
-	UImage* ItemImage;
-	UPROPERTY(meta = (BindWidget))	
-	UTextBlock* ItemName;
-	UPROPERTY(meta = (BindWidget))	
-	UImage* ItemCountImage;
-	UPROPERTY(meta = (BindWidget))	
-	UTextBlock* ItemCountText;
-	UPROPERTY(meta = (BindWidget))
-	UButton* ItemButton;
-
+	
 	const FItemMasterDataRow* ItemSlotData;
 
 	FStorageArray StorageArr;
-	
+
+public :
+
+	UPROPERTY(meta = (BindWidget))	UImage* ItemImage;
+	UPROPERTY(meta = (BindWidget))	UTextBlock* ItemName;
+	UPROPERTY(meta = (BindWidget))	UImage* ItemCountImage;
+	UPROPERTY(meta = (BindWidget))	UTextBlock* ItemCountText;
+	UPROPERTY(meta = (BindWidget))	UButton* ItemButton;
+
 	int32 curQuickQuantity;
 
 	void SetItemData(const FStorageArray& InData);
 	FStorageArray& GetItemData() { return StorageArr; }
+
+	UFUNCTION()
+	bool DecreaseQuantity();
 };

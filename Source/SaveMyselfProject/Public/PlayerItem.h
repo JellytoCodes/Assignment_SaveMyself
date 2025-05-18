@@ -19,8 +19,6 @@ public:
 	APlayerItem();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class USphereComponent* SphereCollision;
@@ -34,4 +32,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UProjectileMovementComponent* ProjectileMovement;
 
+public :
+	virtual void EnableItemData(FName ItemID) PURE_VIRTUAL(APlayerItem::EnableItemData, );
 };

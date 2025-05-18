@@ -3,6 +3,7 @@
 #include "TrapItem.h"
 #include "PlayerItem.h"
 #include "ItemMasterTable.h"
+#include "ItemSubsystem.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -27,8 +28,33 @@ void ATrapItem::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Log, TEXT("Spawned TrapItem"));
+	
+	if (getItemName != NAME_None)
+	{
+		EnableItemData(getItemName);
+	}
 
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &ATrapItem::OnTrapOverlap);
+}
+
+void ATrapItem::EnableItemData(FName ItemID)
+{
+	if(const UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>())
+	{
+		const FTrapDataRow* Data = ItemDB->GetItemTrapData(ItemID);
+		if(Data)
+		{
+			trapName = Data->TrapName;
+			trapEffect = Data->TrapEffect;
+			maxCoolTime = Data->MaxCoolTime;
+			trapType = Data->TrapType;
+
+			UE_LOG(LogTemp, Log, TEXT("structureName	: %s"), *trapName.ToString());
+			UE_LOG(LogTemp, Log, TEXT("structureHP		: %.2f"), trapEffect);
+			UE_LOG(LogTemp, Log, TEXT("structureDefense	: %.2f"), maxCoolTime);
+			UE_LOG(LogTemp, Log, TEXT("maxCoolTime		: %d"), trapType);
+		}
+	}
 }
 
 void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
@@ -37,6 +63,5 @@ void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *
 	{
 		FTransform WeaponTrans;
 		WeaponTrans.SetLocation(SweepResult.ImpactPoint);
-		Destroy();
 	}
 }

@@ -110,7 +110,7 @@ private :
 	void SelectQuickSlot10() { SelectQuickSlot(10); }
 
 	//퀵슬롯 키 바인드 마스터
-	void SelectQuickSlot(int32 Index);
+	void SelectQuickSlot(int32 index);
 
 	//아이템 스폰 (상세설명 정의 부분 참조)
 	void SpwanPlayerItem();
@@ -121,6 +121,14 @@ private :
 	class UDataTable*	ItemMasterDataTable;
 
 	TMap<FName, const FItemMasterDataRow*> ItemMasterDataMap;
+
+	UPROPERTY()
+	class AFieldPreviewItem* PreviewInstance = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Preview")
+	TSubclassOf<AFieldPreviewItem> PreviewClass;
+
+	void RequestPreviewItem(FName ItemID, EItemTypes ItemType);
 
 public :
 	void bEntranceShowMouseCursor();

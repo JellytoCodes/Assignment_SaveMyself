@@ -2,6 +2,7 @@
 
 #include "StructureItem.h"
 #include "ItemMasterTable.h"
+#include "ItemSubsystem.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -10,8 +11,7 @@ AStructureItem::AStructureItem()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	BoxCollision->SetGenerateOverlapEvents(true);
 	BoxCollision->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
-	BoxCollision->BodyInstance.SetCollisionProfileName("BlockAll");
-	BoxCollision->SetCollisionResponseToAllChannels(ECR_Block);
+	BoxCollision->BodyInstance.SetCollisionProfileName("OverlapAllDynamic");
 	BoxCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	RootComponent = BoxCollision;
 
@@ -26,15 +26,39 @@ void AStructureItem::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Log, TEXT("Spawned StructureItem"));
+	
+	if (getItemName != NAME_None)
+	{
+		EnableItemData(getItemName);
+	}
 
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AStructureItem::OnStructureOverlap);
 }
 
+void AStructureItem::EnableItemData(FName ItemID)
+{
+	if(const UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>())
+	{
+		const FStructureDataRow* Data = ItemDB->GetItemStructureData(ItemID);
+		if(Data)
+		{
+			structureName = Data->StructureName;
+			structureHP = Data->StructureHP;
+			structureDefense = Data->StructureDefense;
+			maxCoolTime = Data->MaxCoolTime;
+
+			UE_LOG(LogTemp, Log, TEXT("structureName	: %s"), *structureName.ToString());
+			UE_LOG(LogTemp, Log, TEXT("structureHP		: %.2f"), structureHP);
+			UE_LOG(LogTemp, Log, TEXT("structureDefense	: %.2f"), structureDefense);
+			UE_LOG(LogTemp, Log, TEXT("maxCoolTime		: %.2f"), maxCoolTime);
+		}
+	}
+}
+
 void AStructureItem::OnStructureOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	if(OtherActor)
+	if(OtherActor && OtherActor != this && OtherActor->IsA<AStructureItem>())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Do Not There Building"));
-		Destroy();
 	}
 }

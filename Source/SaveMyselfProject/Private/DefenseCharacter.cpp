@@ -14,6 +14,7 @@
 #include "StorageSlot.h"
 #include "StorageWidget.h"
 #include "QuickSlotWidget.h"
+#include "FieldPreviewItem.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -139,7 +140,9 @@ void ADefenseCharacter::Move(const FInputActionValue &value)
 
 void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 {
+	//창고 진입 시 비활성화
 	if(bMouseCursorUsed) return;
+
 	const auto LookAxisVector = value.Get<FVector2D>();
 
 	if(Controller != nullptr)
@@ -156,6 +159,7 @@ void ADefenseCharacter::Interact(const FInputActionValue &value)
 
 void ADefenseCharacter::SpwanPlayerItem()
 {
+	//창고 진입 시 비활성화
 	if(bMouseCursorUsed) return;
 
 	//크래시 방지
@@ -164,48 +168,61 @@ void ADefenseCharacter::SpwanPlayerItem()
 		UE_LOG(LogTemp, Log, TEXT("None Item"));
 		return;
 	}
-	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[playerItemID];
 
-	//Weapon Item일 경우 무기 발사
-	if(ItemMasterDataRow->ItemType == EItemTypes::Weapon)
+	if (PreviewInstance)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Fire"));
-		
-		const auto WeaponSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
-		const auto WeaponSpawnRotation = GetMesh()->GetComponentRotation();
-		auto WeaponSpawnPrams = FActorSpawnParameters();
-
-		WeaponSpawnPrams.Owner = this;
-		WeaponSpawnPrams.Instigator = GetInstigator();
-		GetWorld()->SpawnActor<AWeaponItem>(ItemMasterDataRow->ItemClass, WeaponSpawnLocation, WeaponSpawnRotation, WeaponSpawnPrams);
+		PreviewInstance->ConfirmPlacement();
+		PreviewInstance = nullptr;
 	}
 
-	//Structure Item일 경우 플레이어 전방 기준으로 구조물 설치
-	else if(ItemMasterDataRow->ItemType == EItemTypes::Structure)
+	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("Structure"));
-		
-		const auto StructureSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
-		const auto StructureSpawnRotation = GetMesh()->GetComponentRotation();
-		auto StructureSpawnPrams = FActorSpawnParameters();
+		const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[playerItemID];
+		if(!ItemMasterDataRow || !ItemMasterDataRow->ItemClass) return;
 
-		StructureSpawnPrams.Owner = this;
-		StructureSpawnPrams.Instigator = GetInstigator();
-		GetWorld()->SpawnActor<AStructureItem>(ItemMasterDataRow->ItemClass, StructureSpawnLocation, StructureSpawnRotation, StructureSpawnPrams);
+		const auto ItemSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
+		const auto ItemSpawnRotation = GetMesh()->GetComponentRotation();
+		auto ItemSpawnPrams = FActorSpawnParameters();
+
+		ItemSpawnPrams.Owner = this;
+		ItemSpawnPrams.Instigator = GetInstigator();
+
+		UE_LOG(LogTemp, Log, TEXT("Spwaned Item : %s"), *ItemMasterDataMap[playerItemID]->ItemClass->GetName());
+
+		APlayerItem* SpawnedItem = 
+		GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
 	}
 
-	//Trap Item일 경우 플레이어 전방 기준으로 구조물 설치
-	else if(ItemMasterDataRow->ItemType == EItemTypes::Trap)
+	for (int32 i = 0; i < quickSlotWidgetInstance->saveSlot.Num(); ++i)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Trap"));
-		
-		const auto TrapSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
-		const auto TrapSpawnRotation = GetMesh()->GetComponentRotation();
-		auto TrapSpawnPrams = FActorSpawnParameters();
+		if (quickSlotWidgetInstance->saveSlot[i].ItemID == playerItemID)
+		{
+			quickSlotWidgetInstance->UseQuickSlotItem(i);
+			return;
+		}
+	}
+}
 
-		TrapSpawnPrams.Owner = this;
-		TrapSpawnPrams.Instigator = GetInstigator();
-		GetWorld()->SpawnActor<ATrapItem>(ItemMasterDataRow->ItemClass, TrapSpawnLocation, TrapSpawnRotation, TrapSpawnPrams);
+void ADefenseCharacter::RequestPreviewItem(FName ItemID, EItemTypes ItemType)
+{
+	if(PreviewInstance)
+	{
+		PreviewInstance->Destroy();
+		PreviewInstance = nullptr;
+	}
+
+	if (ItemType != EItemTypes::Structure && ItemType != EItemTypes::Trap) return;
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+
+	FVector SpawnLoc = GetActorLocation();
+	FRotator SpawnRot = GetActorRotation();
+
+	PreviewInstance = GetWorld()->SpawnActor<AFieldPreviewItem>(PreviewClass, SpawnLoc, SpawnRot, Params);
+	if (PreviewInstance)
+	{
+		PreviewInstance->SetPreviewData(ItemID, ItemType);
 	}
 }
 
@@ -229,6 +246,36 @@ void ADefenseCharacter::bExitHideMouseCursor()
 	}
 }
 
+void ADefenseCharacter::SelectQuickSlot(int32 index)
+{
+	UE_LOG(LogTemp, Log, TEXT("Quick Slot : %d"), index);
+
+	const FStorageArray* itemData = quickSlotWidgetInstance->GetQuickSlotItem(index - 1);
+
+	if (!itemData) 
+	{
+		playerItemID = NAME_None;
+
+		// 기존 프리뷰 제거
+		if (PreviewInstance)
+		{
+			PreviewInstance->Destroy();
+			PreviewInstance = nullptr;
+		}
+		return;
+	}
+
+	playerItemID = itemData->ItemID;
+
+	const FItemMasterDataRow* ItemDataRow = ItemMasterDataMap[playerItemID];
+	if (!ItemDataRow) return;
+
+	UE_LOG(LogTemp, Log, TEXT("Item ID   : %s"), *ItemDataRow->ItemID.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Item Type : %d"), ItemDataRow->ItemType);
+
+	RequestPreviewItem(ItemDataRow->ItemID, ItemDataRow->ItemType);
+}
+
 void ADefenseCharacter::BindStorageSlot(UStorageSlot *StorageSlot)
 {
 	if(StorageSlot)
@@ -242,26 +289,5 @@ void ADefenseCharacter::QuickSlotHandling(UStorageSlot *ClickedSlot)
 	if(quickSlotWidgetInstance)
 	{
 		quickSlotWidgetInstance->AddItemQuickSlot(ClickedSlot);
-	}
-}
-
-void ADefenseCharacter::SelectQuickSlot(int32 Index)
-{
-	UE_LOG(LogTemp, Log, TEXT("Quick Slot : %d"), Index);
-	//스폰 테스트용
-	if(Index == 1)
-	{
-		playerItemID = "Weapon001";
-		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[playerItemID]->ItemType);
-	}
-	else if(Index == 2)
-	{
-		playerItemID = "Structure001";
-		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[playerItemID]->ItemType);
-	}
-	else if(Index == 3)
-	{
-		playerItemID = "Trap001";
-		UE_LOG(LogTemp, Log, TEXT("Item Type : %d"),ItemMasterDataMap[playerItemID]->ItemType);
 	}
 }

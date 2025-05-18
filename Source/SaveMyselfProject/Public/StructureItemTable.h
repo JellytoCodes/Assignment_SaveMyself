@@ -14,7 +14,6 @@ struct FStructureDataRow : public FTableRowBase
 	FName StructureName;
 
 	//건축물 체력 
-	//ex) Binding = 5.f (5초동안 묶이도록함), Explosive = 30.f (폭발하며 주변에 30의 데미지를 입힘)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float StructureHP;
 

@@ -21,7 +21,7 @@ protected :
 
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* storageWrapBox;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category = "QuickSlot")
 	class UQuickSlotWidget* QuickSlotWidgetInstance;
 

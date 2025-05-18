@@ -3,6 +3,7 @@
 #include "WeaponItem.h"
 #include "PlayerItem.h"
 #include "ItemMasterTable.h"
+#include "ItemSubsystem.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -36,6 +37,11 @@ void AWeaponItem::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Log, TEXT("Spawned WeaponItem"));
+	
+	if (getItemName != NAME_None)
+	{
+		EnableItemData(getItemName);
+	}
 
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeaponItem::OnWeaponOverlap);
 	ProjectileMovement->Velocity = GetActorForwardVector() * ProjectileMovement->InitialSpeed;
@@ -45,6 +51,26 @@ void AWeaponItem::BeginPlay()
 	{
 		Destroy();
 	}), 2.f, false);
+}
+
+void AWeaponItem::EnableItemData(FName ItemID)
+{
+	if(const UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>())
+	{
+		const FWeaponDataRow* Data = ItemDB->GetItemWeaponData(ItemID);
+		if(Data)
+		{
+			weaponName = Data->WeaponName;
+			weaponDamage = Data->WeaponDamage;
+			maxCoolTime = Data->MaxCoolTime;
+			damageType = Data->DamageType;
+
+			UE_LOG(LogTemp, Log, TEXT("weaponName	: %s"), *weaponName.ToString());
+			UE_LOG(LogTemp, Log, TEXT("weaponDamage	: %.2f"), weaponDamage);
+			UE_LOG(LogTemp, Log, TEXT("maxCoolTime	: %.2f"), maxCoolTime);
+			UE_LOG(LogTemp, Log, TEXT("DamageType	: %d"), damageType);
+		}
+	}
 }
 
 void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)

@@ -9,6 +9,7 @@
 
 class UPlayerQuickSlot;
 class UWrapBox;
+class UProgressBar;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API UQuickSlotWidget : public UUserWidget
@@ -25,15 +26,26 @@ protected :
 
 	int32 maxQuantity = 99;
 
-	bool GetBagWeight(FStorageArray& InData);
+	UPROPERTY(meta = (BindWidget))
+	UProgressBar* curWeightBar;
 
 	UPROPERTY(meta = (BindWidget))
 	UWrapBox* QuickSlotWrapBox;
 
+	int32 slotArr = 0;
+
 public :
 
-
+	bool SetBagWeight(FStorageArray& InData);
+	bool GetBagWeight() { return curBagWeight >= maxBagWeight; }
 
 	UFUNCTION(BlueprintCallable)
 	void AddItemQuickSlot(UStorageSlot* pSlotData);
+
+	const FStorageArray* GetQuickSlotItem(int32 index);
+
+	TArray<FStorageArray> saveSlot;
+
+	UFUNCTION(BlueprintCallable)
+	void UseQuickSlotItem(int32 index);
 };

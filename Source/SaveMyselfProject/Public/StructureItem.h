@@ -15,17 +15,25 @@ class SAVEMYSELFPROJECT_API AStructureItem : public APlayerItem
 public :
 	AStructureItem();
 
-	UFUNCTION()
-	void OnStructureOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
-
 protected :
 	virtual void BeginPlay() override;
 
-	//ItemMasterDataTable 식별 ID
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	FName ItemMasterID = NAME_None;
+public :
 
-	//ItemTrapDataTable 식별 ID
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	FName ItemStructureID = NAME_None;
+	UFUNCTION()
+	void OnStructureOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	
+	//아이템 정보 삽입
+	virtual void EnableItemData(FName ItemID) override;
+
+private : 
+	//BP에서 아이템 ID 관리
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemID", meta = (AllowPrivateAccess = "true"))
+	FName getItemName;
+
+	//데이터 테이블 기반 아이템 정보
+	FName structureName;
+	float structureHP;
+	float structureDefense;
+	float maxCoolTime;
 };

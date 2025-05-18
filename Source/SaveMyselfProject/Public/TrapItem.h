@@ -18,16 +18,22 @@ public :
 protected :
 	virtual void BeginPlay() override;
 
-	//ItemMasterDataTable 식별 ID
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	FName ItemMasterID = NAME_None;
-
-	//ItemTrapDataTable 식별 ID
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData")
-	FName ItemTrapID = NAME_None;
-
 public :
-	//적이 트랩 밟을 시 처리하기 위한 Overlap
 	UFUNCTION()
 	void OnTrapOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	//아이템 정보 삽입
+	virtual void EnableItemData(FName ItemID) override;
+
+private :
+	//BP에서 아이템 ID 관리
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemID", meta = (AllowPrivateAccess = "true"))
+	FName getItemName;
+
+	//데이터 테이블 기반 아이템 정보
+	FName trapName;
+	float trapEffect;
+	float maxCoolTime;
+	ETrapType trapType;
+
 };

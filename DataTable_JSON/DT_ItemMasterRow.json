@@ -1,12 +1,50 @@
 [
 	{
 		"Name": "Weapon001",
-		"ItemID": 1001,
-		"DisplayName": "NSLOCTEXT(\"[7EDD75ADDD837F9BAB65F5B558485C82]\", \"37C482F34544DF838DAB54B8D242B82F\", \"Knife\")",
-		"Description": "NSLOCTEXT(\"[7EDD75ADDD837F9BAB65F5B558485C82]\", \"6FB60AA44F365F17E8E57A8E183064F9\", \"Normal Knife\")",
+		"ItemID": "Weapon001",
+		"DisplayName": "Knife",
+		"Description": "Normal Knife",
 		"ItemType": "Weapon",
 		"ItemIcon": "None",
-		"ItemClass": "/Script/Engine.BlueprintGeneratedClass'/Game/Blueprints/WeaponItem/BP_WeaponItem_Knife.BP_WeaponItem_Knife_C'",
-		"ItemWeight": 1
+		"ItemClass": "/Game/Blueprints/WeaponItem/BP_WeaponItem_Knife.BP_WeaponItem_Knife_C",
+		"ItemWeight": 1,
+		"LocalOffSet": {
+			"X": 150.0,
+			"Y": 50.0,
+			"Z": 0.0
+		},
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/dagger_common.dagger_common"
+	},
+	{
+		"Name": "Structure001",
+		"ItemID": "Structure001",
+		"DisplayName": "WoodBox",
+		"Description": "Normal Structure",
+		"ItemType": "Structure",
+		"ItemIcon": "None",
+		"ItemClass": "/Game/Blueprints/StructureItem/BP_StructureItem_WoodBox.BP_StructureItem_WoodBox_C",
+		"ItemWeight": 3,
+		"LocalOffSet": {
+			"X": 200.0,
+			"Y": 0.0,
+			"Z": -50.0
+		},
+		"ItemMesh": "Game/Asset/KayKit/DungeonElements/cratePlatform_medium.cratePlatform_medium"
+	},
+	{
+		"Name": "Trap001",
+		"ItemID": "Trap001",
+		"DisplayName": "WireTrap",
+		"Description": "Normal Trap",
+		"ItemType": "Trap",
+		"ItemIcon": "None",
+		"ItemClass": "/Game/Blueprints/TrapItem/MyTrapItem.MyTrapItem_C",
+		"ItemWeight": 2,
+		"LocalOffSet": {
+			"X": 200.0,
+			"Y": 0.0,
+			"Z": -80.0
+		},
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/scaffold_small_low.scaffold_small_low"
 	}
 ]

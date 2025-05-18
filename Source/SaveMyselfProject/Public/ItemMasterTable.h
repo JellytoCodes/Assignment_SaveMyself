@@ -52,4 +52,8 @@ struct FItemMasterDataRow : public FTableRowBase
 	//플레이어 기준으로 아이템을 스폰하기 위한 설정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
 	FVector LocalOffSet = FVector(0.f, 0.f, 0.f);
+
+	//아이템 메시
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
+	UStaticMesh* ItemMesh = nullptr;
 };
