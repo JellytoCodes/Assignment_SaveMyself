@@ -27,15 +27,15 @@
 <br> 
 
 **🎒 배낭 인벤토리 시스템**  
- - [ ] InventoryItem 및 ItemType 구조 정의  
- - [ ] ItemWeight, MaxCarryWeight 기능 적용  
- - [ ] 인벤토리 총 무게 계산 + 제한 처리  
+ - [X] InventoryItem 및 ItemType 구조 정의  
+ - [X] ItemWeight, MaxCarryWeight 기능 적용  
+ - [X] 인벤토리 총 무게 계산 + 제한 처리  
  - [ ] UI에 아이템 무게 및 제한 출력      
 <br> 
 
 **🏪 상점(물자창고) 시스템**  
- - [ ] 상점 UI (선택 + 수량 조절)
- - [ ] 무게 초과 시 제한 처리
+ - [X] 상점 UI
+ - [X] 무게 초과 시 제한 처리
  - [ ] 스테이지별 무게 제한 설정 (DataTable 기반으로 계산)    
 <br> 
 
