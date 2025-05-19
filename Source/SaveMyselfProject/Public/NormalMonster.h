@@ -13,5 +13,17 @@ UCLASS()
 class SAVEMYSELFPROJECT_API ANormalMonster : public AMonsterBase
 {
 	GENERATED_BODY()
-	
+
+protected :
+	virtual void OnEnterIdle() override;
+	virtual void OnEnterPatrol() override;
+	virtual void OnEnterChase() override;
+	virtual void OnEnterAttack() override;
+	virtual void OnEnterDamage() override;
+	virtual void OnEnterDead() override;
+
+public :
+	void EquipWeapon();
+	void TryAttack();
+
 };

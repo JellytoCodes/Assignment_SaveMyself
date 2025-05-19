@@ -64,6 +64,8 @@ ADefenseCharacter::ADefenseCharacter()
 	{
 		HPWidgetClass = HPWidgetBP.Class;
 	}
+
+	Tags.Add(FName("Player"));
 }
 
 // Called when the game starts or when spawned

@@ -30,6 +30,8 @@ AWeaponItem::AWeaponItem()
 	ProjectileMovement->MaxSpeed = 3000;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = false;
+
+	Tags.Add(FName("Weapon"));
 }
 
 void AWeaponItem::BeginPlay()

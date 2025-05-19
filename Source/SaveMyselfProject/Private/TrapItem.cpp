@@ -21,6 +21,8 @@ ATrapItem::ATrapItem()
 	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	ItemMesh->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f));
+
+	Tags.Add(FName("Trap"));
 }
 
 void ATrapItem::BeginPlay()
