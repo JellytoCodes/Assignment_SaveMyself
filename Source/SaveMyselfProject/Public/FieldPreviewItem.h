@@ -37,10 +37,10 @@ protected :
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	UBoxComponent* PlacementCheckBox;
+	class UBoxComponent* PlacementCheckBox;
 
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* PreviewMesh;
+	class UStaticMeshComponent* PreviewMesh;
 
 	UPROPERTY()
 	EItemTypes PreviewItemType;

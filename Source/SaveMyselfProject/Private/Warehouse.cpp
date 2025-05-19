@@ -2,6 +2,7 @@
 
 #include "Warehouse.h"
 #include "Components/BoxComponent.h"
+#include "Engine/DataTable.h"
 #include "StorageWidget.h"
 #include "DefenseCharacter.h"
 #include "ItemSubsystem.h"
@@ -21,12 +22,28 @@ AWarehouse::AWarehouse()
 	{
 		StorageWidgetClass = storageWidgetBP.Class;
 	}
+
+	UDataTable* WarehouseTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
+	if(WarehouseTableFinder)				WarehouseItemTable	= WarehouseTableFinder;
 }
 
 // Called when the game starts or when spawned
 void AWarehouse::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(WarehouseItemTable)
+	{
+		TArray<FName> RowNames = WarehouseItemTable->GetRowNames();
+		for(const FName& RowName : RowNames)
+		{
+			const FStorageArrRow* Row = WarehouseItemTable->FindRow<FStorageArrRow>(RowName, "ItemInit");
+			if(Row)
+			{
+				fInData.Add(Row);
+			}
+		}
+	}
 
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AWarehouse::OnWarehouseEntranceOverlap);
 	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AWarehouse::OnWarehouseExitOverlap);

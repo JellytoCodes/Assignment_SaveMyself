@@ -1,0 +1,9 @@
+[
+	{
+		"Name": "WoodBox",
+		"StructureName": "WoodBox",
+		"StructureHP": 50,
+		"StructureDefense": 1,
+		"MaxCoolTime": 1
+	}
+]

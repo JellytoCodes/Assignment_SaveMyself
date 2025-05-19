@@ -6,12 +6,11 @@
 #include "Components/ProgressBar.h"
 #include "PlayerQuickSlot.h"
 #include "StorageSlot.h"
-#include "DefenseCharacter.h"
 
 void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 {
 	UE_LOG(LogTemp, Log, TEXT("Called AddItemQuickSlot"));
-	FStorageArray& InData = pSlotData->GetItemData();
+	FStorageArrRow& InData = pSlotData->GetItemData();
 	
 	if(SetBagWeight(InData)) return;
 	
@@ -42,7 +41,7 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 			UPlayerQuickSlot* pNewQuickSlot = CreateWidget<UPlayerQuickSlot>(QuickSlotWrapBox, itemSlotWidgetClass);
 			if(pNewQuickSlot)
 			{
-				pNewQuickSlot->SetItemData(InData);
+				pNewQuickSlot->SetItemData(&InData);
 				QuickSlotWrapBox->AddChildToWrapBox(pNewQuickSlot);
 				pNewQuickSlot->curQuickQuantity++;
 				pNewQuickSlot->ItemCountText->SetText(FText::AsNumber(pNewQuickSlot->curQuickQuantity));
@@ -54,7 +53,7 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 	}
 }
 
-bool UQuickSlotWidget::SetBagWeight(FStorageArray& InData)
+bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 {
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 
@@ -66,18 +65,21 @@ bool UQuickSlotWidget::SetBagWeight(FStorageArray& InData)
 	curBagWeight = curBagWeight + DataRow->ItemWeight;
 	UE_LOG(LogTemp, Log, TEXT("curBagWeight : %d"), curBagWeight);
 	
-	//배낭 무게 현황 체크 (현재 버그있음 수정 필요)
-	if(curWeightBar)
-	{
-		curWeightBar->SetFillColorAndOpacity(FColor::Green);
-		curWeightBar->SetPercent((float)(curBagWeight / maxBagWeight));
-		UE_LOG(LogTemp, Log, TEXT("curWeightBar : %d"), curWeightBar->GetParent());		
-	}
+	if(!curWeightBar && !curWeightText) return true;
+
+	//적재 초과 여부 컬러 표시
+	if(curBagWeight >= maxBagWeight)	curWeightBar->SetFillColorAndOpacity(FColor::Red);
+	else								curWeightBar->SetFillColorAndOpacity(FColor::Green);
+
+	curWeightBar->SetPercent(static_cast<float>(curBagWeight) / static_cast<float>(maxBagWeight));
+
+	FString BagTextString = FString::Printf(TEXT("Bag : %d / %d"), curBagWeight, maxBagWeight);
+	curWeightText->SetText(FText::FromString(BagTextString));
 	
 	return false;
 }
 
-const FStorageArray* UQuickSlotWidget::GetQuickSlotItem(int32 index)
+const FStorageArrRow* UQuickSlotWidget::GetQuickSlotItem(int32 index)
 {
 	if(!QuickSlotWrapBox) return nullptr;
 

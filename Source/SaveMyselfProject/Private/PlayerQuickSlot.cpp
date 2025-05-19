@@ -25,15 +25,15 @@ void UPlayerQuickSlot::OnItemButtonClicked()
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 }
 
-void UPlayerQuickSlot::SetItemData(const FStorageArray& InData)
+void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)
 {
 	UE_LOG(LogTemp, Log, TEXT("SetItemData"));
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 	if(!ItemDB) return;
 
-	ItemSlotData = ItemDB->GetItemMasterData(InData.ItemID);
+	ItemSlotData = ItemDB->GetItemMasterData(InData->ItemID);
 
-	StorageArr = InData;
+	StorageArr = *InData;
 
 	//아이콘이 없을 경우를 대비하여 else if 조건 분기점 생성
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);

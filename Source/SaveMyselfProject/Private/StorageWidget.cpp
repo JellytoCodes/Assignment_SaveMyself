@@ -8,7 +8,7 @@
 #include "DefenseCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
-void UStorageWidget::AddItemStorage(const TArray<FStorageArray>& InData)
+void UStorageWidget::AddItemStorage(const TArray<const FStorageArrRow*> InData)
 {
 	if(storageWrapBox)
 	{
@@ -32,7 +32,7 @@ void UStorageWidget::AddItemStorage(const TArray<FStorageArray>& InData)
 
 void UStorageWidget::ItemRegist(UStorageSlot* pSlotData)
 {	
-	FStorageArray& ItemData = pSlotData->GetItemData();
+	FStorageArrRow& ItemData = pSlotData->GetItemData();
 
 	if(ItemData.Quantity > 0)
 	{

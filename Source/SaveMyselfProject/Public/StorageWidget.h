@@ -27,8 +27,7 @@ protected :
 
 public :
 
-	UFUNCTION(BlueprintCallable)
-	void AddItemStorage(const TArray<FStorageArray>& InData);
+	void AddItemStorage(const TArray<const FStorageArrRow*> InData);
 
 	UFUNCTION()
 	void ItemRegist(UStorageSlot* pSlotData);

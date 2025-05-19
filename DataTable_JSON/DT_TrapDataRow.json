@@ -1,0 +1,9 @@
+[
+	{
+		"Name": "WireTrap",
+		"TrapName": "WireTrap",
+		"TrapEffect": 5,
+		"MaxCoolTime": 1,
+		"TrapType" : "Binding"
+	}
+]

@@ -129,15 +129,17 @@ private :
 	TSubclassOf<AFieldPreviewItem> PreviewClass;
 
 	void RequestPreviewItem(FName ItemID, EItemTypes ItemType);
+	void ThrowWeapon();
 
 public :
 	void bEntranceShowMouseCursor();
 	void bExitHideMouseCursor();
 
 	bool bMouseCursorUsed = false;
+	bool bIsPreview = false;
 
 	//Äü½½·Ô Widget
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "ture"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 	TSubclassOf<UQuickSlotWidget> quickSlotWidgetClass;
 
 	UFUNCTION()
@@ -147,5 +149,22 @@ public :
 	void QuickSlotHandling(UStorageSlot* ClickedSlot);
 
 	UQuickSlotWidget* quickSlotWidgetInstance;
+
+//-----------------------Ã¼·Â ±â´É ¼Â¾÷-----------------------//
+private :
+	int32 PlayerHP = 5;
+	int32 GetPlayerHP() { return PlayerHP; }
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
+	UInputAction* PlayerDamaged;
+
+	void TestPlayerDamaged();
+
+public :
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget")
+	TSubclassOf<class UPlayerHPWidget> HPWidgetClass;
+
+	UPlayerHPWidget* HPWidgetInstance;
 
 };

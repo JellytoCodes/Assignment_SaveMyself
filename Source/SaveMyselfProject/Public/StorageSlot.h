@@ -27,10 +27,13 @@ protected :
 public :
 	UPROPERTY(meta = (BindWidget))	
 	UImage* ItemImage;
+
 	UPROPERTY(meta = (BindWidget))	
 	UTextBlock* ItemName;
+
 	UPROPERTY(meta = (BindWidget))	
 	UImage* ItemCountImage;
+
 	UPROPERTY(meta = (BindWidget))	
 	UTextBlock* ItemCountText;
 
@@ -39,10 +42,10 @@ public :
 
 	const FItemMasterDataRow* ItemSlotData;
 
-	FStorageArray StorageArr;
+	FStorageArrRow StorageArr;
 
 	FItemSlotDelegate ItemSlotDelegate;
 	
-	void SetItemData(const FStorageArray& InData);
-	FStorageArray& GetItemData() { return StorageArr; }
+	void SetItemData(const FStorageArrRow* InData);
+	FStorageArrRow& GetItemData() { return StorageArr; }
 };

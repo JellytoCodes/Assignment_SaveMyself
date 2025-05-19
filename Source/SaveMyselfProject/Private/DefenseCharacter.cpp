@@ -15,6 +15,7 @@
 #include "StorageWidget.h"
 #include "QuickSlotWidget.h"
 #include "FieldPreviewItem.h"
+#include "PlayerHPWidget.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -50,11 +51,18 @@ ADefenseCharacter::ADefenseCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
-	//플레이어 퀵슬롯 설정
+	//플레이어 QuickSlot Widget 설정
 	static ConstructorHelpers::FClassFinder<UQuickSlotWidget> quickSlotWidgetBP(TEXT("/Game/WidgetBP/WBP_QuickSlotWidget.WBP_QuickSlotWidget_C"));
 	if(quickSlotWidgetBP.Succeeded())
 	{
 		quickSlotWidgetClass = quickSlotWidgetBP.Class;
+	}
+
+	//플레이어 HP Widget 설정
+	static ConstructorHelpers::FClassFinder<UPlayerHPWidget> HPWidgetBP(TEXT("/Game/WidgetBP/WBP_PlayerHPWidget.WBP_PlayerHPWidget_C"));
+	if(HPWidgetBP.Succeeded())
+	{
+		HPWidgetClass = HPWidgetBP.Class;
 	}
 }
 
@@ -84,6 +92,9 @@ void ADefenseCharacter::BeginPlay()
 
 	quickSlotWidgetInstance = CreateWidget<UQuickSlotWidget>(GetWorld(), quickSlotWidgetClass);
 	if(quickSlotWidgetInstance) quickSlotWidgetInstance->AddToViewport();
+
+	HPWidgetInstance = CreateWidget<UPlayerHPWidget>(GetWorld(), HPWidgetClass);
+	if(HPWidgetInstance) HPWidgetInstance->AddToViewport();
 }
 
 // Called every frame
@@ -117,6 +128,9 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_QuickSlot08, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot08);
 		EnhancedInputComponent->BindAction(IA_QuickSlot09, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot09);
 		EnhancedInputComponent->BindAction(IA_QuickSlot10, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot10);
+
+		//플레이어 HP 감소 체크
+		EnhancedInputComponent->BindAction(PlayerDamaged, ETriggerEvent::Started, this, &ADefenseCharacter::TestPlayerDamaged);
 	}
 }
 
@@ -140,8 +154,8 @@ void ADefenseCharacter::Move(const FInputActionValue &value)
 
 void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 {
-	//창고 진입 시 비활성화
-	if(bMouseCursorUsed) return;
+	//각 상태에 따른 기능 비활성화
+	if(bMouseCursorUsed || bIsPreview) return;
 
 	const auto LookAxisVector = value.Get<FVector2D>();
 
@@ -159,24 +173,64 @@ void ADefenseCharacter::Interact(const FInputActionValue &value)
 
 void ADefenseCharacter::SpwanPlayerItem()
 {
-	//창고 진입 시 비활성화
+	//각 상태에 따른 기능 비활성화
 	if(bMouseCursorUsed) return;
 
-	//크래시 방지
-	if(playerItemID == NAME_None)
+	for(int32 i = 0; i < quickSlotWidgetInstance->saveSlot.Num(); ++i)
 	{
-		UE_LOG(LogTemp, Log, TEXT("None Item"));
-		return;
+		//아이템 수량 소진 시 return
+		if(quickSlotWidgetInstance->saveSlot[i].Quantity < 1) return;
+
+		if(quickSlotWidgetInstance->saveSlot[i].ItemID == playerItemID)
+		{
+			quickSlotWidgetInstance->UseQuickSlotItem(i);
+
+			//건축 모드
+			if (PreviewInstance)
+			{
+				PreviewInstance->ConfirmPlacement();
+				PreviewInstance = nullptr;
+				bIsPreview = false;
+			}
+
+			//무기 모드
+			else
+			{
+				ThrowWeapon();
+			}
+			return;
+		}		
+	}
+}
+
+void ADefenseCharacter::RequestPreviewItem(FName ItemID, EItemTypes ItemType)
+{
+	if(PreviewInstance)
+	{
+		PreviewInstance->Destroy();
+		PreviewInstance = nullptr;
+		bIsPreview = false;
 	}
 
+	if (ItemType != EItemTypes::Structure && ItemType != EItemTypes::Trap) return;
+
+	bIsPreview = true;
+
+	FActorSpawnParameters Params;
+	Params.Owner = this;
+
+	FVector SpawnLoc = GetActorLocation();
+	FRotator SpawnRot = GetActorRotation();
+
+	PreviewInstance = GetWorld()->SpawnActor<AFieldPreviewItem>(PreviewClass, SpawnLoc, SpawnRot, Params);
 	if (PreviewInstance)
 	{
-		PreviewInstance->ConfirmPlacement();
-		PreviewInstance = nullptr;
+		PreviewInstance->SetPreviewData(ItemID, ItemType);
 	}
+}
 
-	else
-	{
+void ADefenseCharacter::ThrowWeapon()
+{
 		const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[playerItemID];
 		if(!ItemMasterDataRow || !ItemMasterDataRow->ItemClass) return;
 
@@ -191,39 +245,12 @@ void ADefenseCharacter::SpwanPlayerItem()
 
 		APlayerItem* SpawnedItem = 
 		GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
-	}
-
-	for (int32 i = 0; i < quickSlotWidgetInstance->saveSlot.Num(); ++i)
-	{
-		if (quickSlotWidgetInstance->saveSlot[i].ItemID == playerItemID)
-		{
-			quickSlotWidgetInstance->UseQuickSlotItem(i);
-			return;
-		}
-	}
 }
 
-void ADefenseCharacter::RequestPreviewItem(FName ItemID, EItemTypes ItemType)
-{
-	if(PreviewInstance)
-	{
-		PreviewInstance->Destroy();
-		PreviewInstance = nullptr;
-	}
-
-	if (ItemType != EItemTypes::Structure && ItemType != EItemTypes::Trap) return;
-
-	FActorSpawnParameters Params;
-	Params.Owner = this;
-
-	FVector SpawnLoc = GetActorLocation();
-	FRotator SpawnRot = GetActorRotation();
-
-	PreviewInstance = GetWorld()->SpawnActor<AFieldPreviewItem>(PreviewClass, SpawnLoc, SpawnRot, Params);
-	if (PreviewInstance)
-	{
-		PreviewInstance->SetPreviewData(ItemID, ItemType);
-	}
+void ADefenseCharacter::TestPlayerDamaged()
+{	
+	HPWidgetInstance->UpdatedPlayerHPWidget(PlayerHP);
+	PlayerHP--;
 }
 
 void ADefenseCharacter::bEntranceShowMouseCursor()
@@ -250,7 +277,7 @@ void ADefenseCharacter::SelectQuickSlot(int32 index)
 {
 	UE_LOG(LogTemp, Log, TEXT("Quick Slot : %d"), index);
 
-	const FStorageArray* itemData = quickSlotWidgetInstance->GetQuickSlotItem(index - 1);
+	const FStorageArrRow* itemData = quickSlotWidgetInstance->GetQuickSlotItem(index - 1);
 
 	if (!itemData) 
 	{

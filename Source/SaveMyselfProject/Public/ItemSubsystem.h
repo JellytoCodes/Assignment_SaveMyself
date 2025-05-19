@@ -4,27 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "ItemMasterTable.h"
+#include "StorageArrayTable.h"
 #include "TrapItemTable.h"
 #include "StructureItemTable.h"
 #include "WeaponItemTable.h"
 #include "Engine/DataTable.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "ItemSubsystem.generated.h"
-
-USTRUCT(BlueprintType)
-struct FStorageArray
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName ItemID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FText DisplayName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 Quantity;
-};
 
 class UDataTable;
 

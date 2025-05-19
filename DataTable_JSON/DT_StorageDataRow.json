@@ -1,0 +1,26 @@
+[
+	{
+		"Name": "Weapon001",
+		"ItemID": "Weapon001",
+		"DisplayName": "Knife",
+		"Quantity": 7
+	},
+	{
+		"Name": "Weapon002",
+		"ItemID": "Weapon002",
+		"DisplayName": "Boom",
+		"Quantity": 3
+	},
+	{
+		"Name": "Structure001",
+		"ItemID": "Structure001",
+		"DisplayName": "WoodBox",
+		"Quantity": 5
+	},
+	{
+		"Name": "Trap001",
+		"ItemID": "Trap001",
+		"DisplayName": "WireTrap",
+		"Quantity": 5
+	}
+]

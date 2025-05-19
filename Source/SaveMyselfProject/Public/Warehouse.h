@@ -45,6 +45,8 @@ public :
 	//창고 진입 여부 체크 (키 바인딩 비활성화 용도)
 	bool GetStorageEntrance() { return bIsStorageEntrance; }
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DataTable")
-	TArray<FStorageArray> fInData;
+	TArray<const FStorageArrRow*> fInData;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Data")
+	UDataTable* WarehouseItemTable;
 };

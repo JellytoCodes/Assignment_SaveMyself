@@ -37,7 +37,7 @@ void AFieldPreviewItem::Tick(float DeltaTime)
 	if(TraceToGround(Hit))
 	{
 		SetActorLocation(Hit.Location);
-
+		SetActorRotation(FRotator::ZeroRotator);
 		const bool bCanPlace = CheckCanPlace();
 		SetGhostMaterial(bCanPlace);
 	}

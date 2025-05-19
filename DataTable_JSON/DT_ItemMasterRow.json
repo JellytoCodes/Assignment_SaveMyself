@@ -46,5 +46,21 @@
 			"Z": -80.0
 		},
 		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/scaffold_small_low.scaffold_small_low"
+	},
+	{
+		"Name": "Weapon002",
+		"ItemID": "Weapon002",
+		"DisplayName": "Boom",
+		"Description": "Normal Boom",
+		"ItemType": "Weapon",
+		"ItemIcon": "None",
+		"ItemClass": "/Game/Blueprints/WeaponItem/BP_WeaponItem_Boom.BP_WeaponItem_Boom_C",
+		"ItemWeight": 1,
+		"LocalOffSet": {
+			"X": 150.0,
+			"Y": 50.0,
+			"Z": 0.0
+		},
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/potionSmall_blue.potionSmall_blue"
 	}
 ]

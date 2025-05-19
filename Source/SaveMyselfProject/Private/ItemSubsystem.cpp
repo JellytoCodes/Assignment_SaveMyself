@@ -12,7 +12,7 @@ void UItemSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 	UDataTable* itemMasterTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
 	if(itemMasterTableFinder)				ItemMasterTable	= itemMasterTableFinder;
 
-	UDataTable* itemWeaponTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemWeaponRow.DT_ItemWeaponRow")));
+	UDataTable* itemWeaponTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_WeaponDataRow.DT_WeaponDataRow")));
 	if(itemWeaponTableFinder)				ItemWeaponTable = itemWeaponTableFinder;
 
 	UDataTable* itemStructureTableFinder	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_StructureDataRow.DT_StructureDataRow")));

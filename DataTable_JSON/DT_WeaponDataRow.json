@@ -1,0 +1,16 @@
+[
+	{
+		"Name": "Knife",
+		"WeaponName": "Knife",
+		"WeaponDamage": 5,
+		"MaxCoolTime": 3,
+		"DamageType": "Single"
+	},
+	{
+		"Name": "Boom",
+		"WeaponName": "Boom",
+		"WeaponDamage": 20,
+		"MaxCoolTime": 3,
+		"DamageType": "Multiple"
+	}
+]

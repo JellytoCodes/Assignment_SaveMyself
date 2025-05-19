@@ -24,15 +24,15 @@ void UStorageSlot::OnItemButtonClicked()
 	ItemSlotDelegate.Broadcast(this);
 }
 
-void UStorageSlot::SetItemData(const FStorageArray& InData)
+void UStorageSlot::SetItemData(const FStorageArrRow* InData)
 {
 	UE_LOG(LogTemp, Log, TEXT("SetItemData"));
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 	if(!ItemDB) return;
 
-	ItemSlotData = ItemDB->GetItemMasterData(InData.ItemID);
+	ItemSlotData = ItemDB->GetItemMasterData(InData->ItemID);
 
-	StorageArr = InData;
+	StorageArr = *InData;
 
 	//아이콘이 없을 경우를 대비하여 else if 조건 분기점 생성
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
@@ -40,5 +40,5 @@ void UStorageSlot::SetItemData(const FStorageArray& InData)
 
 	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
 	//아이템 수량
-	if(ItemCountText)						ItemCountText->SetText(FText::AsNumber(InData.Quantity));
+	if(ItemCountText)						ItemCountText->SetText(FText::AsNumber(InData->Quantity));
 }

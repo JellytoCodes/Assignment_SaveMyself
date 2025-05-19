@@ -24,7 +24,7 @@ protected :
 	
 	const FItemMasterDataRow* ItemSlotData;
 
-	FStorageArray StorageArr;
+	FStorageArrRow StorageArr;
 
 public :
 
@@ -36,8 +36,8 @@ public :
 
 	int32 curQuickQuantity;
 
-	void SetItemData(const FStorageArray& InData);
-	FStorageArray& GetItemData() { return StorageArr; }
+	void SetItemData(const FStorageArrRow* InData);
+	FStorageArrRow& GetItemData() { return StorageArr; }
 
 	UFUNCTION()
 	bool DecreaseQuantity();
