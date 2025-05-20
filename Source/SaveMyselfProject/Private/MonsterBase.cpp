@@ -9,7 +9,7 @@
 AMonsterBase::AMonsterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -17,7 +17,16 @@ AMonsterBase::AMonsterBase()
 void AMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	LoadMonsterData();
+
+	UE_LOG(LogTemp, Log, TEXT("monster Type : %d"), monsterType);
+	UE_LOG(LogTemp, Log, TEXT("elite AI Type : %d"), eliteAIType);
+	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %s"), *monsterWeaponID.ToString());
+	UE_LOG(LogTemp, Log, TEXT("max HP : %.2f"), maxHP);
+	UE_LOG(LogTemp, Log, TEXT("cur HP : %.2f"), curHP);
+	UE_LOG(LogTemp, Log, TEXT("moveSpeed : %.2f"), moveSpeed);
+	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %.2f"), GetCharacterMovement()->MaxWalkSpeed);
 }
 
 // Called every frame
@@ -36,10 +45,10 @@ void AMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMonsterBase::LoadMonsterData()
 {
-	static const FString ContextStr(TEXT("MonsterStat COntext"));
+	static const FString ContextStr(TEXT("MonsterStat Context"));
 
 	const auto MonsterData = LoadObject<UDataTable>(nullptr, TEXT("/Game/DataTable/DT_MonsterStatRow.DT_MonsterStatRow"));
-	if(MonsterData) return;
+	if(!MonsterData) return;
 	
 	const auto StatRow = MonsterData->FindRow<FMonsterStatRow>(MonsterID, ContextStr);
 	if(!StatRow) return;
@@ -50,6 +59,7 @@ void AMonsterBase::LoadMonsterData()
 	maxHP = StatRow->MaxHP;
 	curHP = maxHP;
 	moveSpeed = StatRow->MoveSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 }
 
 void AMonsterBase::ApplyStat()
@@ -119,4 +129,10 @@ void AMonsterBase::OnEnterDamage()
 void AMonsterBase::OnEnterDead()
 {
 	UE_LOG(LogTemp, Log, TEXT("Entered Dead State"));
+}
+
+void AMonsterBase::Die()
+{
+	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
+	Destroy();
 }

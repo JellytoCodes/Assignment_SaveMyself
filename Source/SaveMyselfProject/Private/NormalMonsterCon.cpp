@@ -83,31 +83,6 @@ void ANormalMonsterCon::HandleAttack()
 	ControlledMonster->TryAttack();
 }
 
-AActor *ANormalMonsterCon::FindNearestVisibleStructure()
-{
-	if(!ControlledMonster) return nullptr;
-
-	TArray<AActor*> PerceivedActors;
-	GetPerceptionComponent()->GetCurrentlyPerceivedActors(nullptr, PerceivedActors);
-
-	AActor* ClosetStructure = nullptr;
-	float MinDistance = FLT_MAX;
-
-	for(AActor* Actor : PerceivedActors)
-	{
-		if(Actor && Actor->ActorHasTag(FName("Structure")))
-		{
-			float Dist = FVector::Dist(Actor->GetActorLocation(), ControlledMonster->GetActorLocation());
-			if(Dist < MinDistance)
-			{
-				MinDistance = Dist;
-				ClosetStructure = Actor;
-			}
-		}
-	}
-	return ClosetStructure;
-}
-
 void ANormalMonsterCon::EvaluateState()
 {
 	if(!ControlledMonster || !PerceptionComp) return;
@@ -156,6 +131,9 @@ void ANormalMonsterCon::EvaluateState()
 void ANormalMonsterCon::OnTargetPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus)
 {
 	if(!Actor || !ControlledMonster) return;
+
+	bool bIsStructure = Actor->ActorHasTag(FName("Structure"));
+	UE_LOG(LogTemp, Log, TEXT("Is Structure: %s"), bIsStructure ? TEXT("true") : TEXT("false"));
 
 	if(Stimulus.WasSuccessfullySensed())
 	{

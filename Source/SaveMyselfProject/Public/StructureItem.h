@@ -36,4 +36,7 @@ private :
 	float structureHP;
 	float structureDefense;
 	float maxCoolTime;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemID", meta = (AllowPrivateAccess = "true"))
+	class UAIPerceptionStimuliSourceComponent* StimuliSourceComp;
 };

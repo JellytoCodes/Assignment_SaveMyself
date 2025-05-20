@@ -33,7 +33,6 @@ protected :
 	UFUNCTION()
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
-	AActor* FindNearestVisibleStructure();
 	float AttackRange = 150.f;
 
 public :

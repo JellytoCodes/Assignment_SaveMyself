@@ -10,12 +10,12 @@
 UENUM(BlueprintType)
 enum class EMonsterState : uint8
 {
-    Idle,	//대기 상태
-    Patrol,	//목표 지점(맵끝) 이동
-    Chase,	//플레이어, 구조물 대상 추적
-    Attack,	//대상 공격
-    Damage,	//피격 반응
-    Dead,	//사망 처리
+    Idle,		//대기 상태
+    Patrol,		//목표 지점(맵끝) 이동
+    Chase,		//플레이어, 구조물 대상 추적
+    Attack,		//대상 공격
+    Damage,		//피격 반응
+    Dead,		//사망 처리
 };
 
 UCLASS()
@@ -70,4 +70,6 @@ public :
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
 	FVector FinalGoalLocation;
+
+	void Die();
 };

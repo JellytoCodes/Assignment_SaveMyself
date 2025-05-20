@@ -3,11 +3,17 @@
 #include "StructureItem.h"
 #include "ItemMasterTable.h"
 #include "ItemSubsystem.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AIPerceptionSystem.h"
+#include "Perception/AISenseConfig_Sight.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AStructureItem::AStructureItem()
 {
+	SetCanBeDamaged(true);
+	SetActorEnableCollision(true);
+
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	BoxCollision->SetGenerateOverlapEvents(true);
 	BoxCollision->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
@@ -21,6 +27,10 @@ AStructureItem::AStructureItem()
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	ItemMesh->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f));
 
+	StimuliSourceComp = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSourceComp"));
+	StimuliSourceComp->RegisterForSense(UAISense_Sight::StaticClass());
+	StimuliSourceComp->bAutoRegister = true;
+
 	Tags.Add(FName("Structure"));
 }
 
@@ -28,8 +38,15 @@ void AStructureItem::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
+
 	UE_LOG(LogTemp, Log, TEXT("Spawned StructureItem"));
 	
+	if (StimuliSourceComp)
+	{
+		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
+	}
+
 	if (getItemName != NAME_None)
 	{
 		EnableItemData(getItemName);

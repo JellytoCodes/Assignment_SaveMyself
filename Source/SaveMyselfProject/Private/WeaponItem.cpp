@@ -4,6 +4,7 @@
 #include "PlayerItem.h"
 #include "ItemMasterTable.h"
 #include "ItemSubsystem.h"
+#include "Engine/DamageEvents.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,8 +15,6 @@ AWeaponItem::AWeaponItem()
 	SphereCollision->SetGenerateOverlapEvents(true);
 	SphereCollision->SetSphereRadius(10.f);
 	SphereCollision->BodyInstance.SetCollisionProfileName("Projectile");
-	SphereCollision->SetCollisionResponseToAllChannels(ECR_Block);
-	SphereCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	RootComponent = SphereCollision;
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
@@ -77,10 +76,10 @@ void AWeaponItem::EnableItemData(FName ItemID)
 
 void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	if(OtherActor)
+	if(OtherActor && OtherActor != this)
 	{
-		FTransform WeaponTrans;
-		WeaponTrans.SetLocation(SweepResult.ImpactPoint);
-		Destroy();
+		const FDamageEvent Event(UDamageType::StaticClass());
+		OtherActor->TakeDamage(10, Event, GetInstigatorController(), this);
+		UE_LOG(LogTemp, Log, TEXT("%s Take Damaged"), *OtherActor->GetName());
 	}
 }
