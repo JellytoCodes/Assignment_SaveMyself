@@ -95,7 +95,9 @@ void ANormalMonsterCon::EvaluateState()
 	
 	for(AActor* Actor : PerceivedActors)
 	{
-		if(!Actor || (!Actor->ActorHasTag(FName("Structure")) && !Actor->ActorHasTag(FName("Player"))))
+		if(Actor->IsA<AMonsterBase>()) continue;
+
+		if(!Actor->ActorHasTag(FName("Structure")) && !Actor->ActorHasTag(FName("Player")))
 		continue;
 
 		float Dist = FVector::Dist(Actor->GetActorLocation(), ControlledMonster->GetActorLocation());
@@ -123,25 +125,25 @@ void ANormalMonsterCon::EvaluateState()
 	{
 		ControlledMonster->SetTargetActor(nullptr);
 		ControlledMonster->SetMonsterState(EMonsterState::Patrol);
-	}
-
-	
+	}	
 }
 
 void ANormalMonsterCon::OnTargetPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus)
 {
 	if(!Actor || !ControlledMonster) return;
 
+	if(Actor->IsA<AMonsterBase>()) return;
+
 	bool bIsStructure = Actor->ActorHasTag(FName("Structure"));
-	UE_LOG(LogTemp, Log, TEXT("Is Structure: %s"), bIsStructure ? TEXT("true") : TEXT("false"));
+	bool bIsPlayer = Actor->ActorHasTag(FName("Player"));
 
 	if(Stimulus.WasSuccessfullySensed())
 	{
-		if(Actor->ActorHasTag(FName("Structure")))
+		if(bIsStructure)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Structure Detected : %s"), *Actor->GetName());
 		}
-		else if(Actor->ActorHasTag(FName("Player")))
+		else if(bIsPlayer)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Player Detected : %s"), *Actor->GetName());
 		}

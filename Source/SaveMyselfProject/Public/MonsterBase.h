@@ -70,7 +70,7 @@ public :
 	AActor* GetTargetActor() const { return TargetActor; }
 
 	void SetMonsterState(EMonsterState NewState); 
-	
+	const EMonsterState GetMonsterState() { return curState; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
 	FVector FinalGoalLocation;

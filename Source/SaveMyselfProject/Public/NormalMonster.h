@@ -6,15 +6,17 @@
 #include "MonsterBase.h"
 #include "NormalMonster.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SAVEMYSELFPROJECT_API ANormalMonster : public AMonsterBase
 {
 	GENERATED_BODY()
 
+public :
+	ANormalMonster();
+
 protected :
+	virtual void Tick(float DeltaTime) override;
+	
 	virtual void OnEnterIdle() override;
 	virtual void OnEnterPatrol() override;
 	virtual void OnEnterChase() override;
@@ -23,6 +25,8 @@ protected :
 	virtual void OnEnterDead() override;
 
 	float attackPower = 30;
+	float attackElapsedTime = 0.f;
+	float AttackInterval = 3.f;
 
 public :
 	void EquipWeapon();

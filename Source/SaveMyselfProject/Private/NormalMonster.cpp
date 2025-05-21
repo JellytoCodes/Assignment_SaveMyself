@@ -4,29 +4,50 @@
 #include "NormalMonsterCon.h"
 #include "DamagebleInterface.h"
 
+ANormalMonster::ANormalMonster()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
+
+void ANormalMonster::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if(GetMonsterState() == EMonsterState::Attack)
+	{
+		attackElapsedTime += DeltaTime;
+		if(attackElapsedTime > AttackInterval)
+		{
+			attackElapsedTime = 0.f;
+			TryAttack();
+			UE_LOG(LogTemp, Log, TEXT("Try Attack"));
+		}
+	}
+}
+
 void ANormalMonster::OnEnterIdle()
 {
-	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Idle State"));
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
+		UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Idle State"));
 		AICon->HandleIdle();
 	}
 }
 
 void ANormalMonster::OnEnterPatrol()
 {
-	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Patrol State"));
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
+		UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Patrol State"));
 		AICon->HandlePatrol();
 	}
 }
 
 void ANormalMonster::OnEnterChase()
 {
-	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Chase State"));
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
+		UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Chase State"));
 		AICon->HandleChase();
 	}
 }
@@ -34,10 +55,11 @@ void ANormalMonster::OnEnterChase()
 void ANormalMonster::OnEnterAttack()
 {
 	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Attack State"));
-	EquipWeapon();
+	//EquipWeapon();
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
 		AICon->HandleAttack();
+		attackElapsedTime = AttackInterval;
 	}
 }
 
