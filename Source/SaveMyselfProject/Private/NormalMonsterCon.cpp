@@ -110,7 +110,7 @@ void ANormalMonsterCon::EvaluateState()
 	{
 		ControlledMonster->SetTargetActor(ClosestTarget);
 
-		if(MinDistance <= AttackRange)
+		if(MinDistance <= GetAttackRange())
 		{
 			ControlledMonster->SetMonsterState(EMonsterState::Attack);
 		}

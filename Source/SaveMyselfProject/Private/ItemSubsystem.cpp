@@ -9,17 +9,25 @@ void UItemSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 {
 	Super::Initialize(Collection);
 
-	UDataTable* itemMasterTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
-	if(itemMasterTableFinder)				ItemMasterTable	= itemMasterTableFinder;
+	//Item Master Table Cast
+	UDataTable* itemMasterTableFinder 
+	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
+	if(itemMasterTableFinder) ItemMasterTable = itemMasterTableFinder;
 
-	UDataTable* itemWeaponTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_WeaponDataRow.DT_WeaponDataRow")));
-	if(itemWeaponTableFinder)				ItemWeaponTable = itemWeaponTableFinder;
+	//Item Weapon Table Cast
+	UDataTable* itemWeaponTableFinder
+	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_WeaponDataRow.DT_WeaponDataRow")));
+	if(itemWeaponTableFinder) ItemWeaponTable = itemWeaponTableFinder;
 
-	UDataTable* itemStructureTableFinder	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_StructureDataRow.DT_StructureDataRow")));
-	if(itemStructureTableFinder)			ItemStructureTable = itemStructureTableFinder;
+	//Item Structure Table Cast
+	UDataTable* itemStructureTableFinder
+	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_StructureDataRow.DT_StructureDataRow")));
+	if(itemStructureTableFinder) ItemStructureTable = itemStructureTableFinder;
 
-	UDataTable* itemTrapTableFinder			= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_TrapDataRow.DT_TrapDataRow")));
-	if(itemTrapTableFinder)					ItemTrapTable = itemTrapTableFinder;
+	//Item Trap Table Cast
+	UDataTable* itemTrapTableFinder	
+	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_TrapDataRow.DT_TrapDataRow")));
+	if(itemTrapTableFinder)	ItemTrapTable = itemTrapTableFinder;
 }
 
 const FItemMasterDataRow *UItemSubsystem::GetItemMasterData(FName ItemID) const

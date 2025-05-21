@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "DamagebleInterface.h"
 #include "MonsterMasterTable.h"
 #include "MonsterBase.generated.h"
 
@@ -19,7 +20,7 @@ enum class EMonsterState : uint8
 };
 
 UCLASS()
-class SAVEMYSELFPROJECT_API AMonsterBase : public ACharacter
+class SAVEMYSELFPROJECT_API AMonsterBase : public ACharacter, public IDamagebleInterface
 {
 	GENERATED_BODY()
 
@@ -60,6 +61,8 @@ protected :
 
 	UPROPERTY()
 	AActor* TargetActor;
+
+	virtual void ReceiveDamage_Implementation(float Damage) override;
 
 public :
 	void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }

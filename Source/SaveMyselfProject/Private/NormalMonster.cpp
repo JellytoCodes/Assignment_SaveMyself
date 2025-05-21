@@ -2,6 +2,7 @@
 
 #include "NormalMonster.h"
 #include "NormalMonsterCon.h"
+#include "DamagebleInterface.h"
 
 void ANormalMonster::OnEnterIdle()
 {
@@ -59,5 +60,23 @@ void ANormalMonster::EquipWeapon()
 
 void ANormalMonster::TryAttack()
 {
+	if(!TargetActor) return;
 
+	auto* AICon = Cast<ANormalMonsterCon>(GetController());
+	if(!AICon) return;
+	
+	const float Distance = FVector::Dist(TargetActor->GetActorLocation(), GetActorLocation());
+	if(Distance > AICon->GetAttackRange()) return;
+
+	if(TargetActor->Implements<UDamagebleInterface>())
+	{
+		if(TargetActor->ActorHasTag(FName("Structure")))
+		{
+			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, attackPower);
+		}
+		else if(TargetActor->ActorHasTag(FName("Player")))
+		{
+			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, 1);
+		}
+	}
 }

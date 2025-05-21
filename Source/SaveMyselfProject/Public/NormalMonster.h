@@ -22,8 +22,9 @@ protected :
 	virtual void OnEnterDamage() override;
 	virtual void OnEnterDead() override;
 
+	float attackPower = 30;
+
 public :
 	void EquipWeapon();
 	void TryAttack();
-
 };

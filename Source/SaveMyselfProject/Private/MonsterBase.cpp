@@ -136,3 +136,18 @@ void AMonsterBase::Die()
 	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
 	Destroy();
 }
+
+void AMonsterBase::ReceiveDamage_Implementation(float Damage)
+{
+	curHP -= Damage;
+
+	if(curHP > 0)
+	{
+		SetMonsterState(EMonsterState::Damage);
+	}
+	else
+	{
+		curHP = 0;
+		SetMonsterState(EMonsterState::Dead);
+	}
+}
