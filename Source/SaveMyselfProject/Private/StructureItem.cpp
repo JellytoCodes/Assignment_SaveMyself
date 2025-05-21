@@ -66,11 +66,6 @@ void AStructureItem::EnableItemData(FName ItemID)
 			structureHP = Data->StructureHP;
 			structureDefense = Data->StructureDefense;
 			maxCoolTime = Data->MaxCoolTime;
-
-			UE_LOG(LogTemp, Log, TEXT("structureName	: %s"), *structureName.ToString());
-			UE_LOG(LogTemp, Log, TEXT("structureHP		: %.2f"), structureHP);
-			UE_LOG(LogTemp, Log, TEXT("structureDefense	: %.2f"), structureDefense);
-			UE_LOG(LogTemp, Log, TEXT("maxCoolTime		: %.2f"), maxCoolTime);
 		}
 	}
 }

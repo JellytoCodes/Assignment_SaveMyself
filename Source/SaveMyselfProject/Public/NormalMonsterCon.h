@@ -34,7 +34,7 @@ protected :
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
-	float AttackRange = 150.f;
+	float AttackRange = 200.f;
 
 public :
 	void HandleIdle();

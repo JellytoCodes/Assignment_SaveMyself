@@ -40,6 +40,7 @@ protected :
 	float curHP;
 	float moveSpeed;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MonsterState")
 	EMonsterState curState;
 
 	EMonsterType monsterType;
@@ -74,5 +75,5 @@ public :
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
 	FVector FinalGoalLocation;
 
-	void Die();
+	void Dead();
 };

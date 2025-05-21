@@ -50,11 +50,6 @@ void ATrapItem::EnableItemData(FName ItemID)
 			trapEffect = Data->TrapEffect;
 			maxCoolTime = Data->MaxCoolTime;
 			trapType = Data->TrapType;
-
-			UE_LOG(LogTemp, Log, TEXT("structureName	: %s"), *trapName.ToString());
-			UE_LOG(LogTemp, Log, TEXT("structureHP		: %.2f"), trapEffect);
-			UE_LOG(LogTemp, Log, TEXT("structureDefense	: %.2f"), maxCoolTime);
-			UE_LOG(LogTemp, Log, TEXT("maxCoolTime		: %d"), trapType);
 		}
 	}
 }

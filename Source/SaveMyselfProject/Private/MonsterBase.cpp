@@ -3,6 +3,7 @@
 
 #include "MonsterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Engine/DataTable.h"
 
 // Sets default values
@@ -11,6 +12,7 @@ AMonsterBase::AMonsterBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	Tags.Add(FName("Monster"));
 }
 
 // Called when the game starts or when spawned
@@ -129,18 +131,22 @@ void AMonsterBase::OnEnterDamage()
 void AMonsterBase::OnEnterDead()
 {
 	UE_LOG(LogTemp, Log, TEXT("Entered Dead State"));
+	Dead();
 }
 
-void AMonsterBase::Die()
+void AMonsterBase::Dead()
 {
 	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
-	Destroy();
+	GetCharacterMovement()->DisableMovement();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetActorRotation(FRotator(90.f, 0.f, 0.f));
+	SetLifeSpan(3.f);
 }
 
 void AMonsterBase::ReceiveDamage_Implementation(float Damage)
 {
+	UE_LOG(LogTemp, Warning, TEXT("MonsterDamaged!"))
 	curHP -= Damage;
-
 	if(curHP > 0)
 	{
 		SetMonsterState(EMonsterState::Damage);

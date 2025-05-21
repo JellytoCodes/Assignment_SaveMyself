@@ -2,6 +2,7 @@
 
 #include "WeaponItem.h"
 #include "PlayerItem.h"
+#include "MonsterBase.h"
 #include "ItemMasterTable.h"
 #include "ItemSubsystem.h"
 #include "Engine/DamageEvents.h"
@@ -14,7 +15,10 @@ AWeaponItem::AWeaponItem()
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("Collision");
 	SphereCollision->SetGenerateOverlapEvents(true);
 	SphereCollision->SetSphereRadius(10.f);
-	SphereCollision->BodyInstance.SetCollisionProfileName("Projectile");
+	SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SphereCollision->SetCollisionObjectType(ECC_WorldDynamic);
+	SphereCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SphereCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	RootComponent = SphereCollision;
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
@@ -54,6 +58,13 @@ void AWeaponItem::BeginPlay()
 	}), 2.f, false);
 }
 
+void AWeaponItem::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	SphereCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SphereCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+}
+
 void AWeaponItem::EnableItemData(FName ItemID)
 {
 	if(const UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>())
@@ -65,21 +76,18 @@ void AWeaponItem::EnableItemData(FName ItemID)
 			weaponDamage = Data->WeaponDamage;
 			maxCoolTime = Data->MaxCoolTime;
 			damageType = Data->DamageType;
-
-			UE_LOG(LogTemp, Log, TEXT("weaponName	: %s"), *weaponName.ToString());
-			UE_LOG(LogTemp, Log, TEXT("weaponDamage	: %.2f"), weaponDamage);
-			UE_LOG(LogTemp, Log, TEXT("maxCoolTime	: %.2f"), maxCoolTime);
-			UE_LOG(LogTemp, Log, TEXT("DamageType	: %d"), damageType);
 		}
 	}
 }
 
 void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	if(OtherActor && OtherActor != this)
+	if(OtherActor)
 	{
-		const FDamageEvent Event(UDamageType::StaticClass());
-		OtherActor->TakeDamage(10, Event, GetInstigatorController(), this);
-		UE_LOG(LogTemp, Log, TEXT("%s Take Damaged"), *OtherActor->GetName());
+		if(auto TargetActor = Cast<AMonsterBase>(OtherActor))
+		{	
+			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, weaponDamage);
+		}
 	}
+	Destroy();
 }

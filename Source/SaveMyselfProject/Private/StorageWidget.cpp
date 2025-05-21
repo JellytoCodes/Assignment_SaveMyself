@@ -10,22 +10,21 @@
 
 void UStorageWidget::AddItemStorage(const TArray<const FStorageArrRow*> InData)
 {
-	if(storageWrapBox)
+	if(!storageWrapBox) return;
+
+	for(auto child : InData)
 	{
-		for(auto child : InData)
+		UStorageSlot* pNewStorageSlot = CreateWidget<UStorageSlot>(storageWrapBox, itemSlotWidgetClass);
+		if(pNewStorageSlot)
 		{
-			UStorageSlot* pNewStorageSlot = CreateWidget<UStorageSlot>(storageWrapBox, itemSlotWidgetClass);
-			if(pNewStorageSlot)
+			pNewStorageSlot->SetItemData(child);
+			storageWrapBox->AddChildToWrapBox(pNewStorageSlot);
+			pNewStorageSlot->ItemSlotDelegate.AddDynamic(this, &UStorageWidget::ItemRegist);
+			if(ADefenseCharacter* PC = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 			{
-				pNewStorageSlot->SetItemData(child);
-				storageWrapBox->AddChildToWrapBox(pNewStorageSlot);
-				pNewStorageSlot->ItemSlotDelegate.AddDynamic(this, &UStorageWidget::ItemRegist);
-				if (ADefenseCharacter* PC = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
-				{
-					PC->BindStorageSlot(pNewStorageSlot);
-				}
-				UE_LOG(LogTemp, Log, TEXT("Get ItemStorage"));
+				PC->BindStorageSlot(pNewStorageSlot);
 			}
+			UE_LOG(LogTemp, Log, TEXT("Get ItemStorage"));
 		}
 	}
 }

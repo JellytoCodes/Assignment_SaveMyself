@@ -51,11 +51,12 @@ void ANormalMonster::OnEnterDead()
 {
 	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Dead State"));
 	//애니메이션 재생 후 Destroy() 구현 예정
+	Dead();
 }
 
 void ANormalMonster::EquipWeapon()
 {
-
+	
 }
 
 void ANormalMonster::TryAttack()

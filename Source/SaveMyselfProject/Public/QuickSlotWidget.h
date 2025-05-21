@@ -52,4 +52,6 @@ public :
 
 	UFUNCTION(BlueprintCallable)
 	void UseQuickSlotItem(int32 index);
+
+	
 };
