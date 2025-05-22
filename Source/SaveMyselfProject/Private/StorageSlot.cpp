@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
+#include "SaveMyselfGameInstance.h"
 
 void UStorageSlot::NativeConstruct()
 {
@@ -20,8 +21,12 @@ void UStorageSlot::NativeConstruct()
 
 void UStorageSlot::OnItemButtonClicked()
 {
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
-	ItemSlotDelegate.Broadcast(this);
+	if(GetIsAmount() && GInstance->GetBagAmount())
+	{
+		ItemSlotDelegate.Broadcast(this);
+	}
 }
 
 void UStorageSlot::SetItemData(const FStorageArrRow* InData)

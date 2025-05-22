@@ -48,4 +48,10 @@ public :
 	
 	void SetItemData(const FStorageArrRow* InData);
 	FStorageArrRow& GetItemData() { return StorageArr; }
+
+	bool bIsAmount = true;
+
+	//bIsAmount Getter/Setter
+	const bool GetIsAmount() { return bIsAmount; }
+	void SetIsAmount(bool IsAmount) { bIsAmount = IsAmount; }
 };

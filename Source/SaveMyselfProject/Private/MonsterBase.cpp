@@ -60,7 +60,7 @@ void AMonsterBase::LoadMonsterData()
 	monsterWeaponID = StatRow->MonsterWeaponID;
 	maxHP = StatRow->MaxHP;
 	curHP = maxHP;
-	moveSpeed = StatRow->MoveSpeed;
+	moveSpeed = FMath::RandRange(StatRow->MinMoveSpeed, StatRow->MaxMoveSpeed);
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 }
 
@@ -139,7 +139,7 @@ void AMonsterBase::Dead()
 	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SetActorRotation(FRotator(90.f, 0.f, 0.f));
+	SetActorRotation(FRotator(0.f, 90.f, 0.f));
 	SetLifeSpan(3.f);
 }
 

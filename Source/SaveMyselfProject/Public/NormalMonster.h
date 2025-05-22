@@ -24,7 +24,7 @@ protected :
 	virtual void OnEnterDamage() override;
 	virtual void OnEnterDead() override;
 
-	float attackPower = 30;
+	float attackPower = 10;
 	float attackElapsedTime = 0.f;
 	float AttackInterval = 3.f;
 

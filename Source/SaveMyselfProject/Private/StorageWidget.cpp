@@ -33,18 +33,18 @@ void UStorageWidget::ItemRegist(UStorageSlot* pSlotData)
 {	
 	FStorageArrRow& ItemData = pSlotData->GetItemData();
 
-	if(ItemData.Quantity > 0)
+	if(ItemData.Quantity > 1)
 	{
 		ItemData.Quantity--;
-
-		if(pSlotData->ItemCountText)
-		{
-			pSlotData->ItemCountText->SetText(FText::AsNumber(ItemData.Quantity));
-		}
-		UE_LOG(LogTemp, Log, TEXT("Used %s : %d"), *ItemData.ItemID.ToString(), ItemData.Quantity);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("Inventory Exhaustion"));
+		ItemData.Quantity = 0;
+		pSlotData->SetIsAmount(false);
+	}
+	if(pSlotData->ItemCountText)
+	{
+		pSlotData->ItemCountText->SetText(FText::AsNumber(ItemData.Quantity));
+		UE_LOG(LogTemp, Log, TEXT("Used %s : %d"), *ItemData.ItemID.ToString(), ItemData.Quantity);
 	}
 }

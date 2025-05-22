@@ -1,0 +1,13 @@
+[
+	{
+		"Name": "NormalMonster001",
+		"MonsterID": "NormalMonster001",
+		"MonsterType": "Normal",
+		"EliteAIType": "None",
+		"MonsterWeaponID": "Exe",
+		"MaxHP": 10,
+		"MinMoveSpeed": 150,
+		"MaxMoveSpeed": 400,
+		"MonsterClass": "/Script/Engine.BlueprintGeneratedClass'/Game/Blueprints/Monster/BP_NormalMonster.BP_NormalMonster_C'"
+	}
+]

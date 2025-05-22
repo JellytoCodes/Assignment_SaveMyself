@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "PlayerItem.h"
 #include "StructureItemTable.h"
+#include "DamagebleInterface.h"
 #include "StructureItem.generated.h"
 
 UCLASS()
-class SAVEMYSELFPROJECT_API AStructureItem : public APlayerItem
+class SAVEMYSELFPROJECT_API AStructureItem : public APlayerItem, public IDamagebleInterface
 {
 	GENERATED_BODY()
 
@@ -17,6 +18,8 @@ public :
 
 protected :
 	virtual void BeginPlay() override;
+
+	virtual void ReceiveDamage_Implementation(float Damage) override;
 
 public :
 
@@ -36,6 +39,7 @@ private :
 	float structureHP;
 	float structureDefense;
 	float maxCoolTime;
+	float curHP;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemID", meta = (AllowPrivateAccess = "true"))
 	class UAIPerceptionStimuliSourceComponent* StimuliSourceComp;

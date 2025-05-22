@@ -31,4 +31,6 @@ public :
 
 	UFUNCTION()
 	void ItemRegist(UStorageSlot* pSlotData);
+
+
 };

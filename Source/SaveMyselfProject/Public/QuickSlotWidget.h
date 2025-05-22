@@ -21,10 +21,6 @@ protected :
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerQuickSlot")
 	TSubclassOf<UPlayerQuickSlot> itemSlotWidgetClass;
 
-	//캐릭터 배낭 무게 설정
-	int32 maxBagWeight = 20;
-	int32 curBagWeight = 0;
-
 	int32 maxQuantity = 99;
 
 	UPROPERTY(meta = (BindWidget))
@@ -41,7 +37,6 @@ protected :
 public :
 
 	bool SetBagWeight(FStorageArrRow& InData);
-	bool GetBagWeight() { return curBagWeight >= maxBagWeight; }
 
 	UFUNCTION(BlueprintCallable)
 	void AddItemQuickSlot(UStorageSlot* pSlotData);

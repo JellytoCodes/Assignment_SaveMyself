@@ -55,6 +55,20 @@ void AStructureItem::BeginPlay()
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AStructureItem::OnStructureOverlap);
 }
 
+void AStructureItem::ReceiveDamage_Implementation(float Damage)
+{
+	UE_LOG(LogTemp, Warning, TEXT("StructureDamaged!"))
+	if(curHP > 0)
+	{
+		curHP -= Damage;
+	}
+	else
+	{
+		curHP = 0;
+		Destroy();
+	}
+}
+
 void AStructureItem::EnableItemData(FName ItemID)
 {
 	if(const UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>())
@@ -66,6 +80,7 @@ void AStructureItem::EnableItemData(FName ItemID)
 			structureHP = Data->StructureHP;
 			structureDefense = Data->StructureDefense;
 			maxCoolTime = Data->MaxCoolTime;
+			curHP = structureHP;
 		}
 	}
 }

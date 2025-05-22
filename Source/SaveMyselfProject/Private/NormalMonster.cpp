@@ -59,7 +59,7 @@ void ANormalMonster::OnEnterAttack()
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
 		AICon->HandleAttack();
-		attackElapsedTime = AttackInterval;
+		attackElapsedTime = 0;
 	}
 }
 

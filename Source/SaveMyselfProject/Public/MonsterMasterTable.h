@@ -40,7 +40,10 @@ struct FMonsterStatRow : public FTableRowBase
 	float MaxHP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MoveSpeed;
+	float MinMoveSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MaxMoveSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class AMonsterBase> MonsterClass;

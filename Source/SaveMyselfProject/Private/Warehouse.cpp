@@ -23,8 +23,9 @@ AWarehouse::AWarehouse()
 		StorageWidgetClass = storageWidgetBP.Class;
 	}
 
-	UDataTable* WarehouseTableFinder		= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
-	if(WarehouseTableFinder)				WarehouseItemTable	= WarehouseTableFinder;
+	UDataTable* WarehouseTableFinder
+	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
+	if(WarehouseTableFinder) WarehouseItemTable	= WarehouseTableFinder;
 }
 
 // Called when the game starts or when spawned
@@ -53,10 +54,7 @@ void AWarehouse::BeginPlay()
 	{
 		StorageWidgetInstance->AddItemStorage(fInData);
 	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("StorageWidgetInstance Nullptr!"));
-	}
+
 	StorageWidgetInstance->AddToViewport();
 	StorageWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
 }

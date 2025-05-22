@@ -6,13 +6,21 @@
 #include "Components/ProgressBar.h"
 #include "PlayerQuickSlot.h"
 #include "StorageSlot.h"
+#include "SaveMyselfGameInstance.h"
 
 void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 {
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+	if(!GInstance) return;
+
 	UE_LOG(LogTemp, Log, TEXT("Called AddItemQuickSlot"));
 	FStorageArrRow& InData = pSlotData->GetItemData();
 	
-	if(SetBagWeight(InData)) return;
+	if(SetBagWeight(InData))
+	{
+		GInstance->SetBagAmount(false);
+		return;
+	}
 	
 	if(QuickSlotWrapBox)
 	{
@@ -55,27 +63,31 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 
 bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 {
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());	
+	if(!GInstance) return true;
+
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 
 	const FItemMasterDataRow* DataRow = ItemDB->GetItemMasterData(InData.ItemID);
 	if(!DataRow) return true;
-	
-	if(curBagWeight >= maxBagWeight || (maxBagWeight - curBagWeight) < DataRow->ItemWeight) return true;
 
-	curBagWeight = curBagWeight + DataRow->ItemWeight;
-	UE_LOG(LogTemp, Log, TEXT("curBagWeight : %d"), curBagWeight);
+	if((GInstance->GetCurBagWeight() + DataRow->ItemWeight) > GInstance->GetMaxBagWeight()) return true;
+
+	GInstance->SetBagWeight(DataRow->ItemWeight);
+	UE_LOG(LogTemp, Log, TEXT("curBagWeight : %d"), GInstance->GetCurBagWeight());
 	
 	if(!curWeightBar && !curWeightText) return true;
 
 	//적재 초과 여부 컬러 표시
-	if(curBagWeight >= maxBagWeight)	curWeightBar->SetFillColorAndOpacity(FColor::Red);
+	if(GInstance->GetCurBagWeight() >= GInstance->GetMaxBagWeight())	curWeightBar->SetFillColorAndOpacity(FColor::Red);
 	else								curWeightBar->SetFillColorAndOpacity(FColor::Green);
 
-	curWeightBar->SetPercent(static_cast<float>(curBagWeight) / static_cast<float>(maxBagWeight));
+	curWeightBar->
+	SetPercent(static_cast<float>(GInstance->GetCurBagWeight()) / static_cast<float>(GInstance->GetMaxBagWeight()));
 
-	FString BagTextString = FString::Printf(TEXT("Bag : %d / %d"), curBagWeight, maxBagWeight);
+	FString BagTextString = FString::Printf(TEXT("Bag : %d / %d"), GInstance->GetCurBagWeight(), GInstance->GetMaxBagWeight());
 	curWeightText->SetText(FText::FromString(BagTextString));
-	
+
 	return false;
 }
 

@@ -124,8 +124,8 @@ void ANormalMonsterCon::EvaluateState()
 	else
 	{
 		ControlledMonster->SetTargetActor(nullptr);
-		ControlledMonster->SetMonsterState(EMonsterState::Patrol);
-	}	
+		ControlledMonster->SetMonsterState(EMonsterState::Patrol);	
+	}
 }
 
 void ANormalMonsterCon::OnTargetPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus)

@@ -139,6 +139,8 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ADefenseCharacter::Move(const FInputActionValue &value)
 {
+	if(bIsDeath) return;
+	
 	const auto MovementVector = value.Get<FVector2D>();
 
 	if(Controller != nullptr)
@@ -157,7 +159,7 @@ void ADefenseCharacter::Move(const FInputActionValue &value)
 void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 {
 	//각 상태에 따른 기능 비활성화
-	if(bMouseCursorUsed || bIsPreview) return;
+	if(bMouseCursorUsed || bIsPreview || bIsDeath) return;
 
 	const auto LookAxisVector = value.Get<FVector2D>();
 
@@ -176,7 +178,7 @@ void ADefenseCharacter::Interact(const FInputActionValue &value)
 void ADefenseCharacter::SpwanPlayerItem()
 {
 	//각 상태에 따른 기능 비활성화
-	if(bMouseCursorUsed) return;
+	if(bMouseCursorUsed || bIsDeath) return;
 
 	for(int32 i = 0; i < quickSlotWidgetInstance->saveSlot.Num(); ++i)
 	{
@@ -253,6 +255,21 @@ void ADefenseCharacter::TestPlayerDamaged()
 {	
 	HPWidgetInstance->UpdatedPlayerHPWidget(PlayerHP);
 	PlayerHP--;
+}
+
+void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
+{
+	HPWidgetInstance->UpdatedPlayerHPWidget(PlayerHP);
+	if(PlayerHP > 0)
+	{
+		PlayerHP -= Damage;
+	}
+	else 
+	{
+		bIsDeath = true;
+		PlayerHP = 0;
+		SetActorRotation(FRotator(0.f, 90.f, 0.f));
+	}
 }
 
 void ADefenseCharacter::bEntranceShowMouseCursor()

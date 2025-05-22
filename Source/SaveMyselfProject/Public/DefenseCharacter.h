@@ -7,6 +7,7 @@
 #include "ItemMasterTable.h"
 #include "WeaponItemTable.h"
 #include "ItemSubsystem.h"
+#include "DamagebleInterface.h"
 #include "DefenseCharacter.generated.h"
 
 class UInputMappingContext;
@@ -18,7 +19,7 @@ struct FItemMasterDataRow;
 struct FWeaponDataRow;
 
 UCLASS()
-class SAVEMYSELFPROJECT_API ADefenseCharacter : public ACharacter
+class SAVEMYSELFPROJECT_API ADefenseCharacter : public ACharacter, public IDamagebleInterface
 {
 	GENERATED_BODY()
 
@@ -155,10 +156,13 @@ private :
 	int32 PlayerHP = 5;
 	int32 GetPlayerHP() { return PlayerHP; }
 
+	bool bIsDeath = false;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* PlayerDamaged;
 
 	void TestPlayerDamaged();
+	virtual void ReceiveDamage_Implementation(float Damage) override;
 
 public :
 
