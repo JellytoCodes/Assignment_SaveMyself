@@ -3,6 +3,7 @@
 
 #include "MonsterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "NavigationInvokerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/DataTable.h"
 
@@ -12,7 +13,10 @@ AMonsterBase::AMonsterBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Tags.Add(FName("Monster"));
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	GetCharacterMovement()->bUseRVOAvoidance = false;
+
+	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
 }
 
 // Called when the game starts or when spawned

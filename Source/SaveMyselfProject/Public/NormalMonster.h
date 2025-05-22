@@ -26,9 +26,11 @@ protected :
 
 	float attackPower = 10;
 	float attackElapsedTime = 0.f;
-	float AttackInterval = 3.f;
+	float attackInterval = 5.f;
+	float attackRange = 150.f;
 
 public :
 	void EquipWeapon();
 	void TryAttack();
+	float GetAttackRange() { return attackRange;}
 };

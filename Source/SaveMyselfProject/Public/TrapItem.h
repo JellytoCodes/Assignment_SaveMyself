@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "PlayerItem.h"
+#include "DamagebleInterface.h"
 #include "TrapItemTable.h"
 #include "TrapItem.generated.h"
 
+class AMonsterBase;
+
 UCLASS()
-class SAVEMYSELFPROJECT_API ATrapItem : public APlayerItem
+class SAVEMYSELFPROJECT_API ATrapItem : public APlayerItem, public IDamagebleInterface
 {
 	GENERATED_BODY()
 
@@ -36,4 +39,10 @@ private :
 	float maxCoolTime;
 	ETrapType trapType;
 
+	bool bIsTriggered = false;
+
+	TArray<AMonsterBase*> GetMonstersRadius(float Radius);
+
+	void TriggerExplosiveEffect();
+	void TriggerBindingEffect();
 };

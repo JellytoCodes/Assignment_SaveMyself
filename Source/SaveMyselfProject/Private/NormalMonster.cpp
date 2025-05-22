@@ -16,7 +16,7 @@ void ANormalMonster::Tick(float DeltaTime)
 	if(GetMonsterState() == EMonsterState::Attack)
 	{
 		attackElapsedTime += DeltaTime;
-		if(attackElapsedTime > AttackInterval)
+		if(attackElapsedTime > attackInterval)
 		{
 			attackElapsedTime = 0.f;
 			TryAttack();
@@ -29,16 +29,16 @@ void ANormalMonster::OnEnterIdle()
 {
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Idle State"));
+		UE_LOG(LogTemp, Log, TEXT("[%s] Entered Idle State"), *GetName());
 		AICon->HandleIdle();
 	}
 }
 
 void ANormalMonster::OnEnterPatrol()
 {
-	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
+	if (auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Patrol State"));
+		UE_LOG(LogTemp, Log, TEXT("[%s] Entered Patrol State"), *GetName());
 		AICon->HandlePatrol();
 	}
 }
@@ -47,14 +47,14 @@ void ANormalMonster::OnEnterChase()
 {
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Chase State"));
+		UE_LOG(LogTemp, Log, TEXT("[%s] Entered Chase State"), *GetName());
 		AICon->HandleChase();
 	}
 }
 
 void ANormalMonster::OnEnterAttack()
 {
-	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Attack State"));
+	UE_LOG(LogTemp, Log, TEXT("[%s] Entered Attack State"), *GetName());
 	//EquipWeapon();
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{

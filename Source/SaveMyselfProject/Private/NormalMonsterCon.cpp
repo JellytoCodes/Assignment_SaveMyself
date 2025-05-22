@@ -17,7 +17,7 @@ ANormalMonsterCon::ANormalMonsterCon()
 
 	SightConfig->SightRadius = 1000.f;
 	SightConfig->LoseSightRadius = 1200.f;
-	SightConfig->PeripheralVisionAngleDegrees = 90.f;
+	SightConfig->PeripheralVisionAngleDegrees = 150.f;
 	SightConfig->SetMaxAge(5.f);
 
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
@@ -56,9 +56,16 @@ void ANormalMonsterCon::HandleIdle()
 
 void ANormalMonsterCon::HandlePatrol()
 {
-	if(!ControlledMonster) return;
+	if (!ControlledMonster) return;
 
-	MoveToLocation(ControlledMonster->FinalGoalLocation);
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (PlayerPawn)
+	{
+		FVector TargetLocation = PlayerPawn->GetActorLocation();
+		ControlledMonster->FinalGoalLocation = TargetLocation;
+
+		MoveToLocation(TargetLocation);
+	}
 }
 
 void ANormalMonsterCon::HandleChase()

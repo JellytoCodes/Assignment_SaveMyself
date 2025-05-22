@@ -65,6 +65,9 @@ protected :
 
 	virtual void ReceiveDamage_Implementation(float Damage) override;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Nav")
+	class UNavigationInvokerComponent* NavInvoker;
+
 public :
 	void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }
 	AActor* GetTargetActor() const { return TargetActor; }

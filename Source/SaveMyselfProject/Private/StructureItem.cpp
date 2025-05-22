@@ -17,7 +17,6 @@ AStructureItem::AStructureItem()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	BoxCollision->SetGenerateOverlapEvents(true);
 	BoxCollision->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
-	BoxCollision->SetRelativeLocation(FVector(0.f, 0.f, 40.f));
 	BoxCollision->BodyInstance.SetCollisionProfileName("OverlapAllDynamic");
 	BoxCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	RootComponent = BoxCollision;
@@ -38,20 +37,17 @@ void AStructureItem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-
 	UE_LOG(LogTemp, Log, TEXT("Spawned StructureItem"));
 	
-	if (StimuliSourceComp)
+	if(StimuliSourceComp)
 	{
 		UAIPerceptionSystem::RegisterPerceptionStimuliSource(GetWorld(), UAISense_Sight::StaticClass(), this);
 	}
 
-	if (getItemName != NAME_None)
+	if(getItemName != NAME_None)
 	{
 		EnableItemData(getItemName);
 	}
-
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AStructureItem::OnStructureOverlap);
 }
 
