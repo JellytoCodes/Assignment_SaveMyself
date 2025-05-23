@@ -260,7 +260,7 @@ void ADefenseCharacter::TestPlayerDamaged()
 void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 {
 	HPWidgetInstance->UpdatedPlayerHPWidget(PlayerHP);
-	if(PlayerHP > 0)
+	if(PlayerHP > 1)
 	{
 		PlayerHP -= Damage;
 	}
@@ -268,7 +268,9 @@ void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 	{
 		bIsDeath = true;
 		PlayerHP = 0;
-		SetActorRotation(FRotator(0.f, 90.f, 0.f));
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		SetActorRotation(FRotator(90.f, 0.f, 0.f));
+		SetActorLocation(FVector(0.f, 0.f, -20.f));		
 	}
 }
 

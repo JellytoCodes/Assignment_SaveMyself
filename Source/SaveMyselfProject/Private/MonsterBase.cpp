@@ -135,7 +135,6 @@ void AMonsterBase::OnEnterDamage()
 void AMonsterBase::OnEnterDead()
 {
 	UE_LOG(LogTemp, Log, TEXT("Entered Dead State"));
-	Dead();
 }
 
 void AMonsterBase::Dead()
@@ -143,7 +142,8 @@ void AMonsterBase::Dead()
 	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SetActorRotation(FRotator(0.f, 90.f, 0.f));
+	SetActorRotation(FRotator(90.f, 0.f, 0.f));
+	SetActorLocation(FVector(0.f, 0.f, -30.f));
 	SetLifeSpan(3.f);
 }
 

@@ -64,7 +64,7 @@ void ANormalMonsterCon::HandlePatrol()
 		FVector TargetLocation = PlayerPawn->GetActorLocation();
 		ControlledMonster->FinalGoalLocation = TargetLocation;
 
-		MoveToLocation(TargetLocation);
+		MoveToLocation(ControlledMonster->FinalGoalLocation);
 	}
 }
 
