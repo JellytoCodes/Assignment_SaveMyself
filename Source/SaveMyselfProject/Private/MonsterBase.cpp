@@ -143,7 +143,6 @@ void AMonsterBase::Dead()
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetActorRotation(FRotator(90.f, 0.f, 0.f));
-	SetActorLocation(FVector(0.f, 0.f, -30.f));
 	SetLifeSpan(3.f);
 }
 

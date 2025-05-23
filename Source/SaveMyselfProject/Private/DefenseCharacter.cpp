@@ -270,7 +270,6 @@ void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 		PlayerHP = 0;
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		SetActorRotation(FRotator(90.f, 0.f, 0.f));
-		SetActorLocation(FVector(0.f, 0.f, -20.f));		
 	}
 }
 
