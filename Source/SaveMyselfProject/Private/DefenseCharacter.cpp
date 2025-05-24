@@ -4,12 +4,14 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Engine/DataTable.h"
 #include "WeaponItem.h"
 #include "StructureItem.h"
 #include "TrapItem.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
+#include "DefenseGameModeBase.h"
 #include "PlayerItem.h"
 #include "StorageSlot.h"
 #include "StorageWidget.h"
@@ -97,6 +99,12 @@ void ADefenseCharacter::BeginPlay()
 
 	HPWidgetInstance = CreateWidget<UPlayerHPWidget>(GetWorld(), HPWidgetClass);
 	if(HPWidgetInstance) HPWidgetInstance->AddToViewport();
+	
+	ADefenseGameModeBase* DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
+    if(DefenseMode)
+    {
+        StageManager = DefenseMode->GetStageManager();
+    }
 }
 
 // Called every frame
@@ -235,20 +243,20 @@ void ADefenseCharacter::RequestPreviewItem(FName ItemID, EItemTypes ItemType)
 
 void ADefenseCharacter::ThrowWeapon()
 {
-		const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[playerItemID];
-		if(!ItemMasterDataRow || !ItemMasterDataRow->ItemClass) return;
+	const FItemMasterDataRow* ItemMasterDataRow = ItemMasterDataMap[playerItemID];
+	if(!ItemMasterDataRow || !ItemMasterDataRow->ItemClass) return;
 
-		const auto ItemSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
-		const auto ItemSpawnRotation = GetMesh()->GetComponentRotation();
-		auto ItemSpawnPrams = FActorSpawnParameters();
+	const auto ItemSpawnLocation = GetActorTransform().TransformPosition(ItemMasterDataRow->LocalOffSet);
+	const auto ItemSpawnRotation = GetMesh()->GetComponentRotation();
+	auto ItemSpawnPrams = FActorSpawnParameters();
 
-		ItemSpawnPrams.Owner = this;
-		ItemSpawnPrams.Instigator = GetInstigator();
+	ItemSpawnPrams.Owner = this;
+	ItemSpawnPrams.Instigator = GetInstigator();
 
-		UE_LOG(LogTemp, Log, TEXT("Spwaned Item : %s"), *ItemMasterDataMap[playerItemID]->ItemClass->GetName());
+	UE_LOG(LogTemp, Log, TEXT("Spwaned Item : %s"), *ItemMasterDataMap[playerItemID]->ItemClass->GetName());
 
-		APlayerItem* SpawnedItem = 
-		GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
+	APlayerItem* SpawnedItem = 
+	GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
 }
 
 void ADefenseCharacter::TestPlayerDamaged()
@@ -267,6 +275,7 @@ void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 	else 
 	{
 		bIsDeath = true;
+		StageManager->CheckEndPhaseConditions(bIsDeath);
 		PlayerHP = 0;
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		SetActorRotation(FRotator(90.f, 0.f, 0.f));

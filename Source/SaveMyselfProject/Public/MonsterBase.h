@@ -69,14 +69,18 @@ protected :
 	class UNavigationInvokerComponent* NavInvoker;
 
 public :
-	void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }
-	AActor* GetTargetActor() const { return TargetActor; }
-
-	void SetMonsterState(EMonsterState NewState); 
-	const EMonsterState GetMonsterState() { return curState; }
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
 	FVector FinalGoalLocation;
 
+	UPROPERTY()
+	class AMonsterSpawner* OwnerSpawner;
+
 	void Dead();
+
+public : //Getter & Setter °ü¸®
+	FORCEINLINE void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }
+	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
+
+	void SetMonsterState(EMonsterState NewState); 
+	FORCEINLINE EMonsterState GetMonsterState() const { return curState; }
 };

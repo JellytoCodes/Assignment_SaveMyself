@@ -38,8 +38,12 @@ void ADefenseHUD::ShowStageWidget(EStageState NewState)
 				StageText = FText::FromString(TEXT("Battle Phase"));
 			break;
 
-			case EStageState::End :
-				StageText = FText::FromString(TEXT("End Phase"));
+			case EStageState::Victory :
+				StageText = FText::FromString(TEXT("Victory"));
+			break;
+
+			case EStageState::Defeat :
+				StageText = FText::FromString(TEXT("Defeat"));
 			break;
 		}
 		StageWidgetInstance->SetStageText(StageText);

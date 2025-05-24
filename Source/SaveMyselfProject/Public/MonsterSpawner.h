@@ -16,12 +16,19 @@ class SAVEMYSELFPROJECT_API AMonsterSpawner : public AActor
 public : 
 	AMonsterSpawner();
 
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	virtual void Destroyed() override;
 
 	UFUNCTION()
     void StartSpawning(); // 스폰 시작 신호
     UFUNCTION()
     void StopSpawning();  // 스폰 중지
+
+	UFUNCTION()
+	bool AreAllMonstersDead() const;
+
+	void OnMonsterDied(AMonsterBase* Monster);
 
 private :	
 	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
@@ -30,10 +37,12 @@ private :
 	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* SpawnerMesh;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
+	class UStageManagerComponent* StageManager;
+
+	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	int32 MaxSpawnCount = 5;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	float SpawnCooldown = 3.f;
 
 	float SpawnTimer = 0.f;
@@ -42,6 +51,8 @@ private :
 	TArray<AMonsterBase*> SpawnedMonsters;
 
 	bool bIsSpawning = false;
+	bool bSpawnCompleted = false;
+	bool bIsSpawn = false;
 
 	void TrySpawn();
 	void SpawnMonster();

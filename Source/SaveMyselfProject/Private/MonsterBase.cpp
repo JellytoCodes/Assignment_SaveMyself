@@ -6,6 +6,7 @@
 #include "NavigationInvokerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/DataTable.h"
+#include "MonsterSpawner.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -140,6 +141,13 @@ void AMonsterBase::OnEnterDead()
 void AMonsterBase::Dead()
 {
 	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
+
+	if(OwnerSpawner)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Succeeded OwnerSpawner"));
+		OwnerSpawner->OnMonsterDied(this);
+	}
+
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetActorRotation(FRotator(90.f, 0.f, 0.f));

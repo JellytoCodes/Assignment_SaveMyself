@@ -8,7 +8,7 @@
 
 UStageManagerComponent::UStageManagerComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 
 }
 
@@ -16,11 +16,17 @@ void UStageManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	 TArray<AActor*> FoundSpawners;
+	TArray<AActor*> FoundSpawners;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMonsterSpawner::StaticClass(), FoundSpawners);
-	if(FoundSpawners.Num() > 0)
+
+	TotalSpawnerCount = FoundSpawners.Num();
+
+	for(AActor* Actor : FoundSpawners)
     {
-        MonsterSpawner = Cast<AMonsterSpawner>(FoundSpawners[0]);
+		if(AMonsterSpawner* Spawner = Cast<AMonsterSpawner>(Actor))
+        {
+			MonsterSpawner.Add(Spawner);
+		}
 	}
 }
 
@@ -41,22 +47,31 @@ void UStageManagerComponent::BattlePhase()
 	CurrentStageState = EStageState::Battle;
 	OnStageStateChanged.Broadcast(CurrentStageState);
 
-	if(MonsterSpawner)
+	for(AMonsterSpawner* Spawner : MonsterSpawner)
 	{
-		MonsterSpawner->StartSpawning();
+		if(Spawner)
+		{
+			Spawner->StartSpawning();
+		}
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(BattleTimerHandle, this, &UStageManagerComponent::EndPhase, BattleTime, false);
+	GetWorld()->GetTimerManager().SetTimer(BattleTimerHandle, this, &UStageManagerComponent::EndPhaseVictory, BattleTime, false);
 }
 
-void UStageManagerComponent::EndPhase()
+void UStageManagerComponent::EndPhaseVictory()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set EndPhase"));
+	UE_LOG(LogTemp, Warning, TEXT("Set Victory"));
 
-    CurrentStageState = EStageState::End;
+    CurrentStageState = EStageState::Victory;
     OnStageStateChanged.Broadcast(CurrentStageState);
+}
 
-	//铰菩 贸府 肺流 备泅
+void UStageManagerComponent::EndPhaseDefeat()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Set Defeat"));
+
+    CurrentStageState = EStageState::Defeat;
+    OnStageStateChanged.Broadcast(CurrentStageState);
 }
 
 void UStageManagerComponent::StartStage()
@@ -68,15 +83,20 @@ void UStageManagerComponent::CheckEndPhaseConditions()
 {
 	if(bHasEnded) return;
 
-	bool bAllMonstersDead = true;
-	bool bPlayerDead = false;
+	DestroyedSpawnerCount++;
+
+	if(DestroyedSpawnerCount >= TotalSpawnerCount)
+	{
+		EndPhaseVictory();
+	}
+}
+
+void UStageManagerComponent::CheckEndPhaseConditions(bool bPlayerDead)
+{
+	if(bHasEnded) return;
 
 	if(bPlayerDead)
 	{
-		EndPhase();
-	}
-	else if(bAllMonstersDead)
-	{
-		EndPhase();
+		EndPhaseDefeat();
 	}
 }

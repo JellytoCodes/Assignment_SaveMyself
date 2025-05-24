@@ -164,6 +164,9 @@ private :
 	void TestPlayerDamaged();
 	virtual void ReceiveDamage_Implementation(float Damage) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
+	class UStageManagerComponent* StageManager;
+
 public :
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget")

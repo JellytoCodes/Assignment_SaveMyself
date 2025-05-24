@@ -20,9 +20,13 @@ public :
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
-	class UStageManagerComponent* StageManager;
-
 	UFUNCTION()
 	void HandleStageState(EStageState NewState);
+
+private :
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UStageManagerComponent* StageManager;
+
+public :
+	FORCEINLINE class UStageManagerComponent* GetStageManager() const { return StageManager; }
 };
