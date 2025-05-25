@@ -24,7 +24,6 @@ void UStorageWidget::AddItemStorage(const TArray<const FStorageArrRow*> InData)
 			{
 				PC->BindStorageSlot(pNewStorageSlot);
 			}
-			UE_LOG(LogTemp, Log, TEXT("Get ItemStorage"));
 		}
 	}
 }

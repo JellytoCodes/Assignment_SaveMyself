@@ -31,7 +31,6 @@ void UStorageSlot::OnItemButtonClicked()
 
 void UStorageSlot::SetItemData(const FStorageArrRow* InData)
 {
-	UE_LOG(LogTemp, Log, TEXT("SetItemData"));
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 	if(!ItemDB) return;
 

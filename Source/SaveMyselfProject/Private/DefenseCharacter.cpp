@@ -18,6 +18,7 @@
 #include "QuickSlotWidget.h"
 #include "FieldPreviewItem.h"
 #include "PlayerHPWidget.h"
+#include "SaveHelper.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -253,8 +254,6 @@ void ADefenseCharacter::ThrowWeapon()
 	ItemSpawnPrams.Owner = this;
 	ItemSpawnPrams.Instigator = GetInstigator();
 
-	UE_LOG(LogTemp, Log, TEXT("Spwaned Item : %s"), *ItemMasterDataMap[playerItemID]->ItemClass->GetName());
-
 	APlayerItem* SpawnedItem = 
 	GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
 }
@@ -304,8 +303,6 @@ void ADefenseCharacter::bExitHideMouseCursor()
 
 void ADefenseCharacter::SelectQuickSlot(int32 index)
 {
-	UE_LOG(LogTemp, Log, TEXT("Quick Slot : %d"), index);
-
 	const FStorageArrRow* itemData = quickSlotWidgetInstance->GetQuickSlotItem(index - 1);
 
 	if (!itemData) 
@@ -325,9 +322,6 @@ void ADefenseCharacter::SelectQuickSlot(int32 index)
 
 	const FItemMasterDataRow* ItemDataRow = ItemMasterDataMap[playerItemID];
 	if (!ItemDataRow) return;
-
-	UE_LOG(LogTemp, Log, TEXT("Item ID   : %s"), *ItemDataRow->ItemID.ToString());
-	UE_LOG(LogTemp, Log, TEXT("Item Type : %d"), ItemDataRow->ItemType);
 
 	RequestPreviewItem(ItemDataRow->ItemID, ItemDataRow->ItemType);
 }

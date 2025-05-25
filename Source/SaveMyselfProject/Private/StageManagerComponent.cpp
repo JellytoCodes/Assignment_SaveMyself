@@ -63,6 +63,7 @@ void UStageManagerComponent::EndPhaseVictory()
 	UE_LOG(LogTemp, Warning, TEXT("Set Victory"));
 
     CurrentStageState = EStageState::Victory;
+	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
 }
 
@@ -71,6 +72,7 @@ void UStageManagerComponent::EndPhaseDefeat()
 	UE_LOG(LogTemp, Warning, TEXT("Set Defeat"));
 
     CurrentStageState = EStageState::Defeat;
+	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
 }
 
