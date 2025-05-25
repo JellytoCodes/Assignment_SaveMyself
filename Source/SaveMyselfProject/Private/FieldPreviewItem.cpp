@@ -36,8 +36,18 @@ void AFieldPreviewItem::Tick(float DeltaTime)
 	FHitResult Hit;
 	if(TraceToGround(Hit))
 	{
-		SetActorLocation(Hit.Location);
+		float ZOffset = 0.f;
+
+		if(PreviewMesh && PreviewMesh->GetStaticMesh())
+		{
+			ZOffset = PreviewMesh->Bounds.BoxExtent.Z;
+		}
+
+		FVector CorrectedLocation = Hit.Location + FVector(0.f, 0.f, ZOffset);
+
+		SetActorLocation(CorrectedLocation);
 		SetActorRotation(FRotator::ZeroRotator);
+
 		const bool bCanPlace = CheckCanPlace();
 		SetGhostMaterial(bCanPlace);
 	}

@@ -2,6 +2,7 @@
 
 #include "QuickSlotWidget.h"
 #include "Components/WrapBox.h"
+#include "Components/WrapBoxSlot.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
 #include "PlayerQuickSlot.h"
@@ -50,7 +51,7 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 			if(pNewQuickSlot)
 			{
 				pNewQuickSlot->SetItemData(&InData);
-				QuickSlotWrapBox->AddChildToWrapBox(pNewQuickSlot);
+
 				pNewQuickSlot->curQuickQuantity++;
 				pNewQuickSlot->ItemCountText->SetText(FText::AsNumber(pNewQuickSlot->curQuickQuantity));
 				UE_LOG(LogTemp, Log, TEXT("Get ItemQuickSlot"));

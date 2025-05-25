@@ -116,7 +116,7 @@ void ATrapItem::TriggerBindingEffect()
 void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
 	UE_LOG(LogTemp, Log, TEXT("Called OnTrapOverlap"));
-	if(OtherActor)
+	if(OtherActor && OtherActor->ActorHasTag("Monster"))
 	{
 		if(!bIsTriggered)
 		{
@@ -126,13 +126,15 @@ void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *
 			{
 				case ETrapType::Explosive :
 					TriggerExplosiveEffect();
+					UE_LOG(LogTemp, Log, TEXT("Called Explosive"));
 				break;
 				
 				case ETrapType::Binding :
 					TriggerBindingEffect();
+					UE_LOG(LogTemp, Log, TEXT("Called Binding"));
 				break;
 			}
+			Destroy();
 		}
 	}
-	Destroy();
 }

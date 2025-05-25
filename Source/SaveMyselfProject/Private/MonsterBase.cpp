@@ -18,6 +18,8 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->bUseRVOAvoidance = false;
 
 	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
+	
+	Tags.Add(FName("Monster"));
 }
 
 // Called when the game starts or when spawned

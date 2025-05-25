@@ -60,6 +60,7 @@ private :
 	float LookSensitivity = .5f;
 
 protected :
+
 	//플레이어 키 바인드 액션
 	void Move(const FInputActionValue& value);
 	void LookNTurn(const FInputActionValue& value);
