@@ -1,4 +1,4 @@
-# 🎮 Assignment_SaveMyself - Survival Defense Game Project
+# 🎮 Assignment_SaveMyself [Survival Defense Game]
 
 > **📝 2025학년도 1학년 1학기 기말 과제 / 1인 개발 프로젝트**
 >
