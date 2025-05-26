@@ -1,11 +1,14 @@
+
 #include "FieldPreviewItem.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Materials/MaterialInstance.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 #include "ItemSubsystem.h"
 #include "StructureItem.h"
 #include "TrapItem.h"
-#include "Kismet/GameplayStatics.h"
-#include "GameFramework/PlayerController.h"
+#include "PlacementBlocker.h"
 
 AFieldPreviewItem::AFieldPreviewItem()
 {
@@ -16,11 +19,24 @@ AFieldPreviewItem::AFieldPreviewItem()
 	PlacementCheckBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	PlacementCheckBox->SetCollisionResponseToAllChannels(ECR_Overlap);
 	PlacementCheckBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	PlacementCheckBox->SetBoxExtent(FVector(80.f, 80.f, 120.f));
 	PlacementCheckBox->SetGenerateOverlapEvents(true);
 
 	PreviewMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PreviewMesh"));
 	PreviewMesh->SetupAttachment(RootComponent);
 	PreviewMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> CanPlaceMaterialBP(TEXT("/Game/Asset/KayKit/DungeonElements/MaterialInstances/MI_Green.MI_Green"));
+	if(CanPlaceMaterialBP.Succeeded())
+	{
+		CanPlaceMaterial = CanPlaceMaterialBP.Object;
+	}
+
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> CannotPlaceMaterialBP(TEXT("/Game/Asset/KayKit/DungeonElements/MaterialInstances/MI_Red.MI_Red"));
+	if(CannotPlaceMaterialBP.Succeeded())
+	{
+		CannotPlaceMaterial = CannotPlaceMaterialBP.Object;
+	}
 }
 
 void AFieldPreviewItem::BeginPlay()
@@ -36,20 +52,21 @@ void AFieldPreviewItem::Tick(float DeltaTime)
 	FHitResult Hit;
 	if(TraceToGround(Hit))
 	{
-		float ZOffset = 0.f;
+		//Z축 보정
+		float ZOffset = PreviewMesh ? PreviewMesh->Bounds.BoxExtent.Z : 40.f;
 
-		if(PreviewMesh && PreviewMesh->GetStaticMesh())
-		{
-			ZOffset = PreviewMesh->Bounds.BoxExtent.Z;
-		}
+		//GridSnap
+		const float GridSize = 50.f;
+		float SnappedX = FMath::GridSnap(Hit.ImpactPoint.X, GridSize);
+		float SnappedY = FMath::GridSnap(Hit.ImpactPoint.Y, GridSize);
+		
+		FVector ConfirmLocation(SnappedX, SnappedY, Hit.ImpactPoint.Z + ZOffset);
 
-		FVector CorrectedLocation = Hit.Location + FVector(0.f, 0.f, ZOffset);
-
-		SetActorLocation(CorrectedLocation);
+		SetActorLocation(ConfirmLocation);
 		SetActorRotation(FRotator::ZeroRotator);
 
-		const bool bCanPlace = CheckCanPlace();
-		SetGhostMaterial(bCanPlace);
+		bIsCanPlace = CheckCanPlace();
+		SetGhostMaterial(bIsCanPlace);
 	}
 }
 
@@ -71,21 +88,19 @@ void AFieldPreviewItem::SetPreviewData(FName InItemID, EItemTypes InItemType)
 bool AFieldPreviewItem::CheckCanPlace() const
 {
 	TArray<AActor*> OverlappingActors;
-	PlacementCheckBox->GetOverlappingActors(OverlappingActors, APlayerItem::StaticClass());
+	PlacementCheckBox->GetOverlappingActors(OverlappingActors);
 
 	for(AActor* Other : OverlappingActors)
 	{
-		if (Other != this)
-		{
-			return false;
-		}
+		if(Other == this) continue;
+
+		if(Other->IsA<APlacementBlocker>() || Other->IsA<APlayerItem>()) return false;
 	}
 	return true;
 }
 
 void AFieldPreviewItem::ConfirmPlacement()
 {
-	UE_LOG(LogTemp, Log, TEXT("Called ConfirmPlacement"));
 	if (!CheckCanPlace()) return;
 
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
@@ -99,7 +114,6 @@ void AFieldPreviewItem::ConfirmPlacement()
 
 	APlayerItem* Placed = GetWorld()->SpawnActor<APlayerItem>(DataRow->ItemClass, GetActorLocation(), GetActorRotation(), Params);
 
-	UE_LOG(LogTemp, Log, TEXT("Ended ConfirmPlacement"));
 	Destroy();
 }
 
@@ -125,6 +139,10 @@ bool AFieldPreviewItem::TraceToGround(FHitResult& HitResult) const
 
 void AFieldPreviewItem::SetGhostMaterial(bool bCanPlace)
 {
-	// TODO: 프리뷰 머티리얼 교체 (초록/빨강)
-	// 이 함수는 MaterialInstanceDynamic이나 CustomDepth로 교체 예정
+	UMaterialInterface* SelectedMat = bCanPlace ? CanPlaceMaterial : CannotPlaceMaterial;
+
+	if(PreviewMesh && SelectedMat)
+	{
+		PreviewMesh->SetMaterial(0, SelectedMat);
+	}
 }

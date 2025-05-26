@@ -137,8 +137,6 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_QuickSlot06, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot06);
 		EnhancedInputComponent->BindAction(IA_QuickSlot07, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot07);
 		EnhancedInputComponent->BindAction(IA_QuickSlot08, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot08);
-		EnhancedInputComponent->BindAction(IA_QuickSlot09, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot09);
-		EnhancedInputComponent->BindAction(IA_QuickSlot10, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot10);
 
 		//플레이어 HP 감소 체크
 		EnhancedInputComponent->BindAction(PlayerDamaged, ETriggerEvent::Started, this, &ADefenseCharacter::TestPlayerDamaged);
@@ -196,22 +194,24 @@ void ADefenseCharacter::SpwanPlayerItem()
 
 		if(quickSlotWidgetInstance->saveSlot[i].ItemID == playerItemID)
 		{
-			quickSlotWidgetInstance->UseQuickSlotItem(i);
-
-			//건축 모드
-			if (PreviewInstance)
+			if(PreviewInstance)
 			{
 				PreviewInstance->ConfirmPlacement();
-				PreviewInstance = nullptr;
-				bIsPreview = false;
+
+				//설치 가능일 때만 수량 감소가 가능하도록 설정
+				if(PreviewInstance->GetbCanPlace()) quickSlotWidgetInstance->UseQuickSlotItem(i);
+				bIsPreview = false;					
+				return;	
 			}
 
-			//무기 모드
 			else
 			{
 				ThrowWeapon();
-			}
-			return;
+				
+				//무기를 던진 뒤 수량 감소 처리
+				quickSlotWidgetInstance->UseQuickSlotItem(i);
+				return;	
+			}			
 		}		
 	}
 }
@@ -256,6 +256,7 @@ void ADefenseCharacter::ThrowWeapon()
 
 	APlayerItem* SpawnedItem = 
 	GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
+	UE_LOG(LogTemp, Warning, TEXT("ThrowWeapon"));
 }
 
 void ADefenseCharacter::TestPlayerDamaged()

@@ -118,23 +118,26 @@ void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *
 	UE_LOG(LogTemp, Log, TEXT("Called OnTrapOverlap"));
 	if(OtherActor && OtherActor->ActorHasTag("Monster"))
 	{
-		if(!bIsTriggered)
-		{
-			bIsTriggered = true;
-
-			switch(trapType)
+		FTimerHandle TriggerTimer;
+		GetWorld()->GetTimerManager().SetTimer(TriggerTimer, [&]{
+			if(!bIsTriggered)
 			{
-				case ETrapType::Explosive :
-					TriggerExplosiveEffect();
-					UE_LOG(LogTemp, Log, TEXT("Called Explosive"));
-				break;
+				bIsTriggered = true;
+
+				switch(trapType)
+				{
+					case ETrapType::Explosive :
+						TriggerExplosiveEffect();
+						UE_LOG(LogTemp, Log, TEXT("Called Explosive"));
+					break;
 				
-				case ETrapType::Binding :
-					TriggerBindingEffect();
-					UE_LOG(LogTemp, Log, TEXT("Called Binding"));
-				break;
+					case ETrapType::Binding :
+						TriggerBindingEffect();
+						UE_LOG(LogTemp, Log, TEXT("Called Binding"));
+					break;
+				}
+				Destroy();
 			}
-			Destroy();
-		}
+		}, .5f, false);
 	}
 }

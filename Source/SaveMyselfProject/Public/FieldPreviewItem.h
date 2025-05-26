@@ -35,16 +35,28 @@ protected :
 	/** 프리뷰용 머티리얼 적용 */
 	void SetGhostMaterial(bool bCanPlace);
 
-protected:
-	UPROPERTY(VisibleAnywhere)
+private :
+	UPROPERTY(EditDefaultsOnly, Category = "Preview", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* PlacementCheckBox;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Preview", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* PreviewMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Preview", meta = (AllowPrivateAccess = "true"))
+	class UMaterialInterface* CanPlaceMaterial;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Preview", meta = (AllowPrivateAccess = "true"))
+	class UMaterialInterface* CannotPlaceMaterial;
 
 	UPROPERTY()
 	EItemTypes PreviewItemType;
 
 	UPROPERTY()
 	FName PreviewItemID;
+
+	bool bIsCanPlace = false;
+
+public : //Getter & Setter 설정
+	const bool GetbCanPlace() { return bIsCanPlace; }
+	
 };

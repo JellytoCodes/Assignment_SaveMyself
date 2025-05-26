@@ -45,12 +45,13 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 		}
 
 		//슬롯에 없는 아이템일 경우 새로 생성
-		if(pSlot == nullptr && slotArr < 10)
+		if(pSlot == nullptr && slotArr < 8)
 		{
 			UPlayerQuickSlot* pNewQuickSlot = CreateWidget<UPlayerQuickSlot>(QuickSlotWrapBox, itemSlotWidgetClass);
 			if(pNewQuickSlot)
 			{
 				pNewQuickSlot->SetItemData(&InData);
+				QuickSlotWrapBox->AddChildToWrapBox(pNewQuickSlot);
 
 				pNewQuickSlot->curQuickQuantity++;
 				pNewQuickSlot->ItemCountText->SetText(FText::AsNumber(pNewQuickSlot->curQuickQuantity));
@@ -80,8 +81,8 @@ bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 	if(!curWeightBar && !curWeightText) return true;
 
 	//적재 초과 여부 컬러 표시
-	if(GInstance->GetCurBagWeight() >= GInstance->GetMaxBagWeight())	curWeightBar->SetFillColorAndOpacity(FColor::Red);
-	else								curWeightBar->SetFillColorAndOpacity(FColor::Green);
+	if(GInstance->GetCurBagWeight() >= GInstance->GetMaxBagWeight()) curWeightBar->SetFillColorAndOpacity(FColor::Red);
+	else curWeightBar->SetFillColorAndOpacity(FColor::Green);
 
 	curWeightBar->
 	SetPercent(static_cast<float>(GInstance->GetCurBagWeight()) / static_cast<float>(GInstance->GetMaxBagWeight()));

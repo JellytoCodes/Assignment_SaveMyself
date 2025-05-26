@@ -17,7 +17,6 @@ AStructureItem::AStructureItem()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	BoxCollision->SetGenerateOverlapEvents(true);
 	BoxCollision->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
-	BoxCollision->SetRelativeLocation(FVector(0.f, 0.f, 40.f));
 	BoxCollision->BodyInstance.SetCollisionProfileName("OverlapAllDynamic");
 	BoxCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	RootComponent = BoxCollision;

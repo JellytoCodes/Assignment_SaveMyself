@@ -35,7 +35,6 @@ protected :
 	int32 slotArr = 0;
 
 public :
-
 	bool SetBagWeight(FStorageArrRow& InData);
 
 	UFUNCTION(BlueprintCallable)

@@ -28,10 +28,11 @@ public:
 	ADefenseCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
 	virtual void BeginPlay() override;
 
-//-----------------------무빙 기능 셋업-----------------------//
+//-----------------------캐릭터 디폴트 셋업-----------------------//
 private :
 	//시점 설정
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "ture"))
@@ -93,12 +94,6 @@ private :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_QuickSlot08;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
-	UInputAction* IA_QuickSlot09;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
-	UInputAction* IA_QuickSlot10;
-
 	//퀵슬롯 키 바인드 액션
 	void SelectQuickSlot01() { SelectQuickSlot(1); }
 	void SelectQuickSlot02() { SelectQuickSlot(2); }
@@ -108,8 +103,6 @@ private :
 	void SelectQuickSlot06() { SelectQuickSlot(6); }
 	void SelectQuickSlot07() { SelectQuickSlot(7); }
 	void SelectQuickSlot08() { SelectQuickSlot(8); }
-	void SelectQuickSlot09() { SelectQuickSlot(9); }
-	void SelectQuickSlot10() { SelectQuickSlot(10); }
 
 	//퀵슬롯 키 바인드 마스터
 	void SelectQuickSlot(int32 index);
