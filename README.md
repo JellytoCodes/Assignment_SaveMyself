@@ -1,4 +1,4 @@
-# 🎮 Assignment_SaveMyself - Survival Defense Game Project
+# 🎮 Assignment_SaveMyself [Survival Defense Game]
 
 > **📝 2025학년도 1학년 1학기 기말 과제 / 1인 개발 프로젝트**
 >
@@ -67,7 +67,7 @@
 
 **💾 저장 / 불러오기 시스템 [확장 기능 계획]**
  - [ ] 저장 슬롯 UI
- - [ ] 스테이지 상태 저장
+ - [X] 스테이지 상태 저장
  - [ ] 불러오기 후 스테이지 이어서 진행      
 <br> 
 
