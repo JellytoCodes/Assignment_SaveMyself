@@ -39,3 +39,23 @@
 
 <br>
 
+## 📌 CASE 3 : 구조물 설치 시스템 문제 통합 정리 (2025.05) 
+&nbsp;**⚠️ 문제 상황**  
+&nbsp;&nbsp;&nbsp;&nbsp; 1) 구조물이 땅에 파묻히는 문제  
+&nbsp;&nbsp;&nbsp;&nbsp; 2) 설치 불가 위치에서도 설치가 가능한 문제  
+&nbsp;&nbsp;&nbsp;&nbsp; 3) 설치 불가 상태에서도 설치가 강제로 실행되는 문제  
+
+&nbsp;**🔍 원인 분석**  
+&nbsp;&nbsp;&nbsp;&nbsp; 1) StaticMesh의 Z축 보정 미적용  
+&nbsp;&nbsp;&nbsp;&nbsp; 2-1) Overlap검사 대상이 PlayerItem으로 한정되어있어 다른 구조물들이 검사 대상에서 제외  
+&nbsp;&nbsp;&nbsp;&nbsp; 2-2) PlacementCheckBox에 사이즈 설정이 없어 Overlap 감지 범위가 작아 발생한 오류  
+&nbsp;&nbsp;&nbsp;&nbsp; 3) PreviewInstance = nullptr; 코드로 인하여 마우스 클릭 시 TrowWeapon()이 호출된 문제  
+
+&nbsp;**🛠️ 해결 방안**  
+&nbsp;&nbsp;&nbsp;&nbsp; 1) Bounds.BoxExtent.Z만큼 Z축 보정하여 위치 계산 적용  
+&nbsp;&nbsp;&nbsp;&nbsp; 2) GetOverlappingActors() 클래스 필터 제거 및 SetBoxExtent() 감지 범위 확대  
+&nbsp;&nbsp;&nbsp;&nbsp; 3) PreviewInstance = nullptr; 삭제 및 설치 가능 여부 체크 후 수량 감소  
+
+&nbsp;**📈 개선 방안**  
+&nbsp;&nbsp;&nbsp;&nbsp; → 설치 위치 판단은 시각 피드백과 실제 논리 판정이 일치할 수 있도록 설계  
+&nbsp;&nbsp;&nbsp;&nbsp; → 수량 / 상태 기반 설치 불가 처리시 조건 검증 구조를 고려하여 설계
