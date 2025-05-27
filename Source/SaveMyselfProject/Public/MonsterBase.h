@@ -49,12 +49,13 @@ protected :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MonsterID")
 	FName MonsterID;	
 
-	virtual void OnEnterIdle();
-	virtual void OnEnterPatrol();
-	virtual void OnEnterChase();
-	virtual void OnEnterAttack();
-	virtual void OnEnterDamage();
-	virtual void OnEnterDead();
+	//상속 클래스 가상 함수 적용을 위한 선언
+	virtual void OnEnterIdle() { /*NULL*/ }
+	virtual void OnEnterPatrol() { /*NULL*/ }
+	virtual void OnEnterChase() { /*NULL*/ }
+	virtual void OnEnterAttack() { /*NULL*/ }
+	virtual void OnEnterDamage() { /*NULL*/ }
+	virtual void OnEnterDead() { /*NULL*/ }
 
 	UPROPERTY()
 	AActor* TargetActor;

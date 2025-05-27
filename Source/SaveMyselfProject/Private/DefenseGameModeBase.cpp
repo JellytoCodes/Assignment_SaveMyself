@@ -4,6 +4,7 @@
 #include "DefenseCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
+#include "SaveMyselfGameInstance.h"
 #include "DefenseHUD.h"
 
 ADefenseGameModeBase::ADefenseGameModeBase()
@@ -27,6 +28,12 @@ void ADefenseGameModeBase::BeginPlay()
 	{
 		StageManager->OnStageStateChanged.AddDynamic(this, &ADefenseGameModeBase::HandleStageState);
 		StageManager->StartStage();
+	}
+
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+	if(GInstance)
+	{
+		GInstance->LoadStageDataByLevelName();
 	}
 }
 

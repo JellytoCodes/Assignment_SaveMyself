@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "TimerManager.h"
 #include "MonsterSpawner.h"
+#include "SaveMyselfGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 UStageManagerComponent::UStageManagerComponent()
@@ -32,8 +33,6 @@ void UStageManagerComponent::BeginPlay()
 
 void UStageManagerComponent::PreparePhase()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set PreparePhase"));
-
 	CurrentStageState = EStageState::Prepare;
 	OnStageStateChanged.Broadcast(CurrentStageState);
 
@@ -42,8 +41,6 @@ void UStageManagerComponent::PreparePhase()
 
 void UStageManagerComponent::BattlePhase()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set BattlePhase"));
-
 	CurrentStageState = EStageState::Battle;
 	OnStageStateChanged.Broadcast(CurrentStageState);
 

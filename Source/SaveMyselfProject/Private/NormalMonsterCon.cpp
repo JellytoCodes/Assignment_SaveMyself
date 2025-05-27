@@ -120,8 +120,6 @@ void ANormalMonsterCon::EvaluateState()
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Detected"));
-
 	if(ClosestTarget)
 	{
 		ControlledMonster->SetTargetActor(ClosestTarget);
@@ -148,20 +146,4 @@ void ANormalMonsterCon::OnTargetPerceptionUpdated(AActor *Actor, FAIStimulus Sti
 
 	bool bIsStructure = Actor->ActorHasTag(FName("Structure"));
 	bool bIsPlayer = Actor->ActorHasTag(FName("Player"));
-
-	if(Stimulus.WasSuccessfullySensed())
-	{
-		if(bIsStructure)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Structure Detected : %s"), *Actor->GetName());
-		}
-		else if(bIsPlayer)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Player Detected : %s"), *Actor->GetName());
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Lost sight of : %s"), *Actor->GetName());
-	}
 }

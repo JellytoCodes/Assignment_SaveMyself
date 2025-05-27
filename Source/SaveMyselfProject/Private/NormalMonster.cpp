@@ -31,7 +31,6 @@ void ANormalMonster::OnEnterIdle()
 {
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("[%s] Entered Idle State"), *GetName());
 		AICon->HandleIdle();
 	}
 }
@@ -40,7 +39,6 @@ void ANormalMonster::OnEnterPatrol()
 {
 	if (auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("[%s] Entered Patrol State"), *GetName());
 		AICon->HandlePatrol();
 	}
 }
@@ -49,15 +47,12 @@ void ANormalMonster::OnEnterChase()
 {
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
-		UE_LOG(LogTemp, Log, TEXT("[%s] Entered Chase State"), *GetName());
 		AICon->HandleChase();
 	}
 }
 
 void ANormalMonster::OnEnterAttack()
 {
-	UE_LOG(LogTemp, Log, TEXT("[%s] Entered Attack State"), *GetName());
-
 	bCanEvaluateState = false;
 
 	FTimerHandle EvaluateResumeTimer;
@@ -69,13 +64,11 @@ void ANormalMonster::OnEnterAttack()
 
 void ANormalMonster::OnEnterDamage()
 {
-	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Damage State"));
-	//여기서 바로 충돌 처리로 HP 감소 반영 예정
+	//Polish 반영 예정
 }
 
 void ANormalMonster::OnEnterDead()
 {
-	UE_LOG(LogTemp, Log, TEXT("[NormalMonster] Entered Dead State"));
 	//애니메이션 재생 후 Destroy() 구현 예정
 	Dead();
 }
@@ -105,6 +98,5 @@ void ANormalMonster::TryAttack(float DeltaTime)
 		{
 			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, 1);
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Try Attack Damaged"));
 	}
 }

@@ -88,43 +88,10 @@ void AMonsterBase::SetMonsterState(EMonsterState NewState)
 	}
 }
 
-void AMonsterBase::OnEnterIdle()
-{
-	UE_LOG(LogTemp, Log, TEXT("Entered Idle State"));
-}
-
-void AMonsterBase::OnEnterPatrol()
-{
-	UE_LOG(LogTemp, Log, TEXT("Entered Patrol State"));
-}
-
-void AMonsterBase::OnEnterChase()
-{
-	UE_LOG(LogTemp, Log, TEXT("Entered Chase State"));
-}
-
-void AMonsterBase::OnEnterAttack()
-{
-	UE_LOG(LogTemp, Log, TEXT("Entered Attack State"));
-}
-
-void AMonsterBase::OnEnterDamage()
-{
-	UE_LOG(LogTemp, Log, TEXT("Entered Damage State"));
-}
-
-void AMonsterBase::OnEnterDead()
-{
-	UE_LOG(LogTemp, Log, TEXT("Entered Dead State"));
-}
-
 void AMonsterBase::Dead()
 {
-	UE_LOG(LogTemp, Log, TEXT("Monster Die"));
-
 	if(OwnerSpawner)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Succeeded OwnerSpawner"));
 		OwnerSpawner->OnMonsterDied(this);
 	}
 
@@ -136,7 +103,6 @@ void AMonsterBase::Dead()
 
 void AMonsterBase::ReceiveDamage_Implementation(float Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MonsterDamaged!"))
 	curHP -= Damage;
 	if(curHP > 0)
 	{
