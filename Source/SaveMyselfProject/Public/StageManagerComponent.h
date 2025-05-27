@@ -49,10 +49,10 @@ private :
 	FTimerHandle BattleTimerHandle;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Timer", meta = (AllowPrivateAccess = "true"))
-	float PrepareTime = 5.f;
+	float PrepareTime = 20.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Timer", meta = (AllowPrivateAccess = "true"))
-	float BattleTime = 30.f;
+	float BattleTime = 50.f;
 
 	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	int32 TotalSpawnerCount = 0;

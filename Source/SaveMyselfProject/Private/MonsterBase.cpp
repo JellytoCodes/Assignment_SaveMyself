@@ -28,14 +28,6 @@ void AMonsterBase::BeginPlay()
 	Super::BeginPlay();
 
 	LoadMonsterData();
-
-	UE_LOG(LogTemp, Log, TEXT("monster Type : %d"), monsterType);
-	UE_LOG(LogTemp, Log, TEXT("elite AI Type : %d"), eliteAIType);
-	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %d"), monsterWeaponID);
-	UE_LOG(LogTemp, Log, TEXT("max HP : %.2f"), maxHP);
-	UE_LOG(LogTemp, Log, TEXT("cur HP : %.2f"), curHP);
-	UE_LOG(LogTemp, Log, TEXT("moveSpeed : %.2f"), moveSpeed);
-	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %.2f"), GetCharacterMovement()->MaxWalkSpeed);
 }
 
 void AMonsterBase::LoadMonsterData()
@@ -50,13 +42,13 @@ void AMonsterBase::LoadMonsterData()
 
 	monsterType = StatRow->MonsterType;
 	eliteAIType = StatRow->EliteAIType;
-	monsterWeaponID = StatRow->MonsterWeaponID;
+	weaponMesh = StatRow->WeaponMesh;
 	maxHP = StatRow->MaxHP;
 	curHP = maxHP;
 	moveSpeed = FMath::RandRange(StatRow->MinMoveSpeed, StatRow->MaxMoveSpeed);
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 
-	SetMonsterState(EMonsterState::Idle);
+	EquipWeapon();
 }
 
 void AMonsterBase::ApplyStat()
@@ -66,8 +58,6 @@ void AMonsterBase::ApplyStat()
 
 void AMonsterBase::SetMonsterState(EMonsterState NewState)
 {
-	//if(curState == NewState) return;
-
 	curState = NewState;
 
 	switch(NewState)
@@ -157,4 +147,17 @@ void AMonsterBase::ReceiveDamage_Implementation(float Damage)
 		curHP = 0;
 		SetMonsterState(EMonsterState::Dead);
 	}
+}
+
+void AMonsterBase::EquipWeapon()
+{
+	if(!weaponMesh) return;
+
+	UStaticMeshComponent* WeaponMeshComp = NewObject<UStaticMeshComponent>(this);
+	WeaponMeshComp->RegisterComponent();
+	WeaponMeshComp->SetStaticMesh(weaponMesh);
+
+	WeaponMeshComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("armRightSocket"));
+	WeaponMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeaponMeshComp->SetGenerateOverlapEvents(false);
 }

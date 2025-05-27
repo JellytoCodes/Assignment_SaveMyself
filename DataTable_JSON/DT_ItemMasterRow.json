@@ -34,11 +34,11 @@
 	{
 		"Name": "Trap001",
 		"ItemID": "Trap001",
-		"DisplayName": "WireTrap",
-		"Description": "Normal Trap",
+		"DisplayName": "BindTrap",
+		"Description": "Bind Trap",
 		"ItemType": "Trap",
 		"ItemIcon": "None",
-		"ItemClass": "/Game/Blueprints/TrapItem/MyTrapItem.MyTrapItem_C",
+		"ItemClass": "/Game/Blueprints/TrapItem/BP_BindTrap.BP_BindTrap",
 		"ItemWeight": 2,
 		"LocalOffSet": {
 			"X": 200.0,
@@ -62,5 +62,21 @@
 			"Z": 0.0
 		},
 		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/potionSmall_blue.potionSmall_blue"
+	},
+	{
+		"Name": "Trap002",
+		"ItemID": "Trap002",
+		"DisplayName": "ExplosiveTrap",
+		"Description": "Explosive Trap",
+		"ItemType": "Trap",
+		"ItemIcon": "None",
+		"ItemClass": "/Game/Blueprints/TrapItem/BP_ExplosiveTrap.BP_ExplosiveTrap",
+		"ItemWeight": 2,
+		"LocalOffSet": {
+			"X": 200.0,
+			"Y": 0.0,
+			"Z": -80.0
+		},
+		"ItemMesh": "/Game/Asset/KayKit/DungeonElements/scaffold_small_low.scaffold_small_low"
 	}
 ]

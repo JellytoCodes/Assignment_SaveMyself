@@ -31,19 +31,19 @@ public :
 	void OnMonsterDied(AMonsterBase* Monster);
 
 private :	
-	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<AMonsterBase> MonsterClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* SpawnerMesh;
-
-	class UStageManagerComponent* StageManager;
 
 	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	int32 MaxSpawnCount = 5;
 
 	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	float SpawnCooldown = 3.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* SpawnerMesh;
+
+	class UStageManagerComponent* StageManager;
 
 	float SpawnTimer = 0.f;
 

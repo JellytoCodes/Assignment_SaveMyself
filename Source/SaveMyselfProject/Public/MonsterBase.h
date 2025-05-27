@@ -41,7 +41,7 @@ protected :
 
 	EMonsterType monsterType;
 	EEliteAIType eliteAIType;
-	EWeaponType monsterWeaponID;
+	class UStaticMesh* weaponMesh;
 
 	void LoadMonsterData();
 	void ApplyStat();
@@ -64,6 +64,8 @@ protected :
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Nav")
 	class UNavigationInvokerComponent* NavInvoker;
 
+	void EquipWeapon();
+
 public :
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
 	FVector FinalGoalLocation;
@@ -78,5 +80,5 @@ public : //Getter & Setter °ü¸®
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
 
 	void SetMonsterState(EMonsterState NewState); 
-	FORCEINLINE EMonsterState GetMonsterState() const { return curState; }
+	EMonsterState GetMonsterState() const { return curState; }
 };

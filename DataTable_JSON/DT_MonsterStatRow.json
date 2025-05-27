@@ -4,10 +4,21 @@
 		"MonsterID": "NormalMonster001",
 		"MonsterType": "Normal",
 		"EliteAIType": "None",
-		"MonsterWeaponID": 1,
+		"WeaponMesh": "/Game/Asset/KayKit/DungeonElements/axe_common.axe_common",
 		"MaxHP": 10,
-		"MinMoveSpeed": 150,
+		"MinMoveSpeed": 300,
 		"MaxMoveSpeed": 500,
-		"MonsterClass": "/Script/Engine.BlueprintGeneratedClass'/Game/Blueprints/Monster/BP_NormalMonster.BP_NormalMonster_C'"
+		"MonsterClass": "/Game/Blueprints/Monster/BP_AxeMonster.BP_AxeMonster"
+	},
+	{
+		"Name": "NormalMonster002",
+		"MonsterID": "NormalMonster002",
+		"MonsterType": "Normal",
+		"EliteAIType": "None",
+		"WeaponMesh": "/Game/Asset/KayKit/DungeonElements/hammer_common.hammer_common",
+		"MaxHP": 15,
+		"MinMoveSpeed": 200,
+		"MaxMoveSpeed": 400,
+		"MonsterClass": "/Game/Blueprints/Monster/BP_HammerMonster.BP_HammerMonster"
 	}
 ]

@@ -1,9 +1,16 @@
 [
 	{
-		"Name": "WireTrap",
-		"TrapName": "WireTrap",
+		"Name": "BindTrap",
+		"TrapName": "BindTrap",
 		"TrapEffect": 5,
-		"MaxCoolTime": 1,
-		"TrapType" : "Binding"
+		"MaxCoolTime": 3,
+		"TrapType": "Binding"
+	},
+	{
+		"Name": "ExplosiveTrap",
+		"TrapName": "ExplosiveTrap",
+		"TrapEffect": 10,
+		"MaxCoolTime": 2,
+		"TrapType": "Explosive"
 	}
 ]

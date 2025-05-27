@@ -29,8 +29,9 @@ protected :
 	float attackInterval = 5.f;
 	float attackRange = 150.f;
 
+	bool bCanEvaluateState = true;
+
 public :
-	void EquipWeapon();
-	void TryAttack();
+	void TryAttack(float DeltaTime);
 	float GetAttackRange() { return attackRange;}
 };

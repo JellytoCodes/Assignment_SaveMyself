@@ -22,7 +22,6 @@ AMonsterSpawner::AMonsterSpawner()
         SpawnerMesh->SetStaticMesh(CubeMesh.Object);
         SpawnerMesh->SetWorldScale3D(FVector(0.5f));
     }
-
 }
 
 void AMonsterSpawner::BeginPlay()
@@ -43,7 +42,7 @@ void AMonsterSpawner::Tick(float DeltaTime)
     if(!bIsSpawning) return;
 
     SpawnTimer += DeltaTime;
-    if (SpawnTimer >= SpawnCooldown)
+    if(SpawnTimer >= SpawnCooldown)
     {
         TrySpawn();
         SpawnTimer = 0.0f;

@@ -12,6 +12,19 @@ ANormalMonster::ANormalMonster()
 void ANormalMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if(bCanEvaluateState)
+	{
+		if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
+		{
+			AICon->EvaluateState();
+		}
+	}
+
+	if(GetMonsterState() == EMonsterState::Attack)
+	{
+		TryAttack(DeltaTime);
+	}
 }
 
 void ANormalMonster::OnEnterIdle()
@@ -44,11 +57,14 @@ void ANormalMonster::OnEnterChase()
 void ANormalMonster::OnEnterAttack()
 {
 	UE_LOG(LogTemp, Log, TEXT("[%s] Entered Attack State"), *GetName());
-	//EquipWeapon();
-	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
+
+	bCanEvaluateState = false;
+
+	FTimerHandle EvaluateResumeTimer;
+	GetWorld()->GetTimerManager().SetTimer(EvaluateResumeTimer, [this]()
 	{
-		AICon->HandleAttack();
-	}
+		bCanEvaluateState = true;
+	}, 1.f, false);
 }
 
 void ANormalMonster::OnEnterDamage()
@@ -64,20 +80,20 @@ void ANormalMonster::OnEnterDead()
 	Dead();
 }
 
-void ANormalMonster::EquipWeapon()
-{
-	
-}
-
-void ANormalMonster::TryAttack()
+void ANormalMonster::TryAttack(float DeltaTime)
 {
 	if(!TargetActor) return;
 
 	auto* AICon = Cast<ANormalMonsterCon>(GetController());
 	if(!AICon) return;
 	
-	const float Distance = FVector::Dist(TargetActor->GetActorLocation(), GetActorLocation());
-	if(Distance > AICon->GetAttackRange()) return;
+	const float distance = FVector::Dist(TargetActor->GetActorLocation(), GetActorLocation());
+	if(distance > AICon->GetAttackRange()) return;
+	
+	attackElapsedTime += DeltaTime;
+	if(attackElapsedTime < attackInterval) return;
+
+	attackElapsedTime = 0.f;
 
 	if(TargetActor->Implements<UDamagebleInterface>())
 	{
@@ -89,5 +105,6 @@ void ANormalMonster::TryAttack()
 		{
 			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, 1);
 		}
+		UE_LOG(LogTemp, Warning, TEXT("Try Attack Damaged"));
 	}
 }

@@ -3,13 +3,13 @@
 		"Name": "Weapon001",
 		"ItemID": "Weapon001",
 		"DisplayName": "Knife",
-		"Quantity": 7
+		"Quantity": 8
 	},
 	{
 		"Name": "Weapon002",
 		"ItemID": "Weapon002",
 		"DisplayName": "Boom",
-		"Quantity": 3
+		"Quantity": 1
 	},
 	{
 		"Name": "Structure001",
@@ -20,7 +20,13 @@
 	{
 		"Name": "Trap001",
 		"ItemID": "Trap001",
-		"DisplayName": "WireTrap",
-		"Quantity": 5
+		"DisplayName": "Bind Trap",
+		"Quantity": 2
+	},
+	{
+		"Name": "Trap002",
+		"ItemID": "Trap002",
+		"DisplayName": "Explosive Trap",
+		"Quantity": 2
 	}
 ]

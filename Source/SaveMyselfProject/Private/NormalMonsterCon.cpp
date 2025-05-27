@@ -47,13 +47,6 @@ void ANormalMonsterCon::OnPossess(APawn *InPawn)
 	}
 }
 
-void ANormalMonsterCon::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	EvaluateState();
-}
-
 void ANormalMonsterCon::HandleIdle()
 {
 	if(!ControlledMonster) return;
@@ -101,8 +94,6 @@ void ANormalMonsterCon::HandleChase()
 void ANormalMonsterCon::HandleAttack()
 {
 	if(!ControlledMonster) return;
-
-	ControlledMonster->TryAttack();
 }
 
 void ANormalMonsterCon::EvaluateState()
