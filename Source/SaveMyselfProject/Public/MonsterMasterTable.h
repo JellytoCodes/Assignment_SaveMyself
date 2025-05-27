@@ -19,6 +19,13 @@ enum class EEliteAIType : uint8
 	TrapDestroyer,
 };
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	None,
+	Axe,
+};
+
 USTRUCT(BlueprintType)
 struct FMonsterStatRow : public FTableRowBase
 {
@@ -34,7 +41,7 @@ struct FMonsterStatRow : public FTableRowBase
 	EEliteAIType EliteAIType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName MonsterWeaponID;
+	EWeaponType MonsterWeaponID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHP;

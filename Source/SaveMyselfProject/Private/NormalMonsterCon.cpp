@@ -7,6 +7,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "RegionPatrolPoint.h"
 
 ANormalMonsterCon::ANormalMonsterCon()
 {
@@ -16,9 +17,9 @@ ANormalMonsterCon::ANormalMonsterCon()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 
 	SightConfig->SightRadius = 500.f;
-	SightConfig->LoseSightRadius = 700.f;
-	SightConfig->PeripheralVisionAngleDegrees = 150.f;
-	SightConfig->SetMaxAge(5.f);
+	SightConfig->LoseSightRadius = 600.f;
+	SightConfig->PeripheralVisionAngleDegrees = 130.f;
+	SightConfig->SetMaxAge(3.f);
 
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
@@ -37,6 +38,12 @@ void ANormalMonsterCon::OnPossess(APawn *InPawn)
 	if(PerceptionComp)
 	{
 		PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(this, &ANormalMonsterCon::OnTargetPerceptionUpdated);
+	}
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARegionPatrolPoint::StaticClass(), FoundRegions);
+	if(FoundRegions.Num() > 0)
+	{
+		regionIndex = FMath::RandRange(0, FoundRegions.Num() - 1);
 	}
 }
 
@@ -59,11 +66,19 @@ void ANormalMonsterCon::HandlePatrol()
 	if (!ControlledMonster) return;
 
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	if (PlayerPawn)
+	if (PlayerPawn && LineOfSightTo(PlayerPawn))
 	{
 		FVector TargetLocation = PlayerPawn->GetActorLocation();
 		ControlledMonster->FinalGoalLocation = TargetLocation;
 
+		MoveToLocation(ControlledMonster->FinalGoalLocation);
+	}
+
+	else
+	{
+		AActor* PatrolTarget = FoundRegions[regionIndex];
+
+		ControlledMonster->FinalGoalLocation = PatrolTarget->GetActorLocation();
 		MoveToLocation(ControlledMonster->FinalGoalLocation);
 	}
 }
@@ -99,13 +114,12 @@ void ANormalMonsterCon::EvaluateState()
 
 	AActor* ClosestTarget = nullptr;
 	float MinDistance = FLT_MAX;
-	
+
 	for(AActor* Actor : PerceivedActors)
 	{
 		if(Actor->IsA<AMonsterBase>()) continue;
 
-		if(!Actor->ActorHasTag(FName("Structure")) && !Actor->ActorHasTag(FName("Player")))
-		continue;
+		if(!Actor->ActorHasTag(FName("Structure")) && !Actor->ActorHasTag(FName("Player"))) continue;
 
 		float Dist = FVector::Dist(Actor->GetActorLocation(), ControlledMonster->GetActorLocation());
 		if(Dist < MinDistance)
@@ -115,10 +129,11 @@ void ANormalMonsterCon::EvaluateState()
 		}
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("Detected"));
+
 	if(ClosestTarget)
 	{
 		ControlledMonster->SetTargetActor(ClosestTarget);
-
 		if(MinDistance <= GetAttackRange())
 		{
 			ControlledMonster->SetMonsterState(EMonsterState::Attack);
@@ -130,7 +145,6 @@ void ANormalMonsterCon::EvaluateState()
 	}
 	else
 	{
-		ControlledMonster->SetTargetActor(nullptr);
 		ControlledMonster->SetMonsterState(EMonsterState::Patrol);	
 	}
 }

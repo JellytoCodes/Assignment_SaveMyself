@@ -12,7 +12,7 @@
 AMonsterBase::AMonsterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	GetCharacterMovement()->bUseRVOAvoidance = false;
@@ -31,25 +31,11 @@ void AMonsterBase::BeginPlay()
 
 	UE_LOG(LogTemp, Log, TEXT("monster Type : %d"), monsterType);
 	UE_LOG(LogTemp, Log, TEXT("elite AI Type : %d"), eliteAIType);
-	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %s"), *monsterWeaponID.ToString());
+	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %d"), monsterWeaponID);
 	UE_LOG(LogTemp, Log, TEXT("max HP : %.2f"), maxHP);
 	UE_LOG(LogTemp, Log, TEXT("cur HP : %.2f"), curHP);
 	UE_LOG(LogTemp, Log, TEXT("moveSpeed : %.2f"), moveSpeed);
 	UE_LOG(LogTemp, Log, TEXT("monsterWeaponID : %.2f"), GetCharacterMovement()->MaxWalkSpeed);
-}
-
-// Called every frame
-void AMonsterBase::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void AMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AMonsterBase::LoadMonsterData()
@@ -69,6 +55,8 @@ void AMonsterBase::LoadMonsterData()
 	curHP = maxHP;
 	moveSpeed = FMath::RandRange(StatRow->MinMoveSpeed, StatRow->MaxMoveSpeed);
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
+
+	SetMonsterState(EMonsterState::Idle);
 }
 
 void AMonsterBase::ApplyStat()
@@ -78,7 +66,7 @@ void AMonsterBase::ApplyStat()
 
 void AMonsterBase::SetMonsterState(EMonsterState NewState)
 {
-	if(curState == NewState) return;
+	//if(curState == NewState) return;
 
 	curState = NewState;
 

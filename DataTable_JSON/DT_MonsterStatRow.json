@@ -4,10 +4,10 @@
 		"MonsterID": "NormalMonster001",
 		"MonsterType": "Normal",
 		"EliteAIType": "None",
-		"MonsterWeaponID": "Exe",
+		"MonsterWeaponID": 1,
 		"MaxHP": 10,
 		"MinMoveSpeed": 150,
-		"MaxMoveSpeed": 400,
+		"MaxMoveSpeed": 500,
 		"MonsterClass": "/Script/Engine.BlueprintGeneratedClass'/Game/Blueprints/Monster/BP_NormalMonster.BP_NormalMonster_C'"
 	}
 ]

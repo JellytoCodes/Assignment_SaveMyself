@@ -12,17 +12,6 @@ ANormalMonster::ANormalMonster()
 void ANormalMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if(GetMonsterState() == EMonsterState::Attack)
-	{
-		attackElapsedTime += DeltaTime;
-		if(attackElapsedTime > attackInterval)
-		{
-			attackElapsedTime = 0.f;
-			TryAttack();
-			UE_LOG(LogTemp, Log, TEXT("Try Attack"));
-		}
-	}
 }
 
 void ANormalMonster::OnEnterIdle()
@@ -59,7 +48,6 @@ void ANormalMonster::OnEnterAttack()
 	if(auto* AICon = Cast<ANormalMonsterCon>(GetController()))
 	{
 		AICon->HandleAttack();
-		attackElapsedTime = 0;
 	}
 }
 

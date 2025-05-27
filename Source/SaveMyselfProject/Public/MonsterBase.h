@@ -30,10 +30,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 protected : 
 	//몬스터 공통 스탯
 	float maxHP;
@@ -41,11 +37,11 @@ protected :
 	float moveSpeed;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MonsterState")
-	EMonsterState curState;
+	EMonsterState curState = EMonsterState::Idle;
 
 	EMonsterType monsterType;
 	EEliteAIType eliteAIType;
-	FName monsterWeaponID;
+	EWeaponType monsterWeaponID;
 
 	void LoadMonsterData();
 	void ApplyStat();
