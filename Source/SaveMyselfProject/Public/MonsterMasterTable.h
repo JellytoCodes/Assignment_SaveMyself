@@ -15,8 +15,8 @@ UENUM(BlueprintType)
 enum class EEliteAIType : uint8
 {
 	None,
-	AoEAttacker,
-	TrapDestroyer,
+	Destroyer,
+	Mage,
 };
 
 USTRUCT(BlueprintType)

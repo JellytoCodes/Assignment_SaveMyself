@@ -5,10 +5,10 @@
 		"MonsterType": "Normal",
 		"EliteAIType": "None",
 		"WeaponMesh": "/Game/Asset/KayKit/DungeonElements/axe_common.axe_common",
-		"MaxHP": 10,
+		"MaxHP": 5,
 		"MinMoveSpeed": 300,
 		"MaxMoveSpeed": 500,
-		"MonsterClass": "/Game/Blueprints/Monster/BP_AxeMonster.BP_AxeMonster"
+		"MonsterClass": "/Game/Blueprints/Monster/BP_AxeMonster.BP_AxeMonster_C"
 	},
 	{
 		"Name": "NormalMonster002",
@@ -16,9 +16,20 @@
 		"MonsterType": "Normal",
 		"EliteAIType": "None",
 		"WeaponMesh": "/Game/Asset/KayKit/DungeonElements/hammer_common.hammer_common",
-		"MaxHP": 15,
+		"MaxHP": 10,
 		"MinMoveSpeed": 200,
 		"MaxMoveSpeed": 400,
-		"MonsterClass": "/Game/Blueprints/Monster/BP_HammerMonster.BP_HammerMonster"
+		"MonsterClass": "/Game/Blueprints/Monster/BP_HammerMonster.BP_HammerMonster_C"
+	},
+	{
+		"Name": "EliteMonster001",
+		"MonsterID": "EliteMonster001",
+		"MonsterType": "Elite",
+		"EliteAIType": "Destroyer",
+		"WeaponMesh": "/Game/Asset/KayKit/DungeonElements/hammer_rare.hammer_rare",
+		"MaxHP": 40,
+		"MinMoveSpeed": 200,
+		"MaxMoveSpeed": 300,
+		"MonsterClass": "/Game/Blueprints/Monster/BP_Destroyer.BP_Destroyer_C"
 	}
 ]

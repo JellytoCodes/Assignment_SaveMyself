@@ -6,7 +6,7 @@
 		"Description": "Normal Knife",
 		"ItemType": "Weapon",
 		"ItemIcon": "None",
-		"ItemClass": "/Game/Blueprints/WeaponItem/BP_WeaponItem_Knife.BP_WeaponItem_Knife_C",
+		"ItemClass": "/Game/Blueprints/WeaponItem/BP_Knife.BP_Knife_C",
 		"ItemWeight": 1,
 		"LocalOffSet": {
 			"X": 150.0,
@@ -22,7 +22,7 @@
 		"Description": "Normal Structure",
 		"ItemType": "Structure",
 		"ItemIcon": "None",
-		"ItemClass": "/Game/Blueprints/StructureItem/BP_StructureItem_WoodBox.BP_StructureItem_WoodBox_C",
+		"ItemClass": "/Game/Blueprints/StructureItem/BP_WoodBox.BP_WoodBox_C",
 		"ItemWeight": 3,
 		"LocalOffSet": {
 			"X": 200.0,
@@ -38,7 +38,7 @@
 		"Description": "Bind Trap",
 		"ItemType": "Trap",
 		"ItemIcon": "None",
-		"ItemClass": "/Game/Blueprints/TrapItem/BP_BindTrap.BP_BindTrap",
+		"ItemClass": "/Game/Blueprints/TrapItem/BP_BindTrap.BP_BindTrap_C",
 		"ItemWeight": 2,
 		"LocalOffSet": {
 			"X": 200.0,
@@ -54,7 +54,7 @@
 		"Description": "Normal Boom",
 		"ItemType": "Weapon",
 		"ItemIcon": "None",
-		"ItemClass": "/Game/Blueprints/WeaponItem/BP_WeaponItem_Boom.BP_WeaponItem_Boom_C",
+		"ItemClass": "/Game/Blueprints/WeaponItem/BP_Boom.BP_Boom_C",
 		"ItemWeight": 1,
 		"LocalOffSet": {
 			"X": 150.0,
@@ -70,7 +70,7 @@
 		"Description": "Explosive Trap",
 		"ItemType": "Trap",
 		"ItemIcon": "None",
-		"ItemClass": "/Game/Blueprints/TrapItem/BP_ExplosiveTrap.BP_ExplosiveTrap",
+		"ItemClass": "/Game/Blueprints/TrapItem/BP_ExplosiveTrap.BP_ExplosiveTrap_C",
 		"ItemWeight": 2,
 		"LocalOffSet": {
 			"X": 200.0,

@@ -4,16 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "NormalMonsterCon.generated.h"
+#include "EliteMonsterCon.generated.h"
 
 UCLASS()
-class SAVEMYSELFPROJECT_API ANormalMonsterCon : public AAIController
+class SAVEMYSELFPROJECT_API AEliteMonsterCon : public AAIController
 {
 	GENERATED_BODY()
 
 public :
-	ANormalMonsterCon();
-
+	AEliteMonsterCon();
 protected :
 
 	virtual void OnPossess(APawn* InPawn) override;
@@ -21,7 +20,7 @@ protected :
 private :
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "Perception", meta = (AllowPrivateAccess = "true"))
-	class ANormalMonster* ControlledMonster;
+	class AEliteMonster* ControlledMonster;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly,Category = "Perception", meta = (AllowPrivateAccess = "true"))
 	class UAIPerceptionComponent* PerceptionComp;
@@ -46,5 +45,5 @@ public :
 
 	void EvaluateState();
 
-	float GetAttackRange() { return AttackRange; }
+	float GetAttackRange() { return AttackRange; }	
 };
