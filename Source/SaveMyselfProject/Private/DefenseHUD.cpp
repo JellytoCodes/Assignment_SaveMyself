@@ -5,6 +5,7 @@
 #include "QuickSlotWidget.h"
 #include "StorageWidget.h"
 #include "PlayerHPWidget.h"
+#include "StageClearWidget.h"
 
 ADefenseHUD::ADefenseHUD()
 {
@@ -27,6 +28,13 @@ ADefenseHUD::ADefenseHUD()
 	if(HPWidgetBP.Succeeded())
 	{
 		HPWidgetClass = HPWidgetBP.Class;
+	}
+
+	//Stage Clear Widget »ý¼º
+	static ConstructorHelpers::FClassFinder<UStageClearWidget> StageClearWidgetBP(TEXT("/Game/WidgetBP/WBP_StageClearWidget.WBP_StageClearWidget_C"));
+	if(StageClearWidgetBP.Succeeded())
+	{
+		StageClearWidgetClass = StageClearWidgetBP.Class;
 	}
 }
 
@@ -58,6 +66,7 @@ void ADefenseHUD::ShowStageWidget(EStageState NewState)
 
 			case EStageState::Victory :
 				StageText = FText::FromString(TEXT("Victory"));
+				ShowStageClearWidget();
 			break;
 
 			case EStageState::Defeat :
@@ -78,6 +87,12 @@ void ADefenseHUD::ShowPlayerHPWidget()
 {
 	HPWidgetInstance = CreateWidget<UPlayerHPWidget>(GetWorld(), HPWidgetClass);
 	if(HPWidgetInstance) HPWidgetInstance->AddToViewport();
+}
+
+void ADefenseHUD::ShowStageClearWidget()
+{
+	StageClearWidgetInstance = CreateWidget<UStageClearWidget>(GetWorld(), StageClearWidgetClass);
+	if(StageClearWidgetInstance) StageClearWidgetInstance->AddToViewport();
 }
 
 void ADefenseHUD::UpdatedPlayerHP(int32 getHP)

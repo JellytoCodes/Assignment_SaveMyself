@@ -25,12 +25,10 @@ void UTitleManagerWidget::OnstartClicked()
 
 void UTitleManagerWidget::OnLoadClicked()
 {
-	if(UGameplayStatics::DoesSaveGameExist(TEXT("DefaultSlot"), 0))
+	if(UGameplayStatics::DoesSaveGameExist(TEXT("DefenseSaveSlot"), 0))
 	{
-		USaveHelper::LoadStageData();
+		UGameplayStatics::OpenLevel(this, USaveHelper::LoadStageData());
 	}
-
-	UGameplayStatics::OpenLevel(this, FName("Stage_Tutorial"));
 }
 
 void UTitleManagerWidget::OnSettingClicked() { /* Not Implemented */ }

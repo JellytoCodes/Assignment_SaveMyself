@@ -10,6 +10,7 @@
 class UStageWidget;
 class UQuickSlotWidget;
 class UPlayerHPWidget;
+class UStageClearWidget;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API ADefenseHUD : public AHUD
@@ -22,10 +23,12 @@ public :
 	void ShowStageWidget(EStageState NewState);
 	void ShowPlayerQuickSlotWidget();
 	void ShowPlayerHPWidget();
-	
+	void ShowStageClearWidget();
+
 	void UpdatedPlayerHP(int32 getHP);
 
 	FORCEINLINE UQuickSlotWidget* GetQuicklotWidget() const { return quickSlotWidgetInstance; }
+
 private :
 	//Stage Widget
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
@@ -44,4 +47,8 @@ private :
 
 	UPlayerHPWidget* HPWidgetInstance;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UStageClearWidget> StageClearWidgetClass;
+
+	UStageClearWidget* StageClearWidgetInstance;
 };

@@ -29,6 +29,6 @@ FName USaveHelper::LoadStageData()
 		return NAME_None;
 	}
 
-	FName LoadedRound = LoadedInstance->GetSavedStage();
-	return LoadedRound;
+	FName LoadedStage = LoadedInstance->GetSavedStage();
+	return LoadedStage;
 }
