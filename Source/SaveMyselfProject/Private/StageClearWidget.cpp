@@ -3,6 +3,7 @@
 #include "StageClearWidget.h"
 #include "SaveMyselfGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "DefenseCharacter.h"
 #include "Components/Button.h"
 
 void UStageClearWidget::NativeConstruct()

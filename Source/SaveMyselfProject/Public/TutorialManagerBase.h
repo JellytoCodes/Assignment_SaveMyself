@@ -20,4 +20,7 @@ public :
 	{
 		HUDClass = ATutorialManagerHUD::StaticClass();
 	}
+
+protected :
+	virtual void BeginPlay() override;
 };

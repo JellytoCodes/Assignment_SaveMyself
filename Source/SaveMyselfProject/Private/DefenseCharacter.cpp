@@ -124,9 +124,6 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_QuickSlot06, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot06);
 		EnhancedInputComponent->BindAction(IA_QuickSlot07, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot07);
 		EnhancedInputComponent->BindAction(IA_QuickSlot08, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot08);
-
-		//플레이어 HP 감소 체크
-		EnhancedInputComponent->BindAction(PlayerDamaged, ETriggerEvent::Started, this, &ADefenseCharacter::TestPlayerDamaged);
 	}
 }
 
@@ -249,16 +246,6 @@ void ADefenseCharacter::ThrowWeapon()
 	UE_LOG(LogTemp, Warning, TEXT("ThrowWeapon"));
 }
 
-void ADefenseCharacter::TestPlayerDamaged()
-{	
-	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	if(!HUD) return;
-	
-	HUD->UpdatedPlayerHP(PlayerHP);
-	PlayerHP--;
-	
-}
-
 void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 {
 	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
@@ -295,8 +282,8 @@ void ADefenseCharacter::bExitHideMouseCursor()
 	APlayerController* playerController = Cast<APlayerController>(GetController());
 	if(playerController)
 	{
-		playerController->bShowMouseCursor = false;
 		bMouseCursorUsed = false;
+		playerController->bShowMouseCursor = false;
 	}
 }
 

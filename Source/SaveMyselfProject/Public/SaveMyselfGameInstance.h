@@ -20,8 +20,6 @@ public :
 	void LoadStageDataByLevelName();
 
 protected : 
-	//캐릭터 배낭 무게 설정
-	int32 maxBagWeight = 20;
 	int32 curBagWeight = 0;
 
 	bool BagAmount = true;
@@ -33,7 +31,7 @@ public :
 	const bool GetBagAmount() { return BagAmount; }
 	void SetBagAmount(bool setAmount) { BagAmount = setAmount; }
 
-//-----------------------StageDataAsset Getter-----------------------//
+//-----------------------StageDataAsset Getter & Setter-----------------------//
 public : 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FName GetStageID() const { return currentStageData ? currentStageData->StageID : NAME_None; }
@@ -50,4 +48,9 @@ public :
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetBattleTime() const { return currentStageData ? currentStageData->BattleTime : 0; }
 
+	UPROPERTY(BlueprintReadOnly)
+	FName curStageID;
+
+	FName GetCurStageID() { return curStageID; }
+	void SetCurStageID() { curStageID = currentStageData ? currentStageData->NextStageID : NAME_None; }
 };

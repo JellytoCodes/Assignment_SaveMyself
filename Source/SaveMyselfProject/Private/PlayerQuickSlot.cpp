@@ -14,14 +14,13 @@ void UPlayerQuickSlot::NativeConstruct()
 
 	if(ItemButton)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 		ItemButton->OnClicked.AddDynamic(this, &UPlayerQuickSlot::OnItemButtonClicked);
 	}
 }
 
-//아이템 구매 취소 기능 구현 대기
 void UPlayerQuickSlot::OnItemButtonClicked()
 {
+	//아이템 구매 취소 기능
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 }
 

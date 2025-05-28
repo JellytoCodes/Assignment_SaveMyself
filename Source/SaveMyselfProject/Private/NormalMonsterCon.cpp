@@ -91,10 +91,7 @@ void ANormalMonsterCon::HandleChase()
 	}
 }
 
-void ANormalMonsterCon::HandleAttack()
-{
-	if(!ControlledMonster) return;
-}
+void ANormalMonsterCon::HandleAttack() { /* NULL */ }
 
 void ANormalMonsterCon::EvaluateState()
 {
@@ -123,7 +120,7 @@ void ANormalMonsterCon::EvaluateState()
 	if(ClosestTarget)
 	{
 		ControlledMonster->SetTargetActor(ClosestTarget);
-		if(MinDistance <= GetAttackRange())
+		if(MinDistance <= ControlledMonster->GetAttackRange())
 		{
 			ControlledMonster->SetMonsterState(EMonsterState::Attack);
 		}

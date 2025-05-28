@@ -37,4 +37,5 @@ private :
 	float maxCoolTime;
 	EDamageType damageType;
 
+	TArray<class AMonsterBase*> GetMonstersRadius(float Radius);
 };

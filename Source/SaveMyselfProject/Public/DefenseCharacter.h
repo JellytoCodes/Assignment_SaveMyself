@@ -144,11 +144,7 @@ private :
 	int32 GetPlayerHP() { return PlayerHP; }
 
 	bool bIsDeath = false;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
-	UInputAction* PlayerDamaged;
 
-	void TestPlayerDamaged();
 	virtual void ReceiveDamage_Implementation(float Damage) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))

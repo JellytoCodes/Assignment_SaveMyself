@@ -46,6 +46,10 @@ void AMonsterBase::LoadMonsterData()
 	maxHP = StatRow->MaxHP;
 	curHP = maxHP;
 	moveSpeed = FMath::RandRange(StatRow->MinMoveSpeed, StatRow->MaxMoveSpeed);
+	attackPower = StatRow->AttackPower;
+	attackInterval = StatRow->AttackInterval;
+	attackRange = StatRow->AttackRange;
+	attackElapsedTime = attackInterval;
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 
 	EquipWeapon();

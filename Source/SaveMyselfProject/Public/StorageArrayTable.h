@@ -10,6 +10,9 @@ struct FStorageArrRow : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName StageID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName ItemID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

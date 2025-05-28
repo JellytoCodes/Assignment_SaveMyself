@@ -35,6 +35,10 @@ protected :
 	float maxHP;
 	float curHP;
 	float moveSpeed;
+	float attackPower;
+	float attackElapsedTime;
+	float attackInterval;
+	float attackRange;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MonsterState")
 	EMonsterState curState = EMonsterState::Idle;
@@ -82,4 +86,6 @@ public : //Getter & Setter °ü¸®
 
 	void SetMonsterState(EMonsterState NewState); 
 	EMonsterState GetMonsterState() const { return curState; }
+
+	float GetAttackRange() const { return attackRange;}
 };

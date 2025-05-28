@@ -75,13 +75,12 @@ TArray<AMonsterBase*> ATrapItem::GetMonstersRadius(float Radius)
 			}
 		}
 	}
-
 	return HitMonsters;
 }
 
 void ATrapItem::TriggerExplosiveEffect()
 {
-	TArray<AMonsterBase*> Monsters = GetMonstersRadius(500.f);
+	TArray<AMonsterBase*> Monsters = GetMonstersRadius(300.f);
 	for(AMonsterBase* Monster : Monsters)
 	{
 		if(Monster->Implements<UDamagebleInterface>())
@@ -89,12 +88,11 @@ void ATrapItem::TriggerExplosiveEffect()
 			IDamagebleInterface::Execute_ReceiveDamage(Monster, trapEffect);
 		}
 	}
-
 }
 
 void ATrapItem::TriggerBindingEffect()
 {
-	TArray<AMonsterBase*> Monsters = GetMonstersRadius(500.f);
+	TArray<AMonsterBase*> Monsters = GetMonstersRadius(300.f);
 	for (AMonsterBase* Monster : Monsters)
 	{
 		if (Monster)
@@ -115,7 +113,6 @@ void ATrapItem::TriggerBindingEffect()
 
 void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	UE_LOG(LogTemp, Log, TEXT("Called OnTrapOverlap"));
 	if(OtherActor && OtherActor->ActorHasTag("Monster"))
 	{
 		FTimerHandle TriggerTimer;
@@ -128,16 +125,14 @@ void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *
 				{
 					case ETrapType::Explosive :
 						TriggerExplosiveEffect();
-						UE_LOG(LogTemp, Log, TEXT("Called Explosive"));
 					break;
 				
 					case ETrapType::Binding :
 						TriggerBindingEffect();
-						UE_LOG(LogTemp, Log, TEXT("Called Binding"));
 					break;
 				}
 				Destroy();
 			}
-		}, .5f, false);
+		}, .2f, false);
 	}
 }

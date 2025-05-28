@@ -28,12 +28,6 @@ protected :
 
 public :
 
-	//창고 위젯
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Storage")
-	TSubclassOf<UStorageWidget> StorageWidgetClass;
-
-	UStorageWidget* StorageWidgetInstance;
-
 	//창고 들어가기
 	UFUNCTION()
 	void OnWarehouseEntranceOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

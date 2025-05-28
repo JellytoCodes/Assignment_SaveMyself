@@ -14,7 +14,6 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
 	if(!GInstance) return;
 
-	UE_LOG(LogTemp, Log, TEXT("Called AddItemQuickSlot"));
 	FStorageArrRow& InData = pSlotData->GetItemData();
 	
 	if(SetBagWeight(InData))
@@ -74,7 +73,6 @@ bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 	if((GInstance->GetCurBagWeight() + DataRow->ItemWeight) > GInstance->GetMaxBagWeight()) return true;
 
 	GInstance->SetBagWeight(DataRow->ItemWeight);
-	UE_LOG(LogTemp, Log, TEXT("curBagWeight : %d"), GInstance->GetCurBagWeight());
 	
 	if(!curWeightBar && !curWeightText) return true;
 

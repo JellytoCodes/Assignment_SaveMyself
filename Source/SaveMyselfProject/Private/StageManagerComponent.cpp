@@ -5,6 +5,7 @@
 #include "TimerManager.h"
 #include "MonsterSpawner.h"
 #include "SaveMyselfGameInstance.h"
+#include "DefenseCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 UStageManagerComponent::UStageManagerComponent()
@@ -66,6 +67,11 @@ void UStageManagerComponent::EndPhaseVictory()
     CurrentStageState = EStageState::Victory;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
+
+	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
+	{
+		pPlayer->bEntranceShowMouseCursor();
+	}
 }
 
 void UStageManagerComponent::EndPhaseDefeat()
@@ -73,6 +79,13 @@ void UStageManagerComponent::EndPhaseDefeat()
     CurrentStageState = EStageState::Defeat;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
+
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
+	{
+		pPlayer->bEntranceShowMouseCursor();
+	}
 }
 
 void UStageManagerComponent::StartStage()

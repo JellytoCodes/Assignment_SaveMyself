@@ -12,18 +12,26 @@ void UStorageWidget::AddItemStorage(const TArray<const FStorageArrRow*> InData)
 {
 	if(!storageWrapBox) return;
 
-	for(auto child : InData)
+	const int32 SlotCount = storageWrapBox->GetChildrenCount();
+
+	for(int32 i = 0 ; i < InData.Num() && i < SlotCount ; ++i)
 	{
-		UStorageSlot* pNewStorageSlot = CreateWidget<UStorageSlot>(storageWrapBox, itemSlotWidgetClass);
-		if(pNewStorageSlot)
+		UWidget* ChildWidget = storageWrapBox->GetChildAt(i);
+		UStorageSlot* pNewStorageSlot = Cast<UStorageSlot>(ChildWidget);
+
+		if(pNewStorageSlot && InData[i])
 		{
-			pNewStorageSlot->SetItemData(child);
-			storageWrapBox->AddChildToWrapBox(pNewStorageSlot);
+			pNewStorageSlot->SetItemData(InData[i]);
 			pNewStorageSlot->ItemSlotDelegate.AddDynamic(this, &UStorageWidget::ItemRegist);
+
 			if(ADefenseCharacter* PC = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 			{
 				PC->BindStorageSlot(pNewStorageSlot);
 			}
+		}
+		else if(pNewStorageSlot && !InData[i])
+		{
+			pNewStorageSlot->SetItemData(nullptr);
 		}
 	}
 }

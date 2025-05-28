@@ -92,10 +92,7 @@ void AEliteMonsterCon::HandleChase()
 	}
 }
 
-void AEliteMonsterCon::HandleAttack()
-{
-	if(!ControlledMonster) return;
-}
+void AEliteMonsterCon::HandleAttack() { /* NULL */ }
 
 void AEliteMonsterCon::EvaluateState()
 {
@@ -124,7 +121,7 @@ void AEliteMonsterCon::EvaluateState()
 	if(ClosestTarget)
 	{
 		ControlledMonster->SetTargetActor(ClosestTarget);
-		if(MinDistance <= GetAttackRange())
+		if(MinDistance <= ControlledMonster->GetAttackRange())
 		{
 			ControlledMonster->SetMonsterState(EMonsterState::Attack);
 		}

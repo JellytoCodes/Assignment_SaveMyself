@@ -22,8 +22,6 @@ ADefenseGameModeBase::ADefenseGameModeBase()
 void ADefenseGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Warning, TEXT("Set BeginPlay"));
 	
 	auto gInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
 	if(gInstance)

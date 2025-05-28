@@ -32,9 +32,6 @@ public :
 	UTextBlock* ItemName;
 
 	UPROPERTY(meta = (BindWidget))	
-	UImage* ItemCountImage;
-
-	UPROPERTY(meta = (BindWidget))	
 	UTextBlock* ItemCountText;
 
 	UPROPERTY(meta = (BindWidget))

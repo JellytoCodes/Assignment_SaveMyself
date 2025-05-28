@@ -3,6 +3,7 @@
 #include "WeaponItem.h"
 #include "PlayerItem.h"
 #include "MonsterBase.h"
+#include "Engine/OverlapResult.h"
 #include "ItemMasterTable.h"
 #include "ItemSubsystem.h"
 #include "Engine/DamageEvents.h"
@@ -40,8 +41,6 @@ AWeaponItem::AWeaponItem()
 void AWeaponItem::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Log, TEXT("Spawned WeaponItem"));
 	
 	if (getItemName != NAME_None)
 	{
@@ -80,14 +79,52 @@ void AWeaponItem::EnableItemData(FName ItemID)
 	}
 }
 
+TArray<AMonsterBase*> AWeaponItem::GetMonstersRadius(float Radius)
+{
+	TArray<AMonsterBase*> HitMonsters;
+	TArray<FOverlapResult> Overlaps;
+
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(Radius);
+	bool bHit = GetWorld()->OverlapMultiByChannel(Overlaps, GetActorLocation(), FQuat::Identity, ECC_Pawn, Sphere);
+
+	if(bHit)
+	{
+		for(const FOverlapResult& MonsterResult : Overlaps)
+		{
+			AMonsterBase* Monster = Cast<AMonsterBase>(MonsterResult.GetActor());
+			if(Monster)
+			{
+				HitMonsters.Add(Monster);
+			}
+		}
+	}
+	return HitMonsters;
+}
+
 void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
 	if(OtherActor)
 	{
 		if(auto TargetActor = Cast<AMonsterBase>(OtherActor))
 		{	
-			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, weaponDamage);
+			switch(damageType)
+			{
+				case EDamageType::Single :
+					IDamagebleInterface::Execute_ReceiveDamage(TargetActor, weaponDamage);
+				break;
+				
+				case EDamageType::Multiple :
+					TArray<AMonsterBase*> Monsters = GetMonstersRadius(300.f);
+					for(AMonsterBase* Monster : Monsters)
+					{
+						if(Monster->Implements<UDamagebleInterface>())
+						{
+							IDamagebleInterface::Execute_ReceiveDamage(Monster, weaponDamage);
+						}
+					}
+				break;
+			}
+			Destroy();
 		}
 	}
-	Destroy();
 }

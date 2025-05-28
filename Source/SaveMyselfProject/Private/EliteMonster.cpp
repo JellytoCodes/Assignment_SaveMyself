@@ -59,7 +59,7 @@ void AEliteMonster::OnEnterAttack()
 	GetWorld()->GetTimerManager().SetTimer(EvaluateResumeTimer, [this]()
 	{
 		bCanEvaluateState = true;
-	}, 1.f, false);
+	}, attackInterval, false);
 }
 
 void AEliteMonster::OnEnterDamage()
@@ -76,12 +76,9 @@ void AEliteMonster::OnEnterDead()
 void AEliteMonster::TryAttack(float DeltaTime)
 {
 	if(!TargetActor) return;
-
-	auto* AICon = Cast<AEliteMonsterCon>(GetController());
-	if(!AICon) return;
 	
 	const float distance = FVector::Dist(TargetActor->GetActorLocation(), GetActorLocation());
-	if(distance > AICon->GetAttackRange()) return;
+	if(distance > GetAttackRange()) return;
 	
 	attackElapsedTime += DeltaTime;
 	if(attackElapsedTime < attackInterval) return;

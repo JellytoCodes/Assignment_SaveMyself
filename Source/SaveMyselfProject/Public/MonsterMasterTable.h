@@ -34,9 +34,6 @@ struct FMonsterStatRow : public FTableRowBase
 	EEliteAIType EliteAIType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStaticMesh* WeaponMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -44,6 +41,18 @@ struct FMonsterStatRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxMoveSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackPower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackInterval;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackRange;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStaticMesh* WeaponMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class AMonsterBase> MonsterClass;

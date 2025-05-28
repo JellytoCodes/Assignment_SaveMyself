@@ -1,10 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Warehouse.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "Engine/DataTable.h"
-#include "StorageWidget.h"
+#include "DefenseHUD.h"
 #include "DefenseCharacter.h"
+#include "SaveMyselfGameInstance.h"
 #include "ItemSubsystem.h"
 
 AWarehouse::AWarehouse()
@@ -17,46 +19,40 @@ AWarehouse::AWarehouse()
 	BoxCollision->BodyInstance.SetCollisionProfileName("Trigger");
 	RootComponent = BoxCollision;
 
-	static ConstructorHelpers::FClassFinder<UStorageWidget> storageWidgetBP(TEXT("/Game/WidgetBP/WBP_StorageWidget.WBP_StorageWidget_C"));
-	if(storageWidgetBP.Succeeded())
-	{
-		StorageWidgetClass = storageWidgetBP.Class;
-	}
-
 	UDataTable* WarehouseTableFinder
 	= Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
 	if(WarehouseTableFinder) WarehouseItemTable	= WarehouseTableFinder;
 }
 
-// Called when the game starts or when spawned
 void AWarehouse::BeginPlay()
 {
 	Super::BeginPlay();
 
 	if(WarehouseItemTable)
-	{
-		TArray<FName> RowNames = WarehouseItemTable->GetRowNames();
-		for(const FName& RowName : RowNames)
+	{	
+		UE_LOG(LogTemp, Warning, TEXT("WarehouseItemTable"));
+		auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+		if(GInstance)
 		{
-			const FStorageArrRow* Row = WarehouseItemTable->FindRow<FStorageArrRow>(RowName, "ItemInit");
-			if(Row)
-			{
-				fInData.Add(Row);
+			UE_LOG(LogTemp, Warning, TEXT("GInstance"));
+			TArray<FStorageArrRow*> AllRows;
+			WarehouseItemTable->GetAllRows(TEXT("Init"), AllRows);
+
+			for(auto Row : AllRows)
+			{	
+				UE_LOG(LogTemp, Warning, TEXT("Data : %s"), *Row->StageID.ToString());
+				UE_LOG(LogTemp, Warning, TEXT("Data : %s"), *GInstance->GetCurStageID().ToString());
+				if(Row->StageID == GInstance->GetCurStageID())
+				{
+					fInData.Add(Row);
+					UE_LOG(LogTemp, Warning, TEXT("Data : %s"), *Row->ItemID.ToString());
+				}
 			}
 		}
 	}
 
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AWarehouse::OnWarehouseEntranceOverlap);
 	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AWarehouse::OnWarehouseExitOverlap);
-
-	StorageWidgetInstance = CreateWidget<UStorageWidget>(GetWorld(), StorageWidgetClass);
-	if(StorageWidgetInstance)
-	{
-		StorageWidgetInstance->AddItemStorage(fInData);
-	}
-
-	StorageWidgetInstance->AddToViewport();
-	StorageWidgetInstance->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
@@ -64,18 +60,15 @@ void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedCompo
 	ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(OtherActor);
 	if(pPlayer)
 	{		
-		//Cast 체크용 Log
-		UE_LOG(LogTemp, Log, TEXT("Warehouse Entrance"));
-
-		//버튼 클릭을 위한 마우스 활성화
 		pPlayer->bEntranceShowMouseCursor();
 
-		FTimerHandle OpenTimer;
-		//생성 오류 방지
-		GetWorld()->GetTimerManager().SetTimer(OpenTimer, [&]
-		{
-			StorageWidgetInstance->SetVisibility(ESlateVisibility::Visible);
-		}, 0.2f, false);		
+		APlayerController* PC = Cast<APlayerController>(pPlayer->GetController());
+		if(!PC) return;
+
+		ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
+		if(!HUD) return;
+
+		HUD->ShowStorageWidget(fInData);
 	}
 }
 
@@ -84,17 +77,14 @@ void AWarehouse::OnWarehouseExitOverlap(UPrimitiveComponent *OverlappedComponent
 	ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(OtherActor);
 	if(pPlayer)
 	{
-		//Cast 체크용 Log
-		UE_LOG(LogTemp, Log, TEXT("Warehouse Exit"));
+		APlayerController* PC = Cast<APlayerController>(pPlayer->GetController());
+		if(!PC) return;
 
-		FTimerHandle CloseTimer;
-		//삭제 오류 방지
-		GetWorld()->GetTimerManager().SetTimer(CloseTimer, [&]
-		{
-			StorageWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);	
-		}, 0.2f, false);
+		ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
+		if(!HUD) return;
 
-		//창고 나간 후 마우스 비활성화
+		HUD->HideStorageWidget();
+
 		pPlayer->bExitHideMouseCursor();
 	}
 }

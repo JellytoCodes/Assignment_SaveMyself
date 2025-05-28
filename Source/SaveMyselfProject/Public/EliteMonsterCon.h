@@ -31,9 +31,6 @@ private :
 	UFUNCTION()
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	float AttackRange = 200.f;
-
 	TArray<AActor*> FoundRegions;
 	int32 regionIndex = 0;
 
@@ -44,6 +41,4 @@ public :
 	void HandleAttack();
 
 	void EvaluateState();
-
-	float GetAttackRange() { return AttackRange; }	
 };

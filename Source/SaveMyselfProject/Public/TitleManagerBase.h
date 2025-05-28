@@ -20,4 +20,7 @@ public :
 	{
 		HUDClass = ATitleManagerHUD::StaticClass();
 	}
+
+protected :
+	virtual void BeginPlay() override;
 };

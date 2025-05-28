@@ -14,7 +14,6 @@ void UStorageSlot::NativeConstruct()
 	Super::NativeConstruct();
 	if(ItemButton)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 		ItemButton->OnClicked.AddDynamic(this, &UStorageSlot::OnItemButtonClicked);
 	}
 }
@@ -22,7 +21,6 @@ void UStorageSlot::NativeConstruct()
 void UStorageSlot::OnItemButtonClicked()
 {
 	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 	if(GetIsAmount() && GInstance->GetBagAmount())
 	{
 		ItemSlotDelegate.Broadcast(this);
@@ -37,6 +35,8 @@ void UStorageSlot::SetItemData(const FStorageArrRow* InData)
 	ItemSlotData = ItemDB->GetItemMasterData(InData->ItemID);
 
 	StorageArr = *InData;
+
+	ItemImage->SetOpacity(1.0f);
 
 	//아이콘이 없을 경우를 대비하여 else if 조건 분기점 생성
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
