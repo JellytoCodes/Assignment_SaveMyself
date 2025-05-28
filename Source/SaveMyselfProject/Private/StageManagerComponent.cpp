@@ -9,8 +9,7 @@
 
 UStageManagerComponent::UStageManagerComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
-
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UStageManagerComponent::BeginPlay()
@@ -36,7 +35,11 @@ void UStageManagerComponent::PreparePhase()
 	CurrentStageState = EStageState::Prepare;
 	OnStageStateChanged.Broadcast(CurrentStageState);
 
-	GetWorld()->GetTimerManager().SetTimer(PrepareTimerHandle, this, &UStageManagerComponent::BattlePhase, PrepareTime, false);
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetWorld()->GetGameInstance());
+	if(!GInstance) return;
+
+	GetWorld()->GetTimerManager().SetTimer
+	(PrepareTimerHandle, this, &UStageManagerComponent::BattlePhase, GInstance->GetPrepareTime(), false);
 }
 
 void UStageManagerComponent::BattlePhase()
@@ -51,14 +54,15 @@ void UStageManagerComponent::BattlePhase()
 			Spawner->StartSpawning();
 		}
 	}
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetWorld()->GetGameInstance());
+	if(!GInstance) return;
 
-	GetWorld()->GetTimerManager().SetTimer(BattleTimerHandle, this, &UStageManagerComponent::EndPhaseVictory, BattleTime, false);
+	GetWorld()->GetTimerManager().SetTimer
+	(BattleTimerHandle, this, &UStageManagerComponent::EndPhaseDefeat, GInstance->GetBattleTime(), false);
 }
 
 void UStageManagerComponent::EndPhaseVictory()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set Victory"));
-
     CurrentStageState = EStageState::Victory;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
@@ -66,8 +70,6 @@ void UStageManagerComponent::EndPhaseVictory()
 
 void UStageManagerComponent::EndPhaseDefeat()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Set Defeat"));
-
     CurrentStageState = EStageState::Defeat;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);

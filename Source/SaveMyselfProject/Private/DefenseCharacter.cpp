@@ -12,6 +12,7 @@
 #include "StructureItem.h"
 #include "TrapItem.h"
 #include "DefenseGameModeBase.h"
+#include "DefenseHUD.h"
 #include "PlayerItem.h"
 #include "StorageSlot.h"
 #include "StorageWidget.h"
@@ -54,20 +55,6 @@ ADefenseCharacter::ADefenseCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
-	//플레이어 QuickSlot Widget 설정
-	static ConstructorHelpers::FClassFinder<UQuickSlotWidget> quickSlotWidgetBP(TEXT("/Game/WidgetBP/WBP_QuickSlotWidget.WBP_QuickSlotWidget_C"));
-	if(quickSlotWidgetBP.Succeeded())
-	{
-		quickSlotWidgetClass = quickSlotWidgetBP.Class;
-	}
-
-	//플레이어 HP Widget 설정
-	static ConstructorHelpers::FClassFinder<UPlayerHPWidget> HPWidgetBP(TEXT("/Game/WidgetBP/WBP_PlayerHPWidget.WBP_PlayerHPWidget_C"));
-	if(HPWidgetBP.Succeeded())
-	{
-		HPWidgetClass = HPWidgetBP.Class;
-	}
-
 	Tags.Add(FName("Player"));
 }
 
@@ -85,7 +72,6 @@ void ADefenseCharacter::BeginPlay()
 	}
 
 	TArray<FName> RowNames = ItemMasterDataTable->GetRowNames();
-
 	for(const FName& RowName : RowNames)
 	{
 		const FItemMasterDataRow* Row = ItemMasterDataTable->FindRow<FItemMasterDataRow>(RowName, "ItemInit");
@@ -94,18 +80,19 @@ void ADefenseCharacter::BeginPlay()
 			ItemMasterDataMap.Add(RowName, Row);
 		}
 	}
-
-	quickSlotWidgetInstance = CreateWidget<UQuickSlotWidget>(GetWorld(), quickSlotWidgetClass);
-	if(quickSlotWidgetInstance) quickSlotWidgetInstance->AddToViewport();
-
-	HPWidgetInstance = CreateWidget<UPlayerHPWidget>(GetWorld(), HPWidgetClass);
-	if(HPWidgetInstance) HPWidgetInstance->AddToViewport();
 	
 	ADefenseGameModeBase* DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
     if(DefenseMode)
     {
         StageManager = DefenseMode->GetStageManager();
     }
+
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(HUD)
+	{
+		HUD->ShowPlayerHPWidget();
+		HUD->ShowPlayerQuickSlotWidget();
+	}
 }
 
 // Called every frame
@@ -187,19 +174,22 @@ void ADefenseCharacter::SpwanPlayerItem()
 	//각 상태에 따른 기능 비활성화
 	if(bMouseCursorUsed || bIsDeath) return;
 
-	for(int32 i = 0; i < quickSlotWidgetInstance->saveSlot.Num(); ++i)
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(!HUD) return;
+
+	for(int32 i = 0; i < HUD->GetQuicklotWidget()->saveSlot.Num(); ++i)
 	{
 		//아이템 수량 소진 시 return
-		if(quickSlotWidgetInstance->saveSlot[i].Quantity < 1) return;
+		if(HUD->GetQuicklotWidget()->saveSlot[i].Quantity < 1) return;
 
-		if(quickSlotWidgetInstance->saveSlot[i].ItemID == playerItemID)
+		if(HUD->GetQuicklotWidget()->saveSlot[i].ItemID == playerItemID)
 		{
 			if(PreviewInstance)
 			{
 				PreviewInstance->ConfirmPlacement();
 
 				//설치 가능일 때만 수량 감소가 가능하도록 설정
-				if(PreviewInstance->GetbCanPlace()) quickSlotWidgetInstance->UseQuickSlotItem(i);
+				if(PreviewInstance->GetbCanPlace()) HUD->GetQuicklotWidget()->UseQuickSlotItem(i);
 				bIsPreview = false;					
 				return;	
 			}
@@ -209,7 +199,7 @@ void ADefenseCharacter::SpwanPlayerItem()
 				ThrowWeapon();
 				
 				//무기를 던진 뒤 수량 감소 처리
-				quickSlotWidgetInstance->UseQuickSlotItem(i);
+				HUD->GetQuicklotWidget()->UseQuickSlotItem(i);
 				return;	
 			}			
 		}		
@@ -261,13 +251,21 @@ void ADefenseCharacter::ThrowWeapon()
 
 void ADefenseCharacter::TestPlayerDamaged()
 {	
-	HPWidgetInstance->UpdatedPlayerHPWidget(PlayerHP);
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(!HUD) return;
+	
+	HUD->UpdatedPlayerHP(PlayerHP);
 	PlayerHP--;
+	
 }
 
 void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 {
-	HPWidgetInstance->UpdatedPlayerHPWidget(PlayerHP);
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(!HUD) return;
+
+	HUD->UpdatedPlayerHP(PlayerHP);
+
 	if(PlayerHP > 1)
 	{
 		PlayerHP -= Damage;
@@ -304,7 +302,10 @@ void ADefenseCharacter::bExitHideMouseCursor()
 
 void ADefenseCharacter::SelectQuickSlot(int32 index)
 {
-	const FStorageArrRow* itemData = quickSlotWidgetInstance->GetQuickSlotItem(index - 1);
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(!HUD) return;
+
+	const FStorageArrRow* itemData = HUD->GetQuicklotWidget()->GetQuickSlotItem(index - 1);
 
 	if (!itemData) 
 	{
@@ -337,8 +338,11 @@ void ADefenseCharacter::BindStorageSlot(UStorageSlot *StorageSlot)
 
 void ADefenseCharacter::QuickSlotHandling(UStorageSlot *ClickedSlot)
 {
-	if(quickSlotWidgetInstance)
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(!HUD) return;
+
+	if(HUD->GetQuicklotWidget())
 	{
-		quickSlotWidgetInstance->AddItemQuickSlot(ClickedSlot);
+		HUD->GetQuicklotWidget()->AddItemQuickSlot(ClickedSlot);
 	}
 }

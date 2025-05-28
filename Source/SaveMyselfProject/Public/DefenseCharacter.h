@@ -12,7 +12,6 @@
 
 class UInputMappingContext;
 class UInputAction;
-class UQuickSlotWidget;
 class UStorageSlot;
 struct FInputActionValue;
 struct FItemMasterDataRow;
@@ -133,17 +132,11 @@ public :
 	bool bMouseCursorUsed = false;
 	bool bIsPreview = false;
 
-	//Äü½½·Ô Widget
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-	TSubclassOf<UQuickSlotWidget> quickSlotWidgetClass;
-
 	UFUNCTION()
 	void BindStorageSlot(UStorageSlot* StorageSlot);
 	
 	UFUNCTION()
 	void QuickSlotHandling(UStorageSlot* ClickedSlot);
-
-	UQuickSlotWidget* quickSlotWidgetInstance;
 
 //-----------------------Ã¼·Â ±â´É ¼Â¾÷-----------------------//
 private :
@@ -160,12 +153,4 @@ private :
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	class UStageManagerComponent* StageManager;
-
-public :
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget")
-	TSubclassOf<class UPlayerHPWidget> HPWidgetClass;
-
-	UPlayerHPWidget* HPWidgetInstance;
-
 };

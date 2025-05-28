@@ -8,7 +8,8 @@
 #include "DefenseHUD.generated.h"
 
 class UStageWidget;
-
+class UQuickSlotWidget;
+class UPlayerHPWidget;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API ADefenseHUD : public AHUD
@@ -19,14 +20,28 @@ public :
 	ADefenseHUD();
 
 	void ShowStageWidget(EStageState NewState);
-
-protected :
+	void ShowPlayerQuickSlotWidget();
+	void ShowPlayerHPWidget();
 	
+	void UpdatedPlayerHP(int32 getHP);
+
+	FORCEINLINE UQuickSlotWidget* GetQuicklotWidget() const { return quickSlotWidgetInstance; }
 private :
 	//Stage Widget
-	UPROPERTY(EditDefaultsOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UStageWidget> StageWidgetClass;
 
 	UStageWidget* StageWidgetInstance;
+
+	//Player QuickSlot Widget
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UQuickSlotWidget> quickSlotWidgetClass;
+
+	UQuickSlotWidget* quickSlotWidgetInstance;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UPlayerHPWidget> HPWidgetClass;
+
+	UPlayerHPWidget* HPWidgetInstance;
 
 };

@@ -40,7 +40,6 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 					return;
 				}
 			}
-			UE_LOG(LogTemp, Log, TEXT("Loop Completed"));
 			pSlot = nullptr;
 		}
 
@@ -55,7 +54,6 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 
 				pNewQuickSlot->curQuickQuantity++;
 				pNewQuickSlot->ItemCountText->SetText(FText::AsNumber(pNewQuickSlot->curQuickQuantity));
-				UE_LOG(LogTemp, Log, TEXT("Get ItemQuickSlot"));
 				slotArr++;
 				saveSlot.Add(InData);
 			}
@@ -87,7 +85,7 @@ bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 	curWeightBar->
 	SetPercent(static_cast<float>(GInstance->GetCurBagWeight()) / static_cast<float>(GInstance->GetMaxBagWeight()));
 
-	FString BagTextString = FString::Printf(TEXT("Bag : %d / %d"), GInstance->GetCurBagWeight(), GInstance->GetMaxBagWeight());
+	FString BagTextString = FString::Printf(TEXT("Weight : %d / %d"), GInstance->GetCurBagWeight(), GInstance->GetMaxBagWeight());
 	curWeightText->SetText(FText::FromString(BagTextString));
 
 	return false;
@@ -99,7 +97,6 @@ const FStorageArrRow* UQuickSlotWidget::GetQuickSlotItem(int32 index)
 
 	if(index < 0 || index >= saveSlot.Num()) return nullptr;
 
-	UE_LOG(LogTemp, Log, TEXT("return ItemID : %s"), *saveSlot[index].ItemID.ToString());
 	return &saveSlot[index];
 }
 

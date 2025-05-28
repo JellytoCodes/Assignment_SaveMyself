@@ -23,17 +23,17 @@ void ADefenseGameModeBase::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Set BeginPlay"));
+	
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+	if(GInstance)
+	{
+		GInstance->LoadStageDataByLevelName();
+	}
 
 	if(StageManager)
 	{
 		StageManager->OnStageStateChanged.AddDynamic(this, &ADefenseGameModeBase::HandleStageState);
 		StageManager->StartStage();
-	}
-
-	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
-	if(GInstance)
-	{
-		GInstance->LoadStageDataByLevelName();
 	}
 }
 
@@ -41,18 +41,10 @@ void ADefenseGameModeBase::HandleStageState(EStageState NewState)
 {
 	UE_LOG(LogTemp, Log, TEXT("Called HandleStageState"));
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
-	if(!PC)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Failed GetPlayerController"));
-		return;
-	}
-	ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
-	if(!HUD)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Failed GetHUD"));
-		return;
-	}
+	if(!PC) return;
 
-	UE_LOG(LogTemp, Log, TEXT("Set NewState"));
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
+	if(!HUD) return;
+
 	HUD->ShowStageWidget(NewState);
 }

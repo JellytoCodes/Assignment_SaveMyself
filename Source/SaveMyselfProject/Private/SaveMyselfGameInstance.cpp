@@ -19,6 +19,9 @@ void USaveMyselfGameInstance::LoadStageDataByLevelName()
 		if(currentStageData)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Loaded StageData : %s"), *currentStageData->StageID.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("Loaded MaxBagWeight : %d"), currentStageData->MaxBagWeight);
+			UE_LOG(LogTemp, Warning, TEXT("Loaded PrepareTime : %.2f"), currentStageData->PrepareTime);
+			UE_LOG(LogTemp, Warning, TEXT("Loaded BattleTime : %.2f"), currentStageData->BattleTime);
 		}
 	}
 }
