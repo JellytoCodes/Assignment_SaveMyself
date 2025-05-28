@@ -5,30 +5,30 @@
 #include "Kismet/GameplayStatics.h"
 #include "DefenseSaveGame.h"
 
-void USaveHelper::SaveRoundData(int32 InRoundNum)
+void USaveHelper::SaveStageData(FName inStageID)
 {
 	UDefenseSaveGame* SaveGameInstance = Cast<UDefenseSaveGame>
 	(UGameplayStatics::CreateSaveGameObject(UDefenseSaveGame::StaticClass()));
 
 	if(!SaveGameInstance) return;
 
-	SaveGameInstance->SetSavedRoundNum(InRoundNum);
+	SaveGameInstance->SetSavedStage(inStageID);
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("DefenseSaveSlot"), 0);
-	UE_LOG(LogTemp, Log, TEXT("Saved RoundNum : %d"), InRoundNum);
+	UE_LOG(LogTemp, Log, TEXT("SaveStageData : %s"), *inStageID.ToString());
 }
 
-int32 USaveHelper::LoadRoundData()
+FName USaveHelper::LoadStageData()
 {
 	UDefenseSaveGame* LoadedInstance = Cast<UDefenseSaveGame>
 	(UGameplayStatics::LoadGameFromSlot(TEXT("DefenseSaveSlot"), 0));
 
 	if(!LoadedInstance) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No SaveGame found. Defaulting to Round 1."));
-		return 1;
+		UE_LOG(LogTemp, Warning, TEXT("No SaveGame found"));
+		return NAME_None;
 	}
 
-	int32 LoadedRound = LoadedInstance->GetSavedRoundNum();
+	FName LoadedRound = LoadedInstance->GetSavedStage();
 	return LoadedRound;
 }

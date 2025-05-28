@@ -19,9 +19,9 @@ public :
 
 private :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData", meta = (AllowPrivateAccess = "true"))
-	int32 SavedRoundNum;
+	FName LastClearedStage;
 
 public : //Getter & Setter °ü¸®
-	FORCEINLINE int32 GetSavedRoundNum() const { return SavedRoundNum; }
-	FORCEINLINE void SetSavedRoundNum(int32 SetRoundNum) { SavedRoundNum = SetRoundNum; }
+	FName GetSavedStage() const { return LastClearedStage; }
+	void SetSavedStage(FName setClearedStage) { LastClearedStage = setClearedStage; }
 };

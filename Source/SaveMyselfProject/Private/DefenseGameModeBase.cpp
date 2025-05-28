@@ -6,6 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "SaveMyselfGameInstance.h"
 #include "DefenseHUD.h"
+#include "SaveHelper.h"
 
 ADefenseGameModeBase::ADefenseGameModeBase()
 {
@@ -24,16 +25,18 @@ void ADefenseGameModeBase::BeginPlay()
 
 	UE_LOG(LogTemp, Warning, TEXT("Set BeginPlay"));
 	
-	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
-	if(GInstance)
+	auto gInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+	if(gInstance)
 	{
-		GInstance->LoadStageDataByLevelName();
-	}
+		gInstance->LoadStageDataByLevelName();
+	
+		if(StageManager)
+		{
+			StageManager->OnStageStateChanged.AddDynamic(this, &ADefenseGameModeBase::HandleStageState);
+			StageManager->StartStage();
+		}
 
-	if(StageManager)
-	{
-		StageManager->OnStageStateChanged.AddDynamic(this, &ADefenseGameModeBase::HandleStageState);
-		StageManager->StartStage();
+		USaveHelper::SaveStageData(gInstance->GetStageID());
 	}
 }
 

@@ -35,7 +35,9 @@ public :
 
 //-----------------------StageDataAsset Getter-----------------------//
 public : 
-	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FName GetStageID() const { return currentStageData ? currentStageData->StageID : NAME_None; }
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int32 GetMaxBagWeight() const { return currentStageData ? currentStageData->MaxBagWeight : 0; }
 

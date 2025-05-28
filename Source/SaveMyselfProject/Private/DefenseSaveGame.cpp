@@ -5,5 +5,5 @@
 
 UDefenseSaveGame::UDefenseSaveGame()
 {
-	SavedRoundNum = 1;
+	LastClearedStage = NAME_None;
 }

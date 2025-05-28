@@ -16,9 +16,8 @@ class SAVEMYSELFPROJECT_API USaveHelper : public UObject
 
 public :
 	UFUNCTION(BlueprintCallable, Category = "SaveGame")
-	static void SaveRoundData(int32 InRoundNum);
+	static void SaveStageData(FName inStageID);
 
 	UFUNCTION(BlueprintCallable, Category = "SaveGame")
-	static int32 LoadRoundData();
-
+	static FName LoadStageData();
 };
