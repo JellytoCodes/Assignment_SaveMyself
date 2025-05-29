@@ -19,18 +19,6 @@ public :
 	UFUNCTION(BlueprintCallable)
 	void LoadStageDataByLevelName();
 
-protected : 
-	int32 curBagWeight = 0;
-
-	bool BagAmount = true;
-
-public :	
-	const int32 GetCurBagWeight() { return curBagWeight; }
-	void SetBagWeight(int32 curWeight) { curBagWeight += curWeight; }
-	
-	const bool GetBagAmount() { return BagAmount; }
-	void SetBagAmount(bool setAmount) { BagAmount = setAmount; }
-
 //-----------------------StageDataAsset Getter & Setter-----------------------//
 public : 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -47,10 +35,4 @@ public :
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetBattleTime() const { return currentStageData ? currentStageData->BattleTime : 0; }
-
-	UPROPERTY(BlueprintReadOnly)
-	FName curStageID;
-
-	FName GetCurStageID() { return curStageID; }
-	void SetCurStageID() { curStageID = currentStageData ? currentStageData->NextStageID : NAME_None; }
 };

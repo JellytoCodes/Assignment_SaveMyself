@@ -130,7 +130,7 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ADefenseCharacter::Move(const FInputActionValue &value)
 {
-	if(bIsDeath) return;
+	if(bIsDeath || bIsVictory) return;
 	
 	const auto MovementVector = value.Get<FVector2D>();
 
@@ -150,7 +150,7 @@ void ADefenseCharacter::Move(const FInputActionValue &value)
 void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 {
 	//각 상태에 따른 기능 비활성화
-	if(bMouseCursorUsed || bIsPreview || bIsDeath) return;
+	if(bMouseCursorUsed || bIsPreview || bIsDeath || bIsVictory) return;
 
 	const auto LookAxisVector = value.Get<FVector2D>();
 
@@ -169,15 +169,21 @@ void ADefenseCharacter::Interact(const FInputActionValue &value)
 void ADefenseCharacter::SpwanPlayerItem()
 {
 	//각 상태에 따른 기능 비활성화
-	if(bMouseCursorUsed || bIsDeath) return;
+	if(bMouseCursorUsed || bIsDeath || bIsVictory) return;
 
 	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	if(!HUD) return;
 
 	for(int32 i = 0; i < HUD->GetQuicklotWidget()->saveSlot.Num(); ++i)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("ItemID : %s"), *HUD->GetQuicklotWidget()->saveSlot[i].ItemID.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Quantity : %d"), HUD->GetQuicklotWidget()->saveSlot[i].Quantity);
 		//아이템 수량 소진 시 return
-		if(HUD->GetQuicklotWidget()->saveSlot[i].Quantity < 1) return;
+		if(HUD->GetQuicklotWidget()->saveSlot[i].Quantity == 0)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Player Not is Vaild Item"));
+			return;
+		}
 
 		if(HUD->GetQuicklotWidget()->saveSlot[i].ItemID == playerItemID)
 		{

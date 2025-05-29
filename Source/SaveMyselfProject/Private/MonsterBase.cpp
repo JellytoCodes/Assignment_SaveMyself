@@ -102,7 +102,8 @@ void AMonsterBase::Dead()
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetActorRotation(FRotator(90.f, 0.f, 0.f));
-	SetLifeSpan(3.f);
+	isDeath = true;
+	SetLifeSpan(1.5f);
 }
 
 void AMonsterBase::ReceiveDamage_Implementation(float Damage)

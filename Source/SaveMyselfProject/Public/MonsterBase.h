@@ -31,6 +31,19 @@ protected:
 	virtual void BeginPlay() override;
 
 protected : 
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MonsterState")
+	EMonsterState curState = EMonsterState::Patrol;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MonsterID")
+	FName MonsterID;	
+
+	UPROPERTY()
+	AActor* TargetActor;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Nav")
+	class UNavigationInvokerComponent* NavInvoker;
+
 	//몬스터 공통 스탯
 	float maxHP;
 	float curHP;
@@ -39,19 +52,14 @@ protected :
 	float attackElapsedTime;
 	float attackInterval;
 	float attackRange;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MonsterState")
-	EMonsterState curState = EMonsterState::Idle;
-
 	EMonsterType monsterType;
 	EEliteAIType eliteAIType;
 	class UStaticMesh* weaponMesh;
 
 	void LoadMonsterData();
 	void ApplyStat();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MonsterID")
-	FName MonsterID;	
+	void EquipWeapon();
+	virtual void ReceiveDamage_Implementation(float Damage) override;
 
 	//상속 클래스 가상 함수 적용을 위한 선언
 	virtual void OnEnterIdle() { /*NULL*/ }
@@ -61,15 +69,9 @@ protected :
 	virtual void OnEnterDamage() { /*NULL*/ }
 	virtual void OnEnterDead() { /*NULL*/ }
 
-	UPROPERTY()
-	AActor* TargetActor;
-
-	virtual void ReceiveDamage_Implementation(float Damage) override;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Nav")
-	class UNavigationInvokerComponent* NavInvoker;
-
-	void EquipWeapon();
+	//State 관리
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State")
+	bool isDeath = false;
 
 public :
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
@@ -79,7 +81,7 @@ public :
 	class AMonsterSpawner* OwnerSpawner;
 
 	void Dead();
-
+	
 public : //Getter & Setter 관리
 	FORCEINLINE void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }

@@ -18,7 +18,7 @@ class SAVEMYSELFPROJECT_API ADefenseGameModeBase : public AGameModeBase
 public :
 	ADefenseGameModeBase();
 
-	virtual void BeginPlay() override;
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 
 	UFUNCTION()
 	void HandleStageState(EStageState NewState);
@@ -26,6 +26,18 @@ public :
 private :
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStageManagerComponent* StageManager;
+
+protected : 
+	int32 curBagWeight = 0;
+
+	bool BagAmount = true;
+
+public :	
+	const int32 GetCurBagWeight() { return curBagWeight; }
+	void SetBagWeight(int32 curWeight) { curBagWeight += curWeight; }
+	
+	const bool GetBagAmount() { return BagAmount; }
+	void SetBagAmount(bool setAmount) { BagAmount = setAmount; }
 
 public :
 	FORCEINLINE class UStageManagerComponent* GetStageManager() const { return StageManager; }

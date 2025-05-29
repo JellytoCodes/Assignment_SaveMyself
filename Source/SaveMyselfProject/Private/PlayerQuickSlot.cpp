@@ -26,7 +26,7 @@ void UPlayerQuickSlot::OnItemButtonClicked()
 
 void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)
 {
-	UE_LOG(LogTemp, Log, TEXT("SetItemData"));
+	UE_LOG(LogTemp, Log, TEXT("SetItemData : %d"), curQuickQuantity);
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 	if(!ItemDB) return;
 
@@ -39,6 +39,7 @@ void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)
 	else if(ItemImage)						ItemImage->SetBrushFromTexture(nullptr);
 
 	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
+
 }
 
 bool UPlayerQuickSlot::DecreaseQuantity()

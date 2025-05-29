@@ -138,15 +138,22 @@ public :
 	UFUNCTION()
 	void QuickSlotHandling(UStorageSlot* ClickedSlot);
 
-//-----------------------체력 기능 셋업-----------------------//
+//-----------------------상태 기능 셋업-----------------------//
 private :
 	int32 PlayerHP = 5;
 	int32 GetPlayerHP() { return PlayerHP; }
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State", meta = (AllowPrivateAccess = "ture"))
 	bool bIsDeath = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State", meta = (AllowPrivateAccess = "ture"))
+	bool bIsVictory = false;
 
 	virtual void ReceiveDamage_Implementation(float Damage) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	class UStageManagerComponent* StageManager;
+
+public :
+	void SetIsVictory(bool setVictory) { bIsVictory = setVictory; }
 };

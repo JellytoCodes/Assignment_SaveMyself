@@ -46,9 +46,10 @@ void UStorageWidget::ItemRegist(UStorageSlot* pSlotData)
 	}
 	else
 	{
-		ItemData.Quantity = 0;
+		ItemData.Quantity--;
 		pSlotData->SetIsAmount(false);
 	}
+
 	if(pSlotData->ItemCountText)
 	{
 		pSlotData->ItemCountText->SetText(FText::AsNumber(ItemData.Quantity));

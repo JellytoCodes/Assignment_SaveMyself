@@ -5,20 +5,22 @@
 #include "Components/WrapBoxSlot.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
+#include "Kismet/GameplayStatics.h"
 #include "PlayerQuickSlot.h"
 #include "StorageSlot.h"
 #include "SaveMyselfGameInstance.h"
+#include "DefenseGameModeBase.h"
 
 void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 {
-	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
-	if(!GInstance) return;
+	auto DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if(!DefenseMode) return;
 
 	FStorageArrRow& InData = pSlotData->GetItemData();
 	
 	if(SetBagWeight(InData))
 	{
-		GInstance->SetBagAmount(false);
+		DefenseMode->SetBagAmount(false);
 		return;
 	}
 	
@@ -48,13 +50,16 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 			UPlayerQuickSlot* pNewQuickSlot = CreateWidget<UPlayerQuickSlot>(QuickSlotWrapBox, itemSlotWidgetClass);
 			if(pNewQuickSlot)
 			{
-				pNewQuickSlot->SetItemData(&InData);
+				FStorageArrRow copy = InData;
+				copy.Quantity = 1;
+				pNewQuickSlot->SetItemData(&copy);
 				QuickSlotWrapBox->AddChildToWrapBox(pNewQuickSlot);
 
-				pNewQuickSlot->curQuickQuantity++;
+				pNewQuickSlot->curQuickQuantity = 1;
 				pNewQuickSlot->ItemCountText->SetText(FText::AsNumber(pNewQuickSlot->curQuickQuantity));
 				slotArr++;
-				saveSlot.Add(InData);
+				saveSlot.Add(copy);
+				UE_LOG(LogTemp, Warning, TEXT("Get New Slot Quantity : %d"),pNewQuickSlot->curQuickQuantity);
 			}
 		}
 	}
@@ -65,25 +70,28 @@ bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());	
 	if(!GInstance) return true;
 
+	auto DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if(!DefenseMode) return true;
+
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 
 	const FItemMasterDataRow* DataRow = ItemDB->GetItemMasterData(InData.ItemID);
 	if(!DataRow) return true;
 
-	if((GInstance->GetCurBagWeight() + DataRow->ItemWeight) > GInstance->GetMaxBagWeight()) return true;
+	if((DefenseMode->GetCurBagWeight() + DataRow->ItemWeight) > GInstance->GetMaxBagWeight()) return true;
 
-	GInstance->SetBagWeight(DataRow->ItemWeight);
+	DefenseMode->SetBagWeight(DataRow->ItemWeight);
 	
 	if(!curWeightBar && !curWeightText) return true;
 
 	//적재 초과 여부 컬러 표시
-	if(GInstance->GetCurBagWeight() >= GInstance->GetMaxBagWeight()) curWeightBar->SetFillColorAndOpacity(FColor::Red);
+	if(DefenseMode->GetCurBagWeight() >= GInstance->GetMaxBagWeight()) curWeightBar->SetFillColorAndOpacity(FColor::Red);
 	else curWeightBar->SetFillColorAndOpacity(FColor::Green);
 
 	curWeightBar->
-	SetPercent(static_cast<float>(GInstance->GetCurBagWeight()) / static_cast<float>(GInstance->GetMaxBagWeight()));
+	SetPercent(static_cast<float>(DefenseMode->GetCurBagWeight()) / static_cast<float>(GInstance->GetMaxBagWeight()));
 
-	FString BagTextString = FString::Printf(TEXT("Weight : %d / %d"), GInstance->GetCurBagWeight(), GInstance->GetMaxBagWeight());
+	FString BagTextString = FString::Printf(TEXT("Weight : %d / %d"), DefenseMode->GetCurBagWeight(), GInstance->GetMaxBagWeight());
 	curWeightText->SetText(FText::FromString(BagTextString));
 
 	return false;

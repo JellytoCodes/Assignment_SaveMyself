@@ -7,7 +7,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
-#include "SaveMyselfGameInstance.h"
+#include "DefenseGameModeBase.h"
 
 void UStorageSlot::NativeConstruct()
 {
@@ -20,8 +20,8 @@ void UStorageSlot::NativeConstruct()
 
 void UStorageSlot::OnItemButtonClicked()
 {
-	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
-	if(GetIsAmount() && GInstance->GetBagAmount())
+	ADefenseGameModeBase* DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if(GetIsAmount() && DefenseMode->GetBagAmount())
 	{
 		ItemSlotDelegate.Broadcast(this);
 	}

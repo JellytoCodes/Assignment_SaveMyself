@@ -28,28 +28,26 @@ void AWarehouse::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(WarehouseItemTable)
-	{	
-		UE_LOG(LogTemp, Warning, TEXT("WarehouseItemTable"));
-		auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
-		if(GInstance)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("GInstance"));
-			TArray<FStorageArrRow*> AllRows;
-			WarehouseItemTable->GetAllRows(TEXT("Init"), AllRows);
+	FTimerHandle InitTimer;
+	GetWorld()->GetTimerManager().SetTimer(InitTimer,[this]{
+		if(WarehouseItemTable)
+		{	
+			auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+			if(GInstance)
+			{
+				TArray<FStorageArrRow*> AllRows;
+				WarehouseItemTable->GetAllRows(TEXT("Init"), AllRows);
 
-			for(auto Row : AllRows)
-			{	
-				UE_LOG(LogTemp, Warning, TEXT("Data : %s"), *Row->StageID.ToString());
-				UE_LOG(LogTemp, Warning, TEXT("Data : %s"), *GInstance->GetCurStageID().ToString());
-				if(Row->StageID == GInstance->GetCurStageID())
-				{
-					fInData.Add(Row);
-					UE_LOG(LogTemp, Warning, TEXT("Data : %s"), *Row->ItemID.ToString());
+				for(auto Row : AllRows)
+				{	
+					if(Row->StageID == GInstance->GetStageID())
+					{
+						fInData.Add(Row);
+					}
 				}
 			}
 		}
-	}
+	}, .2f, false);
 
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AWarehouse::OnWarehouseEntranceOverlap);
 	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AWarehouse::OnWarehouseExitOverlap);

@@ -71,6 +71,7 @@ void UStageManagerComponent::EndPhaseVictory()
 	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 	{
 		pPlayer->bEntranceShowMouseCursor();
+		pPlayer->SetIsVictory(true);
 	}
 }
 

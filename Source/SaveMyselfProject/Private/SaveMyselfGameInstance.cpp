@@ -12,9 +12,5 @@ void USaveMyselfGameInstance::LoadStageDataByLevelName()
 	FSoftObjectPath SoftPath(*AssetPath);
 	UObject* LoadedAsset = SoftPath.TryLoad();
 
-	if(LoadedAsset)
-	{
-		currentStageData = Cast<UStageDataAsset>(LoadedAsset);
-		if(currentStageData) curStageID = currentStageData->NextStageID;
-	}
+	if(LoadedAsset) currentStageData = Cast<UStageDataAsset>(LoadedAsset);
 }

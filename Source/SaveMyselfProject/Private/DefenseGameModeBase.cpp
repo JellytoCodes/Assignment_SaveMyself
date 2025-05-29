@@ -19,9 +19,9 @@ ADefenseGameModeBase::ADefenseGameModeBase()
 	StageManager = CreateDefaultSubobject<UStageManagerComponent>(TEXT("StageManager"));
 }
 
-void ADefenseGameModeBase::BeginPlay()
+void ADefenseGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
-	Super::BeginPlay();
+	Super::InitGame(MapName, Options, ErrorMessage);
 	
 	auto gInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
 	if(gInstance)
