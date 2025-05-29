@@ -89,9 +89,26 @@ void UStageManagerComponent::EndPhaseDefeat()
 	}
 }
 
+int32 UStageManagerComponent::GetPhaseRemaining() const
+{
+	if(CurrentStageState == EStageState::Prepare)
+		return GetWorld()->GetTimerManager().GetTimerRemaining(PrepareTimerHandle);
+
+	else if(CurrentStageState == EStageState::Battle)
+		return GetWorld()->GetTimerManager().GetTimerRemaining(BattleTimerHandle);
+
+	return 0;
+}
+
+EStageState UStageManagerComponent::GetCurStage() const
+{
+	return CurrentStageState;
+}
+
 void UStageManagerComponent::StartStage()
 {
-	PreparePhase();
+	FTimerHandle PhaseTimer;
+	GetWorld()->GetTimerManager().SetTimer(PhaseTimer, [this]{ PreparePhase(); }, 0.2f, false);
 }
 
 void UStageManagerComponent::CheckEndPhaseConditions()

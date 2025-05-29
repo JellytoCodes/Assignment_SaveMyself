@@ -23,7 +23,11 @@ class SAVEMYSELFPROJECT_API ADefenseHUD : public AHUD
 public :
 	ADefenseHUD();
 
-	void ShowStageWidget(EStageState NewState);
+	FTimerHandle StageHUDUpdateHandle;
+
+	void StartStageHUDUpdate(UStageManagerComponent* StageManager);
+
+	void ShowStageWidget(EStageState NewState, UStageManagerComponent* StageManager);
 	void ShowPlayerQuickSlotWidget();
 	void ShowPlayerHPWidget();
 	void ShowStageClearWidget();

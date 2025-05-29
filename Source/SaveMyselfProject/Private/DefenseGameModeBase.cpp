@@ -47,5 +47,18 @@ void ADefenseGameModeBase::HandleStageState(EStageState NewState)
 	ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
 	if(!HUD) return;
 
-	HUD->ShowStageWidget(NewState);
+	switch (NewState)
+	{
+		case EStageState::Victory:
+			HUD->ShowStageClearWidget();
+			break;
+
+		case EStageState::Defeat:
+			HUD->ShowTryAgainWidget();
+			break;
+
+		default :
+			HUD->ShowStageWidget(NewState, StageManager);
+			break;
+	}
 }

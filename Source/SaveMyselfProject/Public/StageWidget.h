@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "StageManagerComponent.h"
 #include "StageWidget.generated.h"
 
 class UTextBlock;
@@ -13,18 +14,14 @@ class SAVEMYSELFPROJECT_API UStageWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public :
-
-	virtual void NativeConstruct() override;
-
-	UFUNCTION(BlueprintCallable, Category = "Stage")
-	void SetStageText(FText InText);
-
 protected :
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* Text_StageMessage;
+	UTextBlock* TextStageNumber;
 
-	FTimerHandle HideTimerHandle;
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* TextPhaseTime;
 
-	void RemoveText();
+public :
+	void SetStageNumberText(FName inStageID);
+	void UpdatePhaseTimeText(EStageState inState, int32 remainingTime);
 };

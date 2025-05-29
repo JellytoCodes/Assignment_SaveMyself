@@ -4,32 +4,29 @@
 #include "Components/TextBlock.h"
 #include "TimerManager.h"
 
-void UStageWidget::NativeConstruct()
+void UStageWidget::SetStageNumberText(FName inStageID)
 {
-	Super::NativeConstruct();
-
-	if(Text_StageMessage)
-	{
-		Text_StageMessage->SetText(FText::FromString(""));
-		Text_StageMessage->SetRenderOpacity(0.f);
-	}
+	if(TextStageNumber) TextStageNumber->SetText(FText::FromName(inStageID));
 }
 
-void UStageWidget::SetStageText(FText InText)
+void UStageWidget::UpdatePhaseTimeText(EStageState inState, int32 remainingTime)
 {
-	if(!Text_StageMessage) return;
+	if(!TextPhaseTime) return;
 
-	Text_StageMessage->SetText(InText);
-	Text_StageMessage->SetRenderOpacity(1.f);
-
-	GetWorld()->GetTimerManager().ClearTimer(HideTimerHandle);
-	GetWorld()->GetTimerManager().SetTimer(HideTimerHandle, this, &UStageWidget::RemoveText, 1.5f, false);
-}
-
-void UStageWidget::RemoveText()
-{
-	if(Text_StageMessage)
+	FString PhaseStr;
+	switch(inState)
 	{
-		Text_StageMessage->RemoveFromParent();
+		case EStageState::Prepare: 
+			PhaseStr = TEXT("Prepare Phase"); 
+		break;
+
+		case EStageState::Battle: 
+			PhaseStr = TEXT("Battle Phase"); 
+		break;
 	}
+
+	int32 Min = remainingTime / 60;
+	int32 Sec = remainingTime % 60;
+
+	TextPhaseTime->SetText(FText::FromString(FString::Printf(TEXT("%s %02d:%02d"), *PhaseStr, Min, Sec)));
 }

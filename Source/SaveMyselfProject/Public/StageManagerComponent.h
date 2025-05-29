@@ -37,6 +37,9 @@ public :
 	UPROPERTY(BlueprintAssignable)
 	FOnStageStateChanged OnStageStateChanged;
 
+	int32 GetPhaseRemaining() const;
+	EStageState GetCurStage() const;
+
 private :
 	void PreparePhase();
 	void BattlePhase();

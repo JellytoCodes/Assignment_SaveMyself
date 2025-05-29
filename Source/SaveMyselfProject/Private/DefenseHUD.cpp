@@ -7,6 +7,8 @@
 #include "PlayerHPWidget.h"
 #include "StageClearWidget.h"
 #include "TryAgainWidget.h"
+#include "SaveMyselfGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 ADefenseHUD::ADefenseHUD()
 {
@@ -47,44 +49,35 @@ ADefenseHUD::ADefenseHUD()
 
 }
 
-void ADefenseHUD::ShowStageWidget(EStageState NewState)
-{
-	if(!StageWidgetClass) return;
-
-	if(StageWidgetInstance)
+void ADefenseHUD::StartStageHUDUpdate(UStageManagerComponent *StageManager)
+{	
+	GetWorld()->GetTimerManager().SetTimer(StageHUDUpdateHandle, [this, StageManager]()
 	{
-		StageWidgetInstance->RemoveFromParent();
-		StageWidgetInstance = nullptr;
-	}
-
-	StageWidgetInstance = CreateWidget<UStageWidget>(GetWorld(), StageWidgetClass);
-	if(StageWidgetInstance)
-	{
-		StageWidgetInstance->AddToViewport();
-
-		FText StageText;
-		switch(NewState)
+		if (StageWidgetInstance && StageManager)
 		{
-			case EStageState::Prepare :
-				StageText = FText::FromString(TEXT("Prepare Phase"));
-			break;
+			int32 Remaining = StageManager->GetPhaseRemaining();
+			EStageState State = StageManager->GetCurStage();
 
-			case EStageState::Battle :
-				StageText = FText::FromString(TEXT("Battle Phase"));
-			break;
-
-			case EStageState::Victory :
-				StageText = FText::FromString(TEXT("Victory"));
-				ShowStageClearWidget();
-			break;
-
-			case EStageState::Defeat :
-				StageText = FText::FromString(TEXT("Defeat"));
-				ShowTryAgainWidget();
-			break;
+			StageWidgetInstance->UpdatePhaseTimeText(State, Remaining);
+			UE_LOG(LogTemp, Warning, TEXT("Updated Stage Widget"));
 		}
-		StageWidgetInstance->SetStageText(StageText);
+	}, 1.0f, true);
+}
+
+void ADefenseHUD::ShowStageWidget(EStageState NewState, UStageManagerComponent* StageManager)
+{
+	if(!StageWidgetInstance) return;
+	StageWidgetInstance->AddToViewport();
+
+	UE_LOG(LogTemp, Warning, TEXT("ShowStageWidget"));
+
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
+	if(GInstance)
+	{
+		StageWidgetInstance->SetStageNumberText(GInstance->GetStageID());
 	}
+
+	StartStageHUDUpdate(StageManager);
 }
 
 void ADefenseHUD::ShowPlayerQuickSlotWidget()
