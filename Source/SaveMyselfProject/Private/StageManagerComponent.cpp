@@ -73,7 +73,7 @@ void UStageManagerComponent::EndPhaseVictory()
 	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 	{
 		pPlayer->bEntranceShowMouseCursor();
-		pPlayer->SetIsVictory(true);
+		pPlayer->SetVictory(true);
 	}
 }
 
@@ -87,6 +87,7 @@ void UStageManagerComponent::EndPhaseDefeat()
 
 	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 	{
+		pPlayer->PlayerDead();
 		pPlayer->bEntranceShowMouseCursor();
 	}
 }

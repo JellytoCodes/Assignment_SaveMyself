@@ -49,17 +49,27 @@ ADefenseHUD::ADefenseHUD()
 
 }
 
+void ADefenseHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    GetWorld()->GetTimerManager().ClearTimer(StageHUDUpdateHandle);
+    Super::EndPlay(EndPlayReason);
+}
+
 void ADefenseHUD::StartStageHUDUpdate(UStageManagerComponent *StageManager)
 {	
 	GetWorld()->GetTimerManager().SetTimer(StageHUDUpdateHandle, [this, StageManager]()
 	{
-		if (StageWidgetInstance && StageManager)
-		{
-			int32 Remaining = StageManager->GetPhaseRemaining();
-			EStageState State = StageManager->GetCurStage();
-
-			StageWidgetInstance->UpdatePhaseTimeText(State, Remaining);
+		//StageWidget이 제거 되었을 시 StageHUDUpdateHandle 제거
+		if (!IsValid(StageManager) || !IsValid(StageWidgetInstance)) 
+		{	
+			GetWorld()->GetTimerManager().ClearTimer(StageHUDUpdateHandle);
+			return;
 		}
+
+		int32 Remaining = StageManager->GetPhaseRemaining();
+		EStageState State = StageManager->GetCurStage();
+
+		StageWidgetInstance->UpdatePhaseTimeText(State, Remaining);
 	}, .5f, true);
 }
 

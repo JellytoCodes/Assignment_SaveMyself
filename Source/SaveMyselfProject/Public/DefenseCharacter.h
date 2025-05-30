@@ -142,11 +142,7 @@ public :
 private :
 	int32 PlayerHP = 5;
 	int32 GetPlayerHP() { return PlayerHP; }
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State", meta = (AllowPrivateAccess = "ture"))
 	bool bIsDeath = false;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State", meta = (AllowPrivateAccess = "ture"))
 	bool bIsVictory = false;
 
 	virtual void ReceiveDamage_Implementation(float Damage) override;
@@ -155,6 +151,6 @@ private :
 	class UStageManagerComponent* StageManager;
 
 public :
-	void SetIsVictory(bool setVictory) { bIsVictory = setVictory; }
-	bool GetIsDeath() const { return bIsDeath; }
+	void SetVictory(bool isVictory);
+	void PlayerDead();
 };

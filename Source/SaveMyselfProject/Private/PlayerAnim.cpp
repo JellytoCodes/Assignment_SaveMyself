@@ -34,3 +34,10 @@ void UPlayerAnim::PlayThrowMontage()
 
 	Montage_Play(ThrowMontage, 1.5f);
 }
+
+void UPlayerAnim::PlayVictoryMontage()
+{
+	if(!VictoryMontage) return;
+
+	Montage_Play(VictoryMontage, 1.5f);
+}

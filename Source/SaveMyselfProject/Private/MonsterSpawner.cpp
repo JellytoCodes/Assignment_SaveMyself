@@ -92,7 +92,7 @@ void AMonsterSpawner::TrySpawn()
 {
     if(!MonsterClass) return;
 
-    if(SpawnedMonsters.Num() >= MaxSpawnCount) return;
+    if(SpawnedMonsterCount >= MaxSpawnCount) return;
     
     bIsSpawn = true;
     SpawnMonster();

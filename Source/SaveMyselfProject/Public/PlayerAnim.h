@@ -28,8 +28,13 @@ private :
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Montage", meta = (AllowPrivateAccess = "true"))
 	UAnimMontage* ThrowMontage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Montage", meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* VictoryMontage;
+
 
 public :
 	void PlayDeadMontage();
 	void PlayThrowMontage();
+	void PlayVictoryMontage();
 };

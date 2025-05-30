@@ -269,15 +269,30 @@ void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 	}
 	else 
 	{
+		PlayerHP = 0;
 		bIsDeath = true;
 		StageManager->CheckEndPhaseConditions(bIsDeath);
-		PlayerHP = 0;
-		Tags.Remove(FName("Player"));
-		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
-		if(PlayerAnim) PlayerAnim->PlayDeadMontage();
 		
 	}
+}
+
+void ADefenseCharacter::SetVictory(bool isVictory)
+{
+	bIsVictory = isVictory;
+
+	UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+	if(PlayerAnim) PlayerAnim->PlayVictoryMontage();
+	
+}
+
+void ADefenseCharacter::PlayerDead()
+{		
+	UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+	if(PlayerAnim) PlayerAnim->PlayDeadMontage();
+
+	Tags.Remove(FName("Player"));
+		
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ADefenseCharacter::bEntranceShowMouseCursor()

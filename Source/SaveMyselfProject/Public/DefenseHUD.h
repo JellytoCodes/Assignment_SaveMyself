@@ -23,6 +23,8 @@ class SAVEMYSELFPROJECT_API ADefenseHUD : public AHUD
 public :
 	ADefenseHUD();
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	FTimerHandle StageHUDUpdateHandle;
 
 	void StartStageHUDUpdate(UStageManagerComponent* StageManager);
