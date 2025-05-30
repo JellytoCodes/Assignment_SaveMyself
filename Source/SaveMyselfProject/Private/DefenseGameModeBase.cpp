@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DefenseGameModeBase.h"
 #include "DefenseCharacter.h"
@@ -40,7 +40,6 @@ void ADefenseGameModeBase::InitGame(const FString& MapName, const FString& Optio
 
 void ADefenseGameModeBase::HandleStageState(EStageState NewState)
 {
-	UE_LOG(LogTemp, Log, TEXT("Called HandleStageState"));
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
 	if(!PC) return;
 

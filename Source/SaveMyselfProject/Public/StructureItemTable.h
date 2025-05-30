@@ -1,4 +1,4 @@
-
+ï»¿
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,19 +9,19 @@ struct FStructureDataRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	//°ÇÃà¹° ÀÌ¸§
+	//ê±´ì¶•ë¬¼ ì´ë¦„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName StructureName;
 
-	//°ÇÃà¹° Ã¼·Â 
+	//ê±´ì¶•ë¬¼ ì²´ë ¥ 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float StructureHP;
 
-	//°ÇÃà¹° ¹æ¾î·Â (Çö °³¹ß¿¡ ³ÖÀ» ¿ä¼Ò´Â ¾Æ´Ï³ª ÃßÈÄ °ËÅä ÈÄ »ç¿ëÇÏ±â À§ÇÔ)
+	//ê±´ì¶•ë¬¼ ë°©ì–´ë ¥ (í˜„ ê°œë°œì— ë„£ì„ ìš”ì†ŒëŠ” ì•„ë‹ˆë‚˜ ì¶”í›„ ê²€í†  í›„ ì‚¬ìš©í•˜ê¸° ìœ„í•¨)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float StructureDefense;
 
-	//°Ç¼³ ÄğÅ¸ÀÓ
+	//ê±´ì„¤ ì¿¨íƒ€ì„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxCoolTime;
 };

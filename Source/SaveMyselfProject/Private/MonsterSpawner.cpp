@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MonsterSpawner.h"
@@ -71,21 +71,20 @@ void AMonsterSpawner::StopSpawning()
     SetActorTickEnabled(false);
 }
 
-bool AMonsterSpawner::AreAllMonstersDead() const
-{
-    if(!bIsSpawn) return false;
-
-    return SpawnedMonsters.Num() == 0;
-}
-
 void AMonsterSpawner::OnMonsterDied(AMonsterBase *Monster)
 {
     SpawnedMonsters.Remove(Monster);
-    StopSpawning();
 
-    if(AreAllMonstersDead() && StageManager)
+    const bool bAllSpawned = SpawnedMonsterCount == MaxSpawnCount;
+    const bool bAllDead = SpawnedMonsters.Num() == 0;
+
+    if(bAllSpawned)
     {
-        Destroy();
+        StopSpawning();
+        if(bAllDead && StageManager) 
+        {
+            Destroy();
+        }
     }
 }
 
@@ -111,6 +110,7 @@ void AMonsterSpawner::SpawnMonster()
     {
         Spawned->OwnerSpawner = this;
         SpawnedMonsters.Add(Spawned);
+        SpawnedMonsterCount++;
         UE_LOG(LogTemp, Log, TEXT("Spawned %s at %s"), *MonsterClass->GetName(), *GetActorLocation().ToString());
     }
 }

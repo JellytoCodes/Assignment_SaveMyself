@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "StageWidget.h"
 #include "Components/TextBlock.h"
@@ -21,12 +21,16 @@ void UStageWidget::UpdatePhaseTimeText(EStageState inState, int32 remainingTime)
 		break;
 
 		case EStageState::Battle: 
-			PhaseStr = TEXT("Battle Phase"); 
+			PhaseStr = TEXT("Battle Phase");
 		break;
+
+		default :
+			PhaseStr = TEXT("End Phase");
+		break;			
 	}
 
 	int32 Min = remainingTime / 60;
 	int32 Sec = remainingTime % 60;
 
-	TextPhaseTime->SetText(FText::FromString(FString::Printf(TEXT("%s %02d:%02d"), *PhaseStr, Min, Sec)));
+	TextPhaseTime->SetText(FText::FromString(FString::Printf(TEXT("%s [%02d : %02d]"), *PhaseStr, Min, Sec)));
 }

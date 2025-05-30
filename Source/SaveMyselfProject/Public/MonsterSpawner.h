@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -21,12 +21,9 @@ public :
 	virtual void Destroyed() override;
 
 	UFUNCTION()
-    void StartSpawning(); // ½ºÆù ½ÃÀÛ ½ÅÈ£
+    void StartSpawning(); // ìŠ¤í° ì‹œì‘ ì‹ í˜¸
     UFUNCTION()
-    void StopSpawning();  // ½ºÆù ÁßÁö
-
-	UFUNCTION()
-	bool AreAllMonstersDead() const;
+    void StopSpawning();  // ìŠ¤í° ì¤‘ì§€
 
 	void OnMonsterDied(AMonsterBase* Monster);
 
@@ -46,6 +43,7 @@ private :
 	class UStageManagerComponent* StageManager;
 
 	float SpawnTimer = 0.f;
+	int32 SpawnedMonsterCount = 0;
 
 	UPROPERTY()
 	TArray<AMonsterBase*> SpawnedMonsters;

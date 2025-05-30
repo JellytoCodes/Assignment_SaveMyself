@@ -1,10 +1,10 @@
-
+ï»¿
 #pragma once
 
 #include "CoreMinimal.h"
 #include "WeaponItemTable.generated.h"
 
-//ÇÇ°İ ½Ã ´ÜÀÏÀÎÁö, ±¤¿ªÀÎÁö °áÁ¤ÇÏ±â À§ÇÔ
+//í”¼ê²© ì‹œ ë‹¨ì¼ì¸ì§€, ê´‘ì—­ì¸ì§€ ê²°ì •í•˜ê¸° ìœ„í•¨
 UENUM(BlueprintType)
 enum class EDamageType : uint8
 {
@@ -17,19 +17,19 @@ struct FWeaponDataRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	//¹«±â ÀÌ¸§
+	//ë¬´ê¸° ì´ë¦„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponData")
 	FName WeaponName;
 
-	//¹«±â µ¥¹ÌÁö
+	//ë¬´ê¸° ë°ë¯¸ì§€
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponData")
 	float WeaponDamage;
 
-	//¹«±â »ç¿ë ÄğÅ¸ÀÓ
+	//ë¬´ê¸° ì‚¬ìš© ì¿¨íƒ€ì„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponData")
 	float MaxCoolTime;
 
-	//ÇÇ°İ Å¸ÀÔ
+	//í”¼ê²© íƒ€ì…
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponData")
 	EDamageType DamageType;
 };

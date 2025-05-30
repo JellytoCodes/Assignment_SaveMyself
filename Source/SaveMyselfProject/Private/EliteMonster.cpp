@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EliteMonster.h"
 #include "EliteMonsterCon.h"
@@ -64,12 +64,12 @@ void AEliteMonster::OnEnterAttack()
 
 void AEliteMonster::OnEnterDamage()
 {
-	//Polish ¹İ¿µ ¿¹Á¤
+	//Polish ë°˜ì˜ ì˜ˆì •
 }
 
 void AEliteMonster::OnEnterDead()
 {
-	//¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ÈÄ Destroy() ±¸Çö ¿¹Á¤
+	//ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ í›„ Destroy() êµ¬í˜„ ì˜ˆì •
 	Dead();
 }
 

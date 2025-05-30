@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -11,12 +11,12 @@
 UENUM(BlueprintType)
 enum class EMonsterState : uint8
 {
-    Idle,		//´ë±â »óÅÂ
-    Patrol,		//¸ñÇ¥ ÁöÁ¡(¸Ê³¡) ÀÌµ¿
-    Chase,		//ÇÃ·¹ÀÌ¾î, ±¸Á¶¹° ´ë»ó ÃßÀû
-    Attack,		//´ë»ó °ø°İ
-    Damage,		//ÇÇ°İ ¹İÀÀ
-    Dead,		//»ç¸Á Ã³¸®
+    Idle,		//ëŒ€ê¸° ìƒíƒœ
+    Patrol,		//ëª©í‘œ ì§€ì (ë§µë) ì´ë™
+    Chase,		//í”Œë ˆì´ì–´, êµ¬ì¡°ë¬¼ ëŒ€ìƒ ì¶”ì 
+    Attack,		//ëŒ€ìƒ ê³µê²©
+    Damage,		//í”¼ê²© ë°˜ì‘
+    Dead,		//ì‚¬ë§ ì²˜ë¦¬
 };
 
 UCLASS()
@@ -44,7 +44,7 @@ protected :
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Nav")
 	class UNavigationInvokerComponent* NavInvoker;
 
-	//¸ó½ºÅÍ °øÅë ½ºÅÈ
+	//ëª¬ìŠ¤í„° ê³µí†µ ìŠ¤íƒ¯
 	float maxHP;
 	float curHP;
 	float moveSpeed;
@@ -61,7 +61,7 @@ protected :
 	void EquipWeapon();
 	virtual void ReceiveDamage_Implementation(float Damage) override;
 
-	//»ó¼Ó Å¬·¡½º °¡»ó ÇÔ¼ö Àû¿ëÀ» À§ÇÑ ¼±¾ğ
+	//ìƒì† í´ë˜ìŠ¤ ê°€ìƒ í•¨ìˆ˜ ì ìš©ì„ ìœ„í•œ ì„ ì–¸
 	virtual void OnEnterIdle() { /*NULL*/ }
 	virtual void OnEnterPatrol() { /*NULL*/ }
 	virtual void OnEnterChase() { /*NULL*/ }
@@ -69,7 +69,7 @@ protected :
 	virtual void OnEnterDamage() { /*NULL*/ }
 	virtual void OnEnterDead() { /*NULL*/ }
 
-	//State °ü¸®
+	//State ê´€ë¦¬
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State")
 	bool isDeath = false;
 
@@ -82,7 +82,7 @@ public :
 
 	void Dead();
 	
-public : //Getter & Setter °ü¸®
+public : //Getter & Setter ê´€ë¦¬
 	FORCEINLINE void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
 

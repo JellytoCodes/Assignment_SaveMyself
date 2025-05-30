@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -22,7 +22,7 @@ class SAVEMYSELFPROJECT_API ADefenseCharacter : public ACharacter, public IDamag
 {
 	GENERATED_BODY()
 
-//-----------------------Defaults ¼Â¾÷-----------------------//
+/* -----------------------Defaults ì…‹ì—…----------------------- */
 public:
 	ADefenseCharacter();
 	virtual void Tick(float DeltaTime) override;
@@ -31,9 +31,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-//-----------------------Ä³¸¯ÅÍ µğÆúÆ® ¼Â¾÷-----------------------//
+/* -----------------------ìºë¦­í„° ë””í´íŠ¸ ì…‹ì—…----------------------- */
 private :
-	//½ÃÁ¡ ¼³Á¤
+	//ì‹œì  ì„¤ì •
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "ture"))
 	class USpringArmComponent* CameraBoom;
 
@@ -55,20 +55,20 @@ private :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_Fire;
 
-	//Ä«¸Ş¶ó ºä ¼Óµµ Á¶Á¤
+	//ì¹´ë©”ë¼ ë·° ì†ë„ ì¡°ì •
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "ture"))
 	float LookSensitivity = .5f;
 
 protected :
 
-	//ÇÃ·¹ÀÌ¾î Å° ¹ÙÀÎµå ¾×¼Ç
+	//í”Œë ˆì´ì–´ í‚¤ ë°”ì¸ë“œ ì•¡ì…˜
 	void Move(const FInputActionValue& value);
 	void LookNTurn(const FInputActionValue& value);
 	void Interact(const FInputActionValue& value);
 
-//-----------------------¾ÆÀÌÅÛ ±â´É ¼Â¾÷-----------------------//
+/* -----------------------ì•„ì´í…œ ê¸°ëŠ¥ ì…‹ì—…----------------------- */
 private : 
-	//Äü½½·Ô Å° ÇÒ´ç
+	//í€µìŠ¬ë¡¯ í‚¤ í• ë‹¹
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_QuickSlot01;
 
@@ -93,7 +93,7 @@ private :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_QuickSlot08;
 
-	//Äü½½·Ô Å° ¹ÙÀÎµå ¾×¼Ç
+	//í€µìŠ¬ë¡¯ í‚¤ ë°”ì¸ë“œ ì•¡ì…˜
 	void SelectQuickSlot01() { SelectQuickSlot(1); }
 	void SelectQuickSlot02() { SelectQuickSlot(2); }
 	void SelectQuickSlot03() { SelectQuickSlot(3); }
@@ -103,10 +103,10 @@ private :
 	void SelectQuickSlot07() { SelectQuickSlot(7); }
 	void SelectQuickSlot08() { SelectQuickSlot(8); }
 
-	//Äü½½·Ô Å° ¹ÙÀÎµå ¸¶½ºÅÍ
+	//í€µìŠ¬ë¡¯ í‚¤ ë°”ì¸ë“œ ë§ˆìŠ¤í„°
 	void SelectQuickSlot(int32 index);
 
-	//¾ÆÀÌÅÛ ½ºÆù (»ó¼¼¼³¸í Á¤ÀÇ ºÎºĞ ÂüÁ¶)
+	//ì•„ì´í…œ ìŠ¤í° (ìƒì„¸ì„¤ëª… ì •ì˜ ë¶€ë¶„ ì°¸ì¡°)
 	void SpwanPlayerItem();
 
 	FName playerItemID = NAME_None;
@@ -138,7 +138,7 @@ public :
 	UFUNCTION()
 	void QuickSlotHandling(UStorageSlot* ClickedSlot);
 
-//-----------------------»óÅÂ ±â´É ¼Â¾÷-----------------------//
+/* -----------------------ìƒíƒœ ê¸°ëŠ¥ ì…‹ì—…----------------------- */
 private :
 	int32 PlayerHP = 5;
 	int32 GetPlayerHP() { return PlayerHP; }
@@ -156,4 +156,5 @@ private :
 
 public :
 	void SetIsVictory(bool setVictory) { bIsVictory = setVictory; }
+	bool GetIsDeath() const { return bIsDeath; }
 };

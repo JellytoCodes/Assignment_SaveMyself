@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 protected :
-	//Ã¢°í ±¸¿ª ¼³Á¤
+	//ì°½ê³  êµ¬ì—­ ì„¤ì •
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Componentes")
 	class UBoxComponent* BoxCollision;
 
@@ -28,15 +28,15 @@ protected :
 
 public :
 
-	//Ã¢°í µé¾î°¡±â
+	//ì°½ê³  ë“¤ì–´ê°€ê¸°
 	UFUNCTION()
 	void OnWarehouseEntranceOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	//Ã¢°í ³ª°¡±â
+	//ì°½ê³  ë‚˜ê°€ê¸°
 	UFUNCTION()
 	void OnWarehouseExitOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	//Ã¢°í ÁøÀÔ ¿©ºÎ Ã¼Å© (Å° ¹ÙÀÎµù ºñÈ°¼ºÈ­ ¿ëµµ)
+	//ì°½ê³  ì§„ì… ì—¬ë¶€ ì²´í¬ (í‚¤ ë°”ì¸ë”© ë¹„í™œì„±í™” ìš©ë„)
 	bool GetStorageEntrance() { return bIsStorageEntrance; }
 
 	TArray<const FStorageArrRow*> fInData;

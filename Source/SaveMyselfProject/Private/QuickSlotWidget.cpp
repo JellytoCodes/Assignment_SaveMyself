@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "QuickSlotWidget.h"
 #include "Components/WrapBox.h"
@@ -28,7 +28,7 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 	{
 		UPlayerQuickSlot* pSlot = nullptr;
 
-		//±âÁ¸ ½½·Ô¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀÏ °æ¿ì ¼ö·®¸¸ Áõ°¡
+		//ê¸°ì¡´ ìŠ¬ë¡¯ì— ìˆëŠ” ì•„ì´í…œì¼ ê²½ìš° ìˆ˜ëŸ‰ë§Œ ì¦ê°€
 		for(UWidget* child : QuickSlotWrapBox->GetAllChildren())
 		{
 			pSlot = Cast<UPlayerQuickSlot>(child);
@@ -44,7 +44,7 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 			pSlot = nullptr;
 		}
 
-		//½½·Ô¿¡ ¾ø´Â ¾ÆÀÌÅÛÀÏ °æ¿ì »õ·Î »ı¼º
+		//ìŠ¬ë¡¯ì— ì—†ëŠ” ì•„ì´í…œì¼ ê²½ìš° ìƒˆë¡œ ìƒì„±
 		if(pSlot == nullptr && slotArr < 8)
 		{
 			UPlayerQuickSlot* pNewQuickSlot = CreateWidget<UPlayerQuickSlot>(QuickSlotWrapBox, itemSlotWidgetClass);
@@ -84,7 +84,7 @@ bool UQuickSlotWidget::SetBagWeight(FStorageArrRow& InData)
 	
 	if(!curWeightBar && !curWeightText) return true;
 
-	//ÀûÀç ÃÊ°ú ¿©ºÎ ÄÃ·¯ Ç¥½Ã
+	//ì ì¬ ì´ˆê³¼ ì—¬ë¶€ ì»¬ëŸ¬ í‘œì‹œ
 	if(DefenseMode->GetCurBagWeight() >= GInstance->GetMaxBagWeight()) curWeightBar->SetFillColorAndOpacity(FColor::Red);
 	else curWeightBar->SetFillColorAndOpacity(FColor::Green);
 

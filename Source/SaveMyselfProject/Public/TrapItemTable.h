@@ -1,4 +1,4 @@
-
+ï»¿
 #pragma once
 
 #include "CoreMinimal.h"
@@ -16,16 +16,16 @@ struct FTrapDataRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	//Æ®·¦ ÀÌ¸§
+	//íŠ¸ë© ì´ë¦„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName TrapName;
 
-	//Æ®·¦ È¿°ú 
-	//ex) Binding = 5.f (5ÃÊµ¿¾È ¹­ÀÌµµ·ÏÇÔ), Explosive = 30.f (Æø¹ßÇÏ¸ç ÁÖº¯¿¡ 30ÀÇ µ¥¹ÌÁö¸¦ ÀÔÈû)
+	//íŠ¸ë© íš¨ê³¼ 
+	//ex) Binding = 5.f (5ì´ˆë™ì•ˆ ë¬¶ì´ë„ë¡í•¨), Explosive = 30.f (í­ë°œí•˜ë©° ì£¼ë³€ì— 30ì˜ ë°ë¯¸ì§€ë¥¼ ì…í˜)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TrapEffect;
 
-	//Æ®·¦ ¼³Ä¡ ÄğÅ¸ÀÓ
+	//íŠ¸ë© ì„¤ì¹˜ ì¿¨íƒ€ì„
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxCoolTime;
 

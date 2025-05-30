@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "StageManagerComponent.h"
 #include "GameFramework/Actor.h"
@@ -64,6 +64,8 @@ void UStageManagerComponent::BattlePhase()
 
 void UStageManagerComponent::EndPhaseVictory()
 {
+	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
+
     CurrentStageState = EStageState::Victory;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
@@ -77,11 +79,11 @@ void UStageManagerComponent::EndPhaseVictory()
 
 void UStageManagerComponent::EndPhaseDefeat()
 {
+	GetWorld()->GetTimerManager().ClearTimer(BattleTimerHandle);
+
     CurrentStageState = EStageState::Defeat;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
-
-	UGameplayStatics::SetGamePaused(GetWorld(), true);
 
 	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 	{

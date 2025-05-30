@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -29,10 +29,10 @@ public :
 protected :
 	virtual void BeginPlay() override;
 
-	/** ¸¶¿ì½º ¾Æ·¡ Áö¸éÀ» TraceÇÏ¿© ÀÌµ¿ */
+	/** ë§ˆìš°ìŠ¤ ì•„ë˜ ì§€ë©´ì„ Traceí•˜ì—¬ ì´ë™ */
 	bool TraceToGround(FHitResult& HitResult) const;
 
-	/** ÇÁ¸®ºä¿ë ¸ÓÆ¼¸®¾ó Àû¿ë */
+	/** í”„ë¦¬ë·°ìš© ë¨¸í‹°ë¦¬ì–¼ ì ìš© */
 	void SetGhostMaterial(bool bCanPlace);
 
 private :
@@ -56,7 +56,7 @@ private :
 
 	bool bIsCanPlace = false;
 
-public : //Getter & Setter ¼³Á¤
+public : //Getter & Setter ì„¤ì •
 	const bool GetbCanPlace() { return bIsCanPlace; }
 	
 };

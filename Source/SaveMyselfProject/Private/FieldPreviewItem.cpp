@@ -1,4 +1,4 @@
-
+ï»¿
 #include "FieldPreviewItem.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -42,7 +42,7 @@ AFieldPreviewItem::AFieldPreviewItem()
 void AFieldPreviewItem::BeginPlay()
 {
 	Super::BeginPlay();
-	SetGhostMaterial(true); // ÃÖÃÊ¿£ ¼³Ä¡ °¡´É »óÅÂ·Î
+	SetGhostMaterial(true); // ìµœì´ˆì—” ì„¤ì¹˜ ê°€ëŠ¥ ìƒíƒœë¡œ
 }
 
 void AFieldPreviewItem::Tick(float DeltaTime)
@@ -52,7 +52,7 @@ void AFieldPreviewItem::Tick(float DeltaTime)
 	FHitResult Hit;
 	if(TraceToGround(Hit))
 	{
-		//ZÃà º¸Á¤
+		//Zì¶• ë³´ì •
 		float ZOffset = PreviewMesh ? PreviewMesh->Bounds.BoxExtent.Z : 40.f;
 
 		//GridSnap

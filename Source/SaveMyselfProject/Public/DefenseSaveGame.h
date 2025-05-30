@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -21,7 +21,7 @@ private :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SaveData", meta = (AllowPrivateAccess = "true"))
 	FName LastClearedStage;
 
-public : //Getter & Setter °ü¸®
+public : //Getter & Setter ê´€ë¦¬
 	FName GetSavedStage() const { return LastClearedStage; }
 	void SetSavedStage(FName setClearedStage) { LastClearedStage = setClearedStage; }
 };

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DefenseCharacter.h"
 #include "Camera/CameraComponent.h"
@@ -20,6 +20,7 @@
 #include "FieldPreviewItem.h"
 #include "PlayerHPWidget.h"
 #include "SaveHelper.h"
+#include "PlayerAnim.h"
 
 // Sets default values
 ADefenseCharacter::ADefenseCharacter()
@@ -27,7 +28,7 @@ ADefenseCharacter::ADefenseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//Ä«¸Ş¶ó ½ÃÁ¡ ¼³Á¤
+	//ì¹´ë©”ë¼ ì‹œì  ì„¤ì •
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 500.f;
@@ -42,7 +43,7 @@ ADefenseCharacter::ADefenseCharacter()
 	bUseControllerRotationRoll	= false;
 	bUseControllerRotationYaw	= false;
 
-	//ÇÃ·¹ÀÌ¾î ¹Ùµğ ¼³Á¤
+	//í”Œë ˆì´ì–´ ë°”ë”” ì„¤ì •
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> PlayerMesh(TEXT("/Game/Asset/KayKit/Characters/barbarian.barbarian"));
 	if(PlayerMesh.Succeeded())
 	{
@@ -107,7 +108,7 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	//ÇÃ·¹ÀÌ¾î Å° ¹ÙÀÎµå ¾×¼Ç ÇÒ´ç
+	//í”Œë ˆì´ì–´ í‚¤ ë°”ì¸ë“œ ì•¡ì…˜ í• ë‹¹
 	if(UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ADefenseCharacter::Move);
@@ -115,7 +116,7 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Triggered, this, &ADefenseCharacter::Interact);
 		EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &ADefenseCharacter::SpwanPlayerItem);
 
-		//-----------------------¾ÆÀÌÅÛ Å° ¹ÙÀÎµå-----------------------//
+		//-----------------------ì•„ì´í…œ í‚¤ ë°”ì¸ë“œ-----------------------//
 		EnhancedInputComponent->BindAction(IA_QuickSlot01, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot01);
 		EnhancedInputComponent->BindAction(IA_QuickSlot02, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot02);
 		EnhancedInputComponent->BindAction(IA_QuickSlot03, ETriggerEvent::Started, this, &ADefenseCharacter::SelectQuickSlot03);
@@ -149,7 +150,7 @@ void ADefenseCharacter::Move(const FInputActionValue &value)
 
 void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 {
-	//°¢ »óÅÂ¿¡ µû¸¥ ±â´É ºñÈ°¼ºÈ­
+	//ê° ìƒíƒœì— ë”°ë¥¸ ê¸°ëŠ¥ ë¹„í™œì„±í™”
 	if(bMouseCursorUsed || bIsPreview || bIsDeath || bIsVictory) return;
 
 	const auto LookAxisVector = value.Get<FVector2D>();
@@ -168,17 +169,20 @@ void ADefenseCharacter::Interact(const FInputActionValue &value)
 
 void ADefenseCharacter::SpwanPlayerItem()
 {
-	//°¢ »óÅÂ¿¡ µû¸¥ ±â´É ºñÈ°¼ºÈ­
+	//ê° ìƒíƒœì— ë”°ë¥¸ ê¸°ëŠ¥ ë¹„í™œì„±í™”
 	if(bMouseCursorUsed || bIsDeath || bIsVictory) return;
 
 	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	if(!HUD) return;
 
+	UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+	if(PlayerAnim) PlayerAnim->PlayThrowMontage();
+
 	for(int32 i = 0; i < HUD->GetQuicklotWidget()->saveSlot.Num(); ++i)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ItemID : %s"), *HUD->GetQuicklotWidget()->saveSlot[i].ItemID.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Quantity : %d"), HUD->GetQuicklotWidget()->saveSlot[i].Quantity);
-		//¾ÆÀÌÅÛ ¼ö·® ¼ÒÁø ½Ã return
+		//ì•„ì´í…œ ìˆ˜ëŸ‰ ì†Œì§„ ì‹œ return
 		if(HUD->GetQuicklotWidget()->saveSlot[i].Quantity == 0)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Player Not is Vaild Item"));
@@ -191,7 +195,7 @@ void ADefenseCharacter::SpwanPlayerItem()
 			{
 				PreviewInstance->ConfirmPlacement();
 
-				//¼³Ä¡ °¡´ÉÀÏ ¶§¸¸ ¼ö·® °¨¼Ò°¡ °¡´ÉÇÏµµ·Ï ¼³Á¤
+				//ì„¤ì¹˜ ê°€ëŠ¥ì¼ ë•Œë§Œ ìˆ˜ëŸ‰ ê°ì†Œê°€ ê°€ëŠ¥í•˜ë„ë¡ ì„¤ì •
 				if(PreviewInstance->GetbCanPlace()) HUD->GetQuicklotWidget()->UseQuickSlotItem(i);
 				bIsPreview = false;					
 				return;	
@@ -201,7 +205,7 @@ void ADefenseCharacter::SpwanPlayerItem()
 			{
 				ThrowWeapon();
 				
-				//¹«±â¸¦ ´øÁø µÚ ¼ö·® °¨¼Ò Ã³¸®
+				//ë¬´ê¸°ë¥¼ ë˜ì§„ ë’¤ ìˆ˜ëŸ‰ ê°ì†Œ ì²˜ë¦¬
 				HUD->GetQuicklotWidget()->UseQuickSlotItem(i);
 				return;	
 			}			
@@ -268,8 +272,11 @@ void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 		bIsDeath = true;
 		StageManager->CheckEndPhaseConditions(bIsDeath);
 		PlayerHP = 0;
+		Tags.Remove(FName("Player"));
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		SetActorRotation(FRotator(90.f, 0.f, 0.f));
+		UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+		if(PlayerAnim) PlayerAnim->PlayDeadMontage();
+		
 	}
 }
 
@@ -304,7 +311,7 @@ void ADefenseCharacter::SelectQuickSlot(int32 index)
 	{
 		playerItemID = NAME_None;
 
-		// ±âÁ¸ ÇÁ¸®ºä Á¦°Å
+		// ê¸°ì¡´ í”„ë¦¬ë·° ì œê±°
 		if (PreviewInstance)
 		{
 			PreviewInstance->Destroy();

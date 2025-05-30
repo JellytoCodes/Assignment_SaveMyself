@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -25,15 +25,15 @@ public :
 	UFUNCTION()
 	void OnTrapOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-	//¾ÆÀÌÅÛ Á¤º¸ »ğÀÔ
+	//ì•„ì´í…œ ì •ë³´ ì‚½ì…
 	virtual void EnableItemData(FName ItemID) override;
 
 private :
-	//BP¿¡¼­ ¾ÆÀÌÅÛ ID °ü¸®
+	//BPì—ì„œ ì•„ì´í…œ ID ê´€ë¦¬
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemID", meta = (AllowPrivateAccess = "true"))
 	FName getItemName;
 
-	//µ¥ÀÌÅÍ Å×ÀÌºí ±â¹İ ¾ÆÀÌÅÛ Á¤º¸
+	//ë°ì´í„° í…Œì´ë¸” ê¸°ë°˜ ì•„ì´í…œ ì •ë³´
 	FName trapName;
 	float trapEffect;
 	float maxCoolTime;

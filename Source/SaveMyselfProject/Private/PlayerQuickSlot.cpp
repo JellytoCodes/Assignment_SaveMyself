@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PlayerQuickSlot.h"
@@ -20,7 +20,7 @@ void UPlayerQuickSlot::NativeConstruct()
 
 void UPlayerQuickSlot::OnItemButtonClicked()
 {
-	//¾ÆÀÌÅÛ ±¸¸Å Ãë¼Ò ±â´É
+	//ì•„ì´í…œ êµ¬ë§¤ ì·¨ì†Œ ê¸°ëŠ¥
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 }
 
@@ -34,7 +34,7 @@ void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)
 
 	StorageArr = *InData;
 
-	//¾ÆÀÌÄÜÀÌ ¾øÀ» °æ¿ì¸¦ ´ëºñÇÏ¿© else if Á¶°Ç ºĞ±âÁ¡ »ı¼º
+	//ì•„ì´ì½˜ì´ ì—†ì„ ê²½ìš°ë¥¼ ëŒ€ë¹„í•˜ì—¬ else if ì¡°ê±´ ë¶„ê¸°ì  ìƒì„±
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
 	else if(ItemImage)						ItemImage->SetBrushFromTexture(nullptr);
 
@@ -48,7 +48,7 @@ bool UPlayerQuickSlot::DecreaseQuantity()
 	{
 		curQuickQuantity--;
 		ItemCountText->SetText(FText::AsNumber(curQuickQuantity));
-		return curQuickQuantity == 0; // 0ÀÌ¸é true ¹İÈ¯ ¡æ Á¦°Å ½ÅÈ£
+		return curQuickQuantity == 0; // 0ì´ë©´ true ë°˜í™˜ â†’ ì œê±° ì‹ í˜¸
 	}
 
 	return false;

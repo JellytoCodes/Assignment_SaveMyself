@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "StorageSlot.h"
@@ -38,11 +38,11 @@ void UStorageSlot::SetItemData(const FStorageArrRow* InData)
 
 	ItemImage->SetOpacity(1.0f);
 
-	//¾ÆÀÌÄÜÀÌ ¾øÀ» °æ¿ì¸¦ ´ëºñÇÏ¿© else if Á¶°Ç ºÐ±âÁ¡ »ý¼º
+	//ì•„ì´ì½˜ì´ ì—†ì„ ê²½ìš°ë¥¼ ëŒ€ë¹„í•˜ì—¬ else if ì¡°ê±´ ë¶„ê¸°ì  ìƒì„±
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
 	else if(ItemImage)						ItemImage->SetBrushFromTexture(nullptr);
 
 	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
-	//¾ÆÀÌÅÛ ¼ö·®
+	//ì•„ì´í…œ ìˆ˜ëŸ‰
 	if(ItemCountText)						ItemCountText->SetText(FText::AsNumber(InData->Quantity));
 }
