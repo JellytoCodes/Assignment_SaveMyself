@@ -3,6 +3,7 @@
 #include "EliteMonster.h"
 #include "EliteMonsterCon.h"
 #include "DamagebleInterface.h"
+#include "MonsterAnim.h"
 
 AEliteMonster::AEliteMonster()
 {
@@ -55,21 +56,27 @@ void AEliteMonster::OnEnterAttack()
 {
 	bCanEvaluateState = false;
 
+
+
 	FTimerHandle EvaluateResumeTimer;
 	GetWorld()->GetTimerManager().SetTimer(EvaluateResumeTimer, [this]()
 	{
 		bCanEvaluateState = true;
+
 	}, attackInterval, false);
 }
 
 void AEliteMonster::OnEnterDamage()
 {
-	//Polish 반영 예정
+	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
+	if(monsterAnim) monsterAnim->PlayDamageMontage();
 }
 
 void AEliteMonster::OnEnterDead()
 {
-	//애니메이션 재생 후 Destroy() 구현 예정
+	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
+	if(monsterAnim) monsterAnim->PlayDeadMontage();
+
 	Dead();
 }
 
@@ -84,6 +91,9 @@ void AEliteMonster::TryAttack(float DeltaTime)
 	if(attackElapsedTime < attackInterval) return;
 
 	attackElapsedTime = 0.f;
+
+	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
+	if(monsterAnim) monsterAnim->PlayAttackMontage();
 
 	if(TargetActor->Implements<UDamagebleInterface>())
 	{

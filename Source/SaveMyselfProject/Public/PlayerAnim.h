@@ -24,14 +24,13 @@ private :
 
 	/* Anim Montage 할당은 BP에서만 관리하므로 nullptr 발생 주의 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Montage", meta = (AllowPrivateAccess = "true"))
-	UAnimMontage* DeadMontage;
+	UAnimMontage* deadMontage;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Montage", meta = (AllowPrivateAccess = "true"))
-	UAnimMontage* ThrowMontage;
+	UAnimMontage* throwMontage;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Montage", meta = (AllowPrivateAccess = "true"))
-	UAnimMontage* VictoryMontage;
-
+	UAnimMontage* victoryMontage;
 
 public :
 	void PlayDeadMontage();

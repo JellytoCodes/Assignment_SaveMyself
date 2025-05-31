@@ -71,7 +71,7 @@ protected :
 
 	//State 관리
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "State")
-	bool isDeath = false;
+	bool bIsDeath = false;
 
 public :
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")

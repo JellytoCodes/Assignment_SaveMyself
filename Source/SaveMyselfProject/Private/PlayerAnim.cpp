@@ -23,21 +23,21 @@ void UPlayerAnim::NativeUpdateAnimation(float DeltaSeconds)
 
 void UPlayerAnim::PlayDeadMontage()
 {
-	if(!DeadMontage) return;
+	if(!deadMontage) return;
 
-	Montage_Play(DeadMontage);
+	Montage_Play(deadMontage);
 }
 
 void UPlayerAnim::PlayThrowMontage()
 {
-	if(!ThrowMontage) return;
+	if(!throwMontage) return;
 
-	Montage_Play(ThrowMontage, 1.5f);
+	Montage_Play(throwMontage, 1.5f);
 }
 
 void UPlayerAnim::PlayVictoryMontage()
 {
-	if(!VictoryMontage) return;
+	if(!victoryMontage) return;
 
-	Montage_Play(VictoryMontage, 1.5f);
+	Montage_Play(victoryMontage, 1.5f);
 }

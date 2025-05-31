@@ -62,6 +62,8 @@ void AMonsterBase::ApplyStat()
 
 void AMonsterBase::SetMonsterState(EMonsterState NewState)
 {
+	if(bIsDeath) return;
+
 	curState = NewState;
 
 	switch(NewState)
@@ -98,12 +100,10 @@ void AMonsterBase::Dead()
 	{
 		OwnerSpawner->OnMonsterDied(this);
 	}
-
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SetActorRotation(FRotator(90.f, 0.f, 0.f));
-	isDeath = true;
-	SetLifeSpan(1.5f);
+	bIsDeath = true;
+	SetLifeSpan(1.2f);
 }
 
 void AMonsterBase::ReceiveDamage_Implementation(float Damage)

@@ -12,6 +12,10 @@ void UEndGameManagerWidget::NativeConstruct()
 
 void UEndGameManagerWidget::OnTitleClicked()
 {
+	ButtonTitle->SetIsEnabled(false);
+
+	RemoveFromParent();
+
 	UGameplayStatics::OpenLevel(this, TEXT("GameTitle"));
 	UGameplayStatics::DeleteGameInSlot(TEXT("DefenseSaveSlot"), 0);
 }

@@ -3,6 +3,7 @@
 #include "NormalMonster.h"
 #include "NormalMonsterCon.h"
 #include "DamagebleInterface.h"
+#include "MonsterAnim.h"
 
 ANormalMonster::ANormalMonster()
 {
@@ -55,8 +56,8 @@ void ANormalMonster::OnEnterAttack()
 {
 	bCanEvaluateState = false;
 
-	FTimerHandle EvaluateResumeTimer;
-	GetWorld()->GetTimerManager().SetTimer(EvaluateResumeTimer, [this]()
+	FTimerHandle evaluateResumeTimer;
+	GetWorld()->GetTimerManager().SetTimer(evaluateResumeTimer, [this]()
 	{
 		bCanEvaluateState = true;
 	}, attackInterval, false);
@@ -64,12 +65,15 @@ void ANormalMonster::OnEnterAttack()
 
 void ANormalMonster::OnEnterDamage()
 {
-	//Polish 반영 예정
+	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
+	if(monsterAnim) monsterAnim->PlayDamageMontage();
 }
 
 void ANormalMonster::OnEnterDead()
 {
-	//애니메이션 재생 후 Destroy() 구현 예정
+	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
+	if(monsterAnim) monsterAnim->PlayDeadMontage();
+
 	Dead();
 }
 
@@ -84,6 +88,9 @@ void ANormalMonster::TryAttack(float DeltaTime)
 	if(attackElapsedTime < attackInterval) return;
 
 	attackElapsedTime = 0.f;
+
+	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
+	if(monsterAnim) monsterAnim->PlayAttackMontage();
 
 	if(TargetActor->Implements<UDamagebleInterface>())
 	{

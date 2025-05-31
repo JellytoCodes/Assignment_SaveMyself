@@ -8,9 +8,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/DataTable.h"
-#include "WeaponItem.h"
-#include "StructureItem.h"
-#include "TrapItem.h"
 #include "DefenseGameModeBase.h"
 #include "DefenseHUD.h"
 #include "PlayerItem.h"
@@ -18,7 +15,6 @@
 #include "StorageWidget.h"
 #include "QuickSlotWidget.h"
 #include "FieldPreviewItem.h"
-#include "PlayerHPWidget.h"
 #include "SaveHelper.h"
 #include "PlayerAnim.h"
 

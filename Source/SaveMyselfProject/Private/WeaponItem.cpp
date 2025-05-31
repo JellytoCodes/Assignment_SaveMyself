@@ -114,7 +114,7 @@ void AWeaponItem::OnWeaponOverlap(UPrimitiveComponent *OverlappedComponent, AAct
 				break;
 				
 				case EDamageType::Multiple :
-					TArray<AMonsterBase*> Monsters = GetMonstersRadius(300.f);
+					TArray<AMonsterBase*> Monsters = GetMonstersRadius(400.f);
 					for(AMonsterBase* Monster : Monsters)
 					{
 						if(Monster->Implements<UDamagebleInterface>())
