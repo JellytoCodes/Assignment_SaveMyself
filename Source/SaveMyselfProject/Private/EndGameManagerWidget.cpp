@@ -7,6 +7,18 @@
 
 void UEndGameManagerWidget::NativeConstruct()
 {
+	//InputMode 전환
+	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+	if(PC)
+	{
+		FInputModeUIOnly inputMode;
+		inputMode.SetWidgetToFocus(TakeWidget());
+		inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		PC->SetInputMode(inputMode);
+		PC->bShowMouseCursor = true;
+	}
+
 	if(ButtonTitle) ButtonTitle->OnClicked.AddDynamic(this, &UEndGameManagerWidget::OnTitleClicked);
 }
 

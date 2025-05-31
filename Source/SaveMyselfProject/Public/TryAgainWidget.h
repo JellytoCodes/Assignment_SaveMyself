@@ -7,6 +7,7 @@
 #include "TryAgainWidget.generated.h"
 
 class UButton;
+class UImage;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API UTryAgainWidget : public UUserWidget
@@ -16,16 +17,27 @@ class SAVEMYSELFPROJECT_API UTryAgainWidget : public UUserWidget
 public :
 	virtual void NativeConstruct() override;
 
-	UPROPERTY(meta = (BindWidget))
-	UButton* ButtonReTry;
 
-	UPROPERTY(meta = (BindWidget))
-	UButton* ButtonQuit;
 
 private :
-	UFUNCTION()
-	void OnReTryClicked();
+	UFUNCTION() void OnRetryClicked();
+	UFUNCTION() void OnRetryHovered();
+	UFUNCTION() void OnRetryUnhovered();
 	
-	UFUNCTION()
-	void OnReQuitClicked();
+	UFUNCTION() void OnQuitClicked();
+	UFUNCTION() void OnQuitHovered();
+	UFUNCTION() void OnQuitUnhovered();
+
+	/* Hierarchy List*/
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	UButton* ButtonRetry;
+
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	UImage* ImageRetry;
+
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	UButton* ButtonQuit;
+
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	UImage* ImageQuit;
 };

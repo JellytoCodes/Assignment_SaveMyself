@@ -38,6 +38,18 @@ void ADefenseGameModeBase::InitGame(const FString& MapName, const FString& Optio
 	}
 }
 
+void ADefenseGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+	if(PC)
+	{
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->bShowMouseCursor = false;
+	}
+}
+
 void ADefenseGameModeBase::HandleStageState(EStageState NewState)
 {
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);

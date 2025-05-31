@@ -96,12 +96,10 @@ void AMonsterBase::SetMonsterState(EMonsterState NewState)
 
 void AMonsterBase::Dead()
 {
-	if(OwnerSpawner)
-	{
-		OwnerSpawner->OnMonsterDied(this);
-	}
-	GetCharacterMovement()->DisableMovement();
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	if(OwnerSpawner) OwnerSpawner->OnMonsterDied(this);
+	if(GetCharacterMovement()) GetCharacterMovement()->DisableMovement();
+	if(GetCapsuleComponent()) GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
 	bIsDeath = true;
 	SetLifeSpan(1.2f);
 }

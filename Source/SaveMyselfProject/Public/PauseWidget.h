@@ -1,34 +1,35 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "TitleManagerWidget.generated.h"
+#include "PauseWidget.generated.h"
 
 class UButton;
 class UImage;
-class UTextBlock;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPauseWidgetClosed);
 
 UCLASS()
-class SAVEMYSELFPROJECT_API UTitleManagerWidget : public UUserWidget
+class SAVEMYSELFPROJECT_API UPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 private :
 	virtual void NativeConstruct() override;
 
-	UFUNCTION() void OnStartClicked();
-	UFUNCTION() void OnStartHovered();
-	UFUNCTION() void OnStartUnhovered();
+	UFUNCTION() void OnContinueClicked();	
+	UFUNCTION() void OnContinueHovered();
+	UFUNCTION() void OnContinueUnhovered();
 
-	UFUNCTION() void OnLoadClicked();
-	UFUNCTION() void OnLoadHovered();
-	UFUNCTION() void OnLoadUnhovered();
+	UFUNCTION() void OnRetryClicked();
+	UFUNCTION() void OnRetryHovered();
+	UFUNCTION() void OnRetryUnhovered();
 
-	UFUNCTION() void OnSettingClicked();
-	UFUNCTION() void OnSettingHovered();
-	UFUNCTION() void OnSettingUnhovered();
+	UFUNCTION() void OnTitleMenuClicked();
+	UFUNCTION() void OnTitleMenuHovered();
+	UFUNCTION() void OnTitleMenuUnhovered();
 
 	UFUNCTION() void OnQuitClicked();		
 	UFUNCTION() void OnQuitHovered();
@@ -36,29 +37,30 @@ private :
 
 	/* Hierarchy List*/
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UButton* ButtonStart;
+	UButton* ButtonContinue;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UImage* ImageStart;
+	UImage* ImageContinue;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UButton* ButtonLoad;
+	UButton* ButtonRetry;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UImage* ImageLoad;
+	UImage* ImageRetry;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UTextBlock* TextLoad;
+	UButton* ButtonTitleMenu;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UButton* ButtonSetting;
-
-	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
-	UImage* ImageSetting;
+	UImage* ImageTitleMenu;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	UButton* ButtonQuit;
 
 	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	UImage* ImageQuit;
+
+public :
+	UPROPERTY(BlueprintAssignable)
+	FOnPauseWidgetClosed OnPauseWidgetClosed;
 };

@@ -20,7 +20,4 @@ public:
 	{
 		HUDClass = AEndGameManagerHUD::StaticClass();
 	}
-
-protected :
-	virtual void BeginPlay() override;
 };

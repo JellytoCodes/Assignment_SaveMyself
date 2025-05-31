@@ -78,7 +78,41 @@ TArray<AMonsterBase*> ATrapItem::GetMonstersRadius(float Radius)
 	return HitMonsters;
 }
 
-void ATrapItem::TriggerExplosiveEffect()
+void ATrapItem::HandleTrapTriggered()
+{
+	switch(trapType)
+	{
+		case ETrapType::Explosive :
+			HandleExplosiveTrap();
+		break;
+				
+		case ETrapType::Binding :
+			HandleBindingTrap();
+		break;
+
+		default :
+			DestroyTrap();
+		break;
+	}
+}
+
+void ATrapItem::HandleExplosiveTrap()
+{
+	EffectExplosiveTrap();
+
+	FTimerHandle DestroyTimer;
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ATrapItem::DestroyTrap, .1f, false);
+}
+
+void ATrapItem::HandleBindingTrap()
+{
+	EffectBindingTrap();
+
+	FTimerHandle DestroyTimer;
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ATrapItem::DestroyTrap, .1f, false);
+}
+
+void ATrapItem::EffectExplosiveTrap()
 {
 	TArray<AMonsterBase*> Monsters = GetMonstersRadius(300.f);
 	for(AMonsterBase* Monster : Monsters)
@@ -90,49 +124,38 @@ void ATrapItem::TriggerExplosiveEffect()
 	}
 }
 
-void ATrapItem::TriggerBindingEffect()
+void ATrapItem::EffectBindingTrap()
 {
 	TArray<AMonsterBase*> Monsters = GetMonstersRadius(300.f);
 	for (AMonsterBase* Monster : Monsters)
 	{
-		if (Monster)
-		{
-			Monster->GetCharacterMovement()->DisableMovement();
+		if(!Monster) continue;
+
+		Monster->GetCharacterMovement()->DisableMovement();
 			
-			FTimerHandle UnbindTimer;
-			GetWorld()->GetTimerManager().SetTimer(UnbindTimer, FTimerDelegate::CreateLambda([Monster]()
+		FTimerHandle UnbindTimer;
+		TWeakObjectPtr<AMonsterBase> WeakMonster(Monster);
+
+		GetWorld()->GetTimerManager().SetTimer(UnbindTimer, FTimerDelegate::CreateLambda([WeakMonster]()
+		{
+			if (WeakMonster.IsValid())
 			{
-				if (Monster && Monster->GetCharacterMovement())
-				{
-					Monster->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-				}
-			}), trapEffect, false);
-		}
+				if(auto MoveComp = WeakMonster->GetCharacterMovement()) MoveComp->SetMovementMode(MOVE_Walking);
+			}
+		}), trapEffect, false);
 	}
+}
+
+void ATrapItem::DestroyTrap()
+{
+	Destroy();
 }
 
 void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
 	if(OtherActor && OtherActor->ActorHasTag("Monster"))
 	{
-		FTimerHandle TriggerTimer;
-		GetWorld()->GetTimerManager().SetTimer(TriggerTimer, [&]{
-			if(!bIsTriggered)
-			{
-				bIsTriggered = true;
-
-				switch(trapType)
-				{
-					case ETrapType::Explosive :
-						TriggerExplosiveEffect();
-					break;
-				
-					case ETrapType::Binding :
-						TriggerBindingEffect();
-					break;
-				}
-				Destroy();
-			}
-		}, .2f, false);
+		bIsTriggered = true;
+		HandleTrapTriggered();
 	}
 }

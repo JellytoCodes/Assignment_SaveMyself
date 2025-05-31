@@ -109,7 +109,7 @@ void ADefenseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	{
 		EnhancedInputComponent->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ADefenseCharacter::Move);
 		EnhancedInputComponent->BindAction(IA_LookNTurn, ETriggerEvent::Triggered, this, &ADefenseCharacter::LookNTurn);
-		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Triggered, this, &ADefenseCharacter::Interact);
+		EnhancedInputComponent->BindAction(IA_PauseMenu, ETriggerEvent::Started, this, &ADefenseCharacter::PauseMenu);
 		EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &ADefenseCharacter::SpwanPlayerItem);
 
 		//-----------------------아이템 키 바인드-----------------------//
@@ -158,9 +158,12 @@ void ADefenseCharacter::LookNTurn(const FInputActionValue &value)
 	}
 }
 
-void ADefenseCharacter::Interact(const FInputActionValue &value)
+void ADefenseCharacter::PauseMenu(const FInputActionValue &value)
 {
-	UE_LOG(LogTemp, Log, TEXT("Interact!"));
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if(!HUD) return;
+
+	HUD->ShowPauseWidget();
 }
 
 void ADefenseCharacter::SpwanPlayerItem()

@@ -14,6 +14,7 @@ class UPlayerHPWidget;
 class UStageClearWidget;
 class UStorageWidget;
 class UTryAgainWidget;
+class UPauseWidget;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API ADefenseHUD : public AHUD
@@ -34,6 +35,11 @@ public :
 	void ShowPlayerHPWidget();
 	void ShowStageClearWidget();
 	void ShowTryAgainWidget();
+
+	void ShowPauseWidget();
+
+	UFUNCTION()
+	void HidePauseWidget();
 
 	void ShowStorageWidget(const TArray<const FStorageArrRow*>& Data);
 	void HideStorageWidget();
@@ -79,4 +85,10 @@ private :
 	TSubclassOf<UTryAgainWidget> TryAgainWidgetClass;
 
 	UTryAgainWidget* TryAgainWidgetInstance;
+
+	//Pause Widget
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UPauseWidget> PauseWidgetClass;
+
+	UPauseWidget* PauseWidgetInstance;
 };

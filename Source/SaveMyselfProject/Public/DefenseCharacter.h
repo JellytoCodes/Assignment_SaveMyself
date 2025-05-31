@@ -50,7 +50,7 @@ private :
 	UInputAction* IA_LookNTurn;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
-	UInputAction* IA_Interact;
+	UInputAction* IA_PauseMenu;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	UInputAction* IA_Fire;
@@ -64,7 +64,9 @@ protected :
 	//플레이어 키 바인드 액션
 	void Move(const FInputActionValue& value);
 	void LookNTurn(const FInputActionValue& value);
-	void Interact(const FInputActionValue& value);
+	void PauseMenu(const FInputActionValue& value);
+
+	bool bIsPauseMenu = false;
 
 /* -----------------------아이템 기능 셋업----------------------- */
 private : 

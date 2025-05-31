@@ -2,6 +2,7 @@
 
 #include "TryAgainWidget.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "SaveMyselfGameInstance.h"
@@ -10,11 +11,39 @@
 
 void UTryAgainWidget::NativeConstruct()
 {	
-	if(ButtonReTry) ButtonReTry->OnClicked.AddDynamic(this, &UTryAgainWidget::OnReTryClicked);
-	if(ButtonQuit) ButtonQuit->OnClicked.AddDynamic(this, &UTryAgainWidget::OnReQuitClicked);
+	Super::NativeConstruct();
+
+	//InputMode 전환
+	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+	if(PC)
+	{
+		FInputModeUIOnly inputMode;
+		inputMode.SetWidgetToFocus(TakeWidget());
+		inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		PC->SetInputMode(inputMode);
+	}
+
+	if(ButtonRetry && ImageRetry)
+	{
+		ImageRetry->SetVisibility(ESlateVisibility::Hidden);
+
+		ButtonRetry->OnClicked.AddDynamic(this, &UTryAgainWidget::OnRetryClicked);
+		ButtonRetry->OnHovered.AddDynamic(this, &UTryAgainWidget::OnRetryHovered);
+		ButtonRetry->OnUnhovered.AddDynamic(this, &UTryAgainWidget::OnRetryUnhovered);
+	}
+
+	if(ButtonQuit && ImageQuit)
+	{
+		ImageQuit->SetVisibility(ESlateVisibility::Hidden);
+
+		ButtonQuit->OnClicked.AddDynamic(this, &UTryAgainWidget::OnQuitClicked);
+		ButtonQuit->OnHovered.AddDynamic(this, &UTryAgainWidget::OnQuitHovered);
+		ButtonQuit->OnUnhovered.AddDynamic(this, &UTryAgainWidget::OnQuitUnhovered);
+	}
 }
 
-void UTryAgainWidget::OnReTryClicked()
+void UTryAgainWidget::OnRetryClicked()
 {
 	if(UGameplayStatics::DoesSaveGameExist(TEXT("DefenseSaveSlot"), 0))
 	{
@@ -22,10 +51,30 @@ void UTryAgainWidget::OnReTryClicked()
 	}
 }
 
-void UTryAgainWidget::OnReQuitClicked()
+void UTryAgainWidget::OnRetryHovered()
+{
+	ImageRetry->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UTryAgainWidget::OnRetryUnhovered()
+{
+	ImageRetry->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UTryAgainWidget::OnQuitClicked()
 {
 	auto PC = UGameplayStatics::GetPlayerController(this, 0);
 	if(!PC) return;
 
 	UKismetSystemLibrary::QuitGame(this, PC, EQuitPreference::Quit, true);
+}
+
+void UTryAgainWidget::OnQuitHovered()
+{
+	ImageQuit->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UTryAgainWidget::OnQuitUnhovered()
+{
+	ImageQuit->SetVisibility(ESlateVisibility::Hidden);
 }

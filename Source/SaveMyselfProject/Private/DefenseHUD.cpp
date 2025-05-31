@@ -1,14 +1,16 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DefenseHUD.h"
+#include "Kismet/GameplayStatics.h"
 #include "StageWidget.h"
 #include "QuickSlotWidget.h"
 #include "StorageWidget.h"
 #include "PlayerHPWidget.h"
 #include "StageClearWidget.h"
 #include "TryAgainWidget.h"
+#include "PauseWidget.h"
 #include "SaveMyselfGameInstance.h"
-#include "Kismet/GameplayStatics.h"
+
 
 ADefenseHUD::ADefenseHUD()
 {
@@ -46,6 +48,12 @@ ADefenseHUD::ADefenseHUD()
 	(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/WidgetBP/WBP_TryAgainWidget.WBP_TryAgainWidget_C'"));
 
 	if(TryAgainWidgetBP.Succeeded()) TryAgainWidgetClass = TryAgainWidgetBP.Class;
+
+	//Pause Widget BP 생성
+	static ConstructorHelpers::FClassFinder<UPauseWidget> PauseWidgetBP
+	(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/WidgetBP/WBP_PauseMenuWidget.WBP_PauseMenuWidget_C'"));
+
+	if(PauseWidgetBP.Succeeded()) PauseWidgetClass = PauseWidgetBP.Class;
 
 }
 
@@ -123,6 +131,28 @@ void ADefenseHUD::ShowTryAgainWidget()
 	{
 		TryAgainWidgetInstance = CreateWidget<UTryAgainWidget>(GetWorld(), TryAgainWidgetClass);
 		if(TryAgainWidgetInstance) TryAgainWidgetInstance->AddToViewport();
+	}
+}
+
+void ADefenseHUD::ShowPauseWidget()
+{
+	if(!PauseWidgetInstance && PauseWidgetClass)
+	{
+		PauseWidgetInstance = CreateWidget<UPauseWidget>(GetWorld(), PauseWidgetClass);
+		if(PauseWidgetInstance)
+		{
+			PauseWidgetInstance->AddToViewport();
+			PauseWidgetInstance->OnPauseWidgetClosed.AddDynamic(this, &ADefenseHUD::HidePauseWidget);
+		}
+	}
+}
+
+void ADefenseHUD::HidePauseWidget()
+{
+	if(PauseWidgetInstance)
+	{
+		PauseWidgetInstance->RemoveFromParent();
+		PauseWidgetInstance = nullptr;
 	}
 }
 

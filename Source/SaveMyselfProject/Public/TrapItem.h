@@ -34,6 +34,7 @@ private :
 	FName getItemName;
 
 	//데이터 테이블 기반 아이템 정보
+	//comment : trapType에 따라 trapEffect 차별 적용
 	FName trapName;
 	float trapEffect;
 	float maxCoolTime;
@@ -43,6 +44,13 @@ private :
 
 	TArray<AMonsterBase*> GetMonstersRadius(float Radius);
 
-	void TriggerExplosiveEffect();
-	void TriggerBindingEffect();
+	void HandleTrapTriggered();
+	void HandleExplosiveTrap();
+	void HandleBindingTrap();
+
+	void EffectExplosiveTrap();
+	void EffectBindingTrap();
+
+	void DestroyTrap();
+	
 };
