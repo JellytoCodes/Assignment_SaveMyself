@@ -30,7 +30,6 @@ public :
 
 	UPROPERTY(meta = (BindWidget))	UImage* ItemImage;
 	UPROPERTY(meta = (BindWidget))	UTextBlock* ItemName;
-	UPROPERTY(meta = (BindWidget))	UImage* ItemCountImage;
 	UPROPERTY(meta = (BindWidget))	UTextBlock* ItemCountText;
 	UPROPERTY(meta = (BindWidget))	UButton* ItemButton;
 

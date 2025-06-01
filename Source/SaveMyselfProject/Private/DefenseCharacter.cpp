@@ -174,19 +174,13 @@ void ADefenseCharacter::SpwanPlayerItem()
 	ADefenseHUD* HUD = Cast<ADefenseHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	if(!HUD) return;
 
-	UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
-	if(PlayerAnim) PlayerAnim->PlayThrowMontage();
-
 	for(int32 i = 0; i < HUD->GetQuicklotWidget()->saveSlot.Num(); ++i)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ItemID : %s"), *HUD->GetQuicklotWidget()->saveSlot[i].ItemID.ToString());
-		UE_LOG(LogTemp, Warning, TEXT("Quantity : %d"), HUD->GetQuicklotWidget()->saveSlot[i].Quantity);
+		UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+		if(PlayerAnim) PlayerAnim->PlayThrowMontage();
+
 		//아이템 수량 소진 시 return
-		if(HUD->GetQuicklotWidget()->saveSlot[i].Quantity == 0)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Player Not is Vaild Item"));
-			return;
-		}
+		if(HUD->GetQuicklotWidget()->saveSlot[i].Quantity == 0) return;
 
 		if(HUD->GetQuicklotWidget()->saveSlot[i].ItemID == playerItemID)
 		{

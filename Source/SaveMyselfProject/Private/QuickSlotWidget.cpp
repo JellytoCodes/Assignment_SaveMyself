@@ -11,6 +11,21 @@
 #include "SaveMyselfGameInstance.h"
 #include "DefenseGameModeBase.h"
 
+void UQuickSlotWidget::NativeConstruct()
+{
+	auto GInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());	
+	if(!GInstance) return;
+
+	auto DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if(!DefenseMode) return;
+
+	if(curWeightText)
+	{
+		FString BagTextString = FString::Printf(TEXT("Weight : %d / %d"), DefenseMode->GetCurBagWeight(), GInstance->GetMaxBagWeight());
+		curWeightText->SetText(FText::FromString(BagTextString));
+	}
+}
+
 void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 {
 	auto DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
@@ -18,11 +33,7 @@ void UQuickSlotWidget::AddItemQuickSlot(UStorageSlot* pSlotData)
 
 	FStorageArrRow& InData = pSlotData->GetItemData();
 	
-	if(SetBagWeight(InData))
-	{
-		DefenseMode->SetBagAmount(false);
-		return;
-	}
+	if(SetBagWeight(InData)) return;
 	
 	if(QuickSlotWrapBox)
 	{

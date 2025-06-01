@@ -17,26 +17,27 @@ class SAVEMYSELFPROJECT_API UQuickSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-protected :
-	UPROPERTY(EditDefaultsOnly, Category = "PlayerQuickSlot")
+private :
+	virtual void NativeConstruct() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "PlayerQuickSlot", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UPlayerQuickSlot> itemSlotWidgetClass;
 
 	int32 maxQuantity = 99;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	UProgressBar* curWeightBar;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	UTextBlock* curWeightText;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
 	UWrapBox* QuickSlotWrapBox;
 
 	int32 slotArr = 0;
-
-public :
 	bool SetBagWeight(FStorageArrRow& InData);
 
+public :
 	UFUNCTION(BlueprintCallable)
 	void AddItemQuickSlot(UStorageSlot* pSlotData);
 
@@ -46,6 +47,5 @@ public :
 
 	UFUNCTION(BlueprintCallable)
 	void UseQuickSlotItem(int32 index);
-
 	
 };

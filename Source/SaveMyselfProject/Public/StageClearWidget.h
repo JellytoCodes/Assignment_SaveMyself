@@ -6,21 +6,35 @@
 #include "Blueprint/UserWidget.h"
 #include "StageClearWidget.generated.h"
 
-/**
- * 
- */
+class UButton;
+class UImage;
+
 UCLASS()
 class SAVEMYSELFPROJECT_API UStageClearWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public :
+private :
 	virtual void NativeConstruct() override;
-
-	UPROPERTY(meta = (BindWidget))
+	
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true")) 
 	class UButton* ButtonNextStage;
 
-private :
-	UFUNCTION()
-	void OnNextStageClicked();
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	UImage* ImageNextStage;
+
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true")) 
+	class UButton* ButtonTitleMenu;
+
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))
+	UImage* ImageTitleMenu;
+	
+	UFUNCTION() void OnNextStageClicked();
+	UFUNCTION() void OnNextStageHovered();
+	UFUNCTION() void OnNextStageUnhovered();
+
+	UFUNCTION() void OnTitleMenuClicked();
+	UFUNCTION() void OnTitleMenuHovered();
+	UFUNCTION() void OnTitleMenuUnhovered();
+
 };
