@@ -16,28 +16,34 @@ class SAVEMYSELFPROJECT_API UPlayerQuickSlot : public UUserWidget
 {
 	GENERATED_BODY()
 
-protected : 
+private : 
 	virtual void NativeConstruct() override;
-
-	UFUNCTION()
-	void OnItemButtonClicked();
 	
 	const FItemMasterDataRow* ItemSlotData;
 
 	FStorageArrRow StorageArr;
 
-public :
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))	
+	UImage* ItemImage;
 
-	UPROPERTY(meta = (BindWidget))	UImage* ItemImage;
-	UPROPERTY(meta = (BindWidget))	UTextBlock* ItemName;
-	UPROPERTY(meta = (BindWidget))	UTextBlock* ItemCountText;
-	UPROPERTY(meta = (BindWidget))	UButton* ItemButton;
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))	
+	UTextBlock* ItemName;
+
+	UPROPERTY(meta = (BindWidget), meta = (AllowPrivateAccess = "true"))	
+	UTextBlock* ItemCountText;
 
 	int32 curQuickQuantity;
 
+public :
 	void SetItemData(const FStorageArrRow* InData);
 	FStorageArrRow& GetItemData() { return StorageArr; }
 
+	void SetQuickQuantity(int32 index) { curQuickQuantity += index; }
+	int32 GetQuickQuantity() const { return curQuickQuantity; }
+
 	UFUNCTION()
 	bool DecreaseQuantity();
+
+	FORCEINLINE UTextBlock* GetItemName() const { return ItemName; }
+	FORCEINLINE UTextBlock* GetItemCountText() const { return ItemCountText; }
 };

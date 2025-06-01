@@ -12,16 +12,6 @@ void UPlayerQuickSlot::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if(ItemButton)
-	{
-		ItemButton->OnClicked.AddDynamic(this, &UPlayerQuickSlot::OnItemButtonClicked);
-	}
-}
-
-void UPlayerQuickSlot::OnItemButtonClicked()
-{
-	//아이템 구매 취소 기능
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *FString(__FUNCTION__));
 }
 
 void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)

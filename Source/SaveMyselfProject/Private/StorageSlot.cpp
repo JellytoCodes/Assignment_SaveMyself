@@ -21,7 +21,7 @@ void UStorageSlot::NativeConstruct()
 void UStorageSlot::OnItemButtonClicked()
 {
 	ADefenseGameModeBase* DefenseMode = Cast<ADefenseGameModeBase>(UGameplayStatics::GetGameMode(this));
-	if(GetIsAmount() && DefenseMode->GetBagAmount())
+	if(GetIsAmount())
 	{
 		ItemSlotDelegate.Broadcast(this);
 	}
