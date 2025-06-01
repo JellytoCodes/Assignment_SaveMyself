@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "StageManagerComponent.h"
 #include "ItemSubsystem.h"
+#include "ItemMasterTable.h"
 #include "DefenseHUD.generated.h"
 
 class UStageWidget;
@@ -15,6 +16,7 @@ class UStageClearWidget;
 class UStorageWidget;
 class UTryAgainWidget;
 class UPauseWidget;
+class USlotToolTipWidget;
 
 UCLASS()
 class SAVEMYSELFPROJECT_API ADefenseHUD : public AHUD
@@ -44,7 +46,13 @@ public :
 	void ShowStorageWidget(const TArray<const FStorageArrRow*>& Data);
 	void HideStorageWidget();
 
+	void ShowSlotToolTipWidget(const FItemMasterDataRow& inData);
+	void HideSlotToolTipWidget();
+
 	void UpdatedPlayerHP(int32 getHP);
+
+	void SetInputModeToUI();
+	void SetInputModeToGame();
 
 	FORCEINLINE UQuickSlotWidget* GetQuicklotWidget() const { return quickSlotWidgetInstance; }
 	FORCEINLINE UStorageWidget* GetStorageWidget() const { return StorageWidgetInstance; }
@@ -91,4 +99,10 @@ private :
 	TSubclassOf<UPauseWidget> PauseWidgetClass;
 
 	UPauseWidget* PauseWidgetInstance;
+
+	//Slot ToolTip Widget
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Widget", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<USlotToolTipWidget> SlotToolTipWidgetClass;
+
+	USlotToolTipWidget* SlotToolTipWidgetInstance;
 };

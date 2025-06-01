@@ -8,10 +8,12 @@
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "DefenseGameModeBase.h"
+#include "DefenseHUD.h"
 
 void UStorageSlot::NativeConstruct()
 {
 	Super::NativeConstruct();
+
 	if(ItemButton)
 	{
 		ItemButton->OnClicked.AddDynamic(this, &UStorageSlot::OnItemButtonClicked);
@@ -25,6 +27,40 @@ void UStorageSlot::OnItemButtonClicked()
 	{
 		ItemSlotDelegate.Broadcast(this);
 	}
+}
+
+void UStorageSlot::NativeOnMouseEnter(const FGeometry &InGeometry, const FPointerEvent &InMouseEvent)
+{
+	Super::NativeOnMouseEnter(InGeometry, InMouseEvent);
+	OnMouseEnterSlot();
+}
+
+void UStorageSlot::NativeOnMouseLeave(const FPointerEvent &InMouseEvent)
+{
+	Super::NativeOnMouseLeave(InMouseEvent);
+	OnMouseLeaveSlot();
+}
+
+void UStorageSlot::OnMouseEnterSlot()
+{
+	auto PC = UGameplayStatics::GetPlayerController(this, 0);
+	if(!PC || !ItemSlotData) return;
+
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
+	if(!HUD) return;
+
+	HUD->ShowSlotToolTipWidget(*ItemSlotData);
+}
+
+void UStorageSlot::OnMouseLeaveSlot()
+{
+	auto PC = UGameplayStatics::GetPlayerController(this, 0);
+	if(!PC || !ItemSlotData) return;
+
+	ADefenseHUD* HUD = Cast<ADefenseHUD>(PC->GetHUD());
+	if(!HUD) return;
+
+	HUD->HideSlotToolTipWidget();
 }
 
 void UStorageSlot::SetItemData(const FStorageArrRow* InData)
@@ -42,7 +78,7 @@ void UStorageSlot::SetItemData(const FStorageArrRow* InData)
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
 	else if(ItemImage)						ItemImage->SetBrushFromTexture(nullptr);
 
-	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
+	if(ItemName)							ItemName->SetText(FText::FromString(ItemSlotData->DisplayName.ToString()));
 	//아이템 수량
 	if(ItemCountText)						ItemCountText->SetText(FText::AsNumber(InData->Quantity));
 }

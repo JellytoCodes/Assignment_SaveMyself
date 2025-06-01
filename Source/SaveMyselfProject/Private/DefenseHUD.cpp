@@ -10,6 +10,7 @@
 #include "TryAgainWidget.h"
 #include "PauseWidget.h"
 #include "SaveMyselfGameInstance.h"
+#include "SlotToolTipWidget.h"
 
 
 ADefenseHUD::ADefenseHUD()
@@ -54,6 +55,12 @@ ADefenseHUD::ADefenseHUD()
 	(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/WidgetBP/WBP_PauseMenuWidget.WBP_PauseMenuWidget_C'"));
 
 	if(PauseWidgetBP.Succeeded()) PauseWidgetClass = PauseWidgetBP.Class;
+
+	//Slot ToopTip Widget BP 생성
+	static ConstructorHelpers::FClassFinder<USlotToolTipWidget> slotToolTipWidgetBP
+	(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/WidgetBP/WBP_SlotToolTipWidget.WBP_SlotToolTipWidget_C'"));
+
+	if(slotToolTipWidgetBP.Succeeded()) SlotToolTipWidgetClass = slotToolTipWidgetBP.Class;
 
 }
 
@@ -174,13 +181,35 @@ void ADefenseHUD::ShowStorageWidget(const TArray<const FStorageArrRow*>& Data)
 	}
 	
 	StorageWidgetInstance->SetVisibility(ESlateVisibility::Visible);
+
+	SetInputModeToUI();
 }
 
 void ADefenseHUD::HideStorageWidget()
 {
-	if(!StorageWidgetInstance) return;
-	
-	StorageWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);
+	if(StorageWidgetInstance) StorageWidgetInstance->SetVisibility(ESlateVisibility::Collapsed);
+
+	SetInputModeToGame();
+}
+
+void ADefenseHUD::ShowSlotToolTipWidget(const FItemMasterDataRow& inData)
+{
+	if(!SlotToolTipWidgetInstance && SlotToolTipWidgetClass)
+	{		
+		SlotToolTipWidgetInstance = CreateWidget<USlotToolTipWidget>(GetWorld(), SlotToolTipWidgetClass);
+	}
+
+	if(SlotToolTipWidgetInstance)
+	{
+		SlotToolTipWidgetInstance->AddToViewport();
+		SlotToolTipWidgetInstance->SetVisibility(ESlateVisibility::HitTestInvisible);
+		SlotToolTipWidgetInstance->Setup(inData);
+	}
+}
+
+void ADefenseHUD::HideSlotToolTipWidget()
+{
+	if(SlotToolTipWidgetInstance) SlotToolTipWidgetInstance->RemoveFromParent();
 }
 
 void ADefenseHUD::UpdatedPlayerHP(int32 getHP)
@@ -188,4 +217,29 @@ void ADefenseHUD::UpdatedPlayerHP(int32 getHP)
 	if(!HPWidgetInstance) return;
 
 	HPWidgetInstance->UpdatedPlayerHPWidget(getHP);
+}
+
+void ADefenseHUD::SetInputModeToUI()
+{
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		FInputModeGameAndUI InputMode;
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputMode.SetHideCursorDuringCapture(false);
+		InputMode.SetWidgetToFocus(nullptr); // 필요시 StorageWidgetInstance->TakeWidget()
+		PC->SetInputMode(InputMode);
+		PC->bShowMouseCursor = true;
+	}
+}
+
+void ADefenseHUD::SetInputModeToGame()
+{
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		FInputModeGameOnly InputMode;
+		PC->SetInputMode(InputMode);
+		PC->bShowMouseCursor = false;
+	}
 }

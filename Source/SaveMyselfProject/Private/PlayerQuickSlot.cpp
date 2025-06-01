@@ -28,8 +28,7 @@ void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)
 	if(ItemImage && ItemSlotData->ItemIcon)	ItemImage->SetBrushFromTexture(ItemSlotData->ItemIcon);
 	else if(ItemImage)						ItemImage->SetBrushFromTexture(nullptr);
 
-	if(ItemName)							ItemName->SetText(ItemSlotData->DisplayName);
-
+	if(ItemName)							ItemName->SetText(FText::FromString(ItemSlotData->DisplayName.ToString()));
 }
 
 bool UPlayerQuickSlot::DecreaseQuantity()

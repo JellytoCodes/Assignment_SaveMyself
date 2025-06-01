@@ -58,8 +58,6 @@ void AWarehouse::OnWarehouseEntranceOverlap(UPrimitiveComponent *OverlappedCompo
 	ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(OtherActor);
 	if(pPlayer)
 	{		
-		pPlayer->bEntranceShowMouseCursor();
-
 		APlayerController* PC = Cast<APlayerController>(pPlayer->GetController());
 		if(!PC) return;
 
@@ -82,7 +80,5 @@ void AWarehouse::OnWarehouseExitOverlap(UPrimitiveComponent *OverlappedComponent
 		if(!HUD) return;
 
 		HUD->HideStorageWidget();
-
-		pPlayer->bExitHideMouseCursor();
 	}
 }

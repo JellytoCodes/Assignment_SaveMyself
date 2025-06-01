@@ -4,14 +4,14 @@
 		"StageID": "Stage_01",
 		"ItemID": "Weapon001",
 		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Weapon001_DisplayName\", \"Knife\")",
-		"Quantity": 4
+		"Quantity": 6
 	},
 	{
 		"Name": "Stage1_Structure001",
 		"StageID": "Stage_01",
 		"ItemID": "Structure001",
 		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Structure001_DisplayName\", \"WoodBox\")",
-		"Quantity": 2
+		"Quantity": 1
 	},
 	{
 		"Name": "Stage1_Trap001",
@@ -26,7 +26,7 @@
 		"StageID": "Stage_02",
 		"ItemID": "Weapon001",
 		"DisplayName": "NSLOCTEXT(\"DT_StorageDataRow [B1A065020C51C85C7DB6729B976BADA5]\", \"Weapon001_DisplayName\", \"Knife\")",
-		"Quantity": 6
+		"Quantity": 8
 	},
 	{
 		"Name": "Stage2_Weapon002",

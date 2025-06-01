@@ -2,7 +2,7 @@
 	{
 		"Name": "WoodBox",
 		"StructureName": "WoodBox",
-		"StructureHP": 50,
+		"StructureHP": 25,
 		"StructureDefense": 1,
 		"MaxCoolTime": 1
 	}

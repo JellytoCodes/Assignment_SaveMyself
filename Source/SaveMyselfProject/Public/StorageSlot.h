@@ -24,6 +24,12 @@ protected :
 	UFUNCTION()
 	void OnItemButtonClicked();
 
+	void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
+	void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
+
+	void OnMouseEnterSlot();
+	void OnMouseLeaveSlot();
+
 public :
 	UPROPERTY(meta = (BindWidget))	
 	UImage* ItemImage;

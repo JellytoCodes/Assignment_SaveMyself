@@ -27,7 +27,7 @@ struct FItemMasterDataRow : public FTableRowBase
 
 	//ID Name 지정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
-	FText DisplayName;
+	FName DisplayName;
 
 	//Item 설명
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
@@ -35,7 +35,7 @@ struct FItemMasterDataRow : public FTableRowBase
 
 	//ItemType 설정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
-	EItemTypes ItemType;
+	EItemTypes ItemType = EItemTypes::None;
 
 	//ItemIcon 설정
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MasterData")
