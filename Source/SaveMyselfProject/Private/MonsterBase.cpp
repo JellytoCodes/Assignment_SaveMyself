@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "NavigationInvokerComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
 #include "Engine/DataTable.h"
 #include "MonsterSpawner.h"
 
@@ -16,6 +17,22 @@ AMonsterBase::AMonsterBase()
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	GetCharacterMovement()->bUseRVOAvoidance = false;
+
+	SoundOutComp = CreateDefaultSubobject<UAudioComponent>(TEXT("SoundOutComp"));
+	SoundOutComp->SetupAttachment(RootComponent);
+	SoundOutComp->bAutoActivate = true;
+
+	//건축 완료 사운드 설정
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempDeadSound
+	(TEXT("/Script/Engine.SoundWave'/Game/Asset/Sound/SW_MonsterDead.SW_MonsterDead'"));
+
+	if(tempDeadSound.Succeeded()) DeadSound = tempDeadSound.Object;
+	
+	//건축 완료 사운드 설정
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempAttackSound
+	(TEXT("/Script/Engine.SoundWave'/Game/Asset/Sound/SW_MonsterAttack.SW_MonsterAttack'"));
+
+	if(tempAttackSound.Succeeded()) AttackSound = tempAttackSound.Object;
 
 	NavInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavInvoker"));
 	
@@ -100,8 +117,14 @@ void AMonsterBase::Dead()
 	if(GetCharacterMovement()) GetCharacterMovement()->DisableMovement();
 	if(GetCapsuleComponent()) GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
+	if(!SoundOutComp->IsPlaying())
+	{
+		SoundOutComp->SetSound(DeadSound);
+		SoundOutComp->Play();
+	}
+
 	bIsDeath = true;
-	SetLifeSpan(1.2f);
+	SetLifeSpan(1.3f);
 }
 
 void AMonsterBase::ReceiveDamage_Implementation(float Damage)

@@ -6,6 +6,9 @@
 #include "DefenseGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
 AMonsterSpawner::AMonsterSpawner()
@@ -22,6 +25,11 @@ AMonsterSpawner::AMonsterSpawner()
         SpawnerMesh->SetStaticMesh(CubeMesh.Object);
         SpawnerMesh->SetWorldScale3D(FVector(0.5f));
     }
+    
+    SpawnedEffectComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SpawnedEffectComp"));
+    SpawnedEffectComp->SetupAttachment(RootComponent);
+    SpawnedEffectComp->SetRelativeScale3D(FVector(1.3f));
+    SpawnedEffectComp->SetAutoActivate(false);
 }
 
 void AMonsterSpawner::BeginPlay()
@@ -44,6 +52,7 @@ void AMonsterSpawner::Tick(float DeltaTime)
     SpawnTimer += DeltaTime;
     if(SpawnTimer >= SpawnCooldown)
     {
+        
         TrySpawn();
         SpawnTimer = 0.0f;
     }
@@ -94,6 +103,8 @@ void AMonsterSpawner::TrySpawn()
 
     if(SpawnedMonsterCount >= MaxSpawnCount) return;
     
+    if(SpawnedEffectComp) SpawnedEffectComp->SetActive(true);
+
     bIsSpawn = true;
     SpawnMonster();
 }
@@ -111,6 +122,5 @@ void AMonsterSpawner::SpawnMonster()
         Spawned->OwnerSpawner = this;
         SpawnedMonsters.Add(Spawned);
         SpawnedMonsterCount++;
-        UE_LOG(LogTemp, Log, TEXT("Spawned %s at %s"), *MonsterClass->GetName(), *GetActorLocation().ToString());
     }
 }

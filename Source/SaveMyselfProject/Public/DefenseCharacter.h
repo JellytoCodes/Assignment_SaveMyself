@@ -152,7 +152,26 @@ private :
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
 	class UStageManagerComponent* StageManager;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
+	class ACameraActor* WinCamera;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "ture"))
+	class ACameraActor* DefeatCamera;
+
 public :
 	void SetVictory(bool isVictory);
+	void SetViewWinCamera();
+	void SetViewDefeatCamera();
 	void PlayerDead();
+
+/* -----------------------사운드 기능 셋업----------------------- */
+private :
+	UPROPERTY(EditDefaultsOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class USoundBase* ConfirmSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class USoundBase* ThrowSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class UAudioComponent* SoundOutComp;
 };

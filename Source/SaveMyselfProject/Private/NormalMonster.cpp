@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NormalMonster.h"
+#include "Components/AudioComponent.h"
 #include "NormalMonsterCon.h"
 #include "DamagebleInterface.h"
 #include "MonsterAnim.h"
@@ -91,6 +92,12 @@ void ANormalMonster::TryAttack(float DeltaTime)
 
 	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
 	if(monsterAnim) monsterAnim->PlayAttackMontage();
+
+	if(!SoundOutComp->IsPlaying())
+	{
+		SoundOutComp->SetSound(AttackSound);
+		SoundOutComp->Play();
+	}
 
 	if(TargetActor->Implements<UDamagebleInterface>())
 	{

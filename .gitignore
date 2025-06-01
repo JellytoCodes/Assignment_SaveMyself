@@ -3,6 +3,7 @@ Binaries/
 DerivedDataCache/
 Intermediate/
 Saved/
+Windows/
 
 # Visual Studio 관련
 .vs/

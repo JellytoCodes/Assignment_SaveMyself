@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EliteMonster.h"
+#include "Components/AudioComponent.h"
 #include "EliteMonsterCon.h"
 #include "DamagebleInterface.h"
 #include "MonsterAnim.h"
@@ -95,6 +96,12 @@ void AEliteMonster::TryAttack(float DeltaTime)
 	UMonsterAnim* monsterAnim = Cast<UMonsterAnim>(GetMesh()->GetAnimInstance());
 	if(monsterAnim) monsterAnim->PlayAttackMontage();
 
+	if(!SoundOutComp->IsPlaying())
+	{
+		SoundOutComp->SetSound(AttackSound);
+		SoundOutComp->Play();
+	}
+
 	if(TargetActor->Implements<UDamagebleInterface>())
 	{
 		if(TargetActor->ActorHasTag(FName("Structure")))
@@ -105,6 +112,5 @@ void AEliteMonster::TryAttack(float DeltaTime)
 		{
 			IDamagebleInterface::Execute_ReceiveDamage(TargetActor, 1);
 		}
-		UE_LOG(LogTemp, Warning, TEXT("Try Attack Damaged"));
 	}
 }

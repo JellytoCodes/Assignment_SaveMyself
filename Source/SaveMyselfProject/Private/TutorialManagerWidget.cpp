@@ -10,13 +10,13 @@ void UTutorialManagerWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	//InputMode 전환
+	FInputModeUIOnly inputMode;
+	inputMode.SetWidgetToFocus(nullptr);
+	inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
 	if(PC)
 	{
-		FInputModeUIOnly inputMode;
-		inputMode.SetWidgetToFocus(TakeWidget());
-		inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-
 		PC->SetInputMode(inputMode);
 		PC->bShowMouseCursor = true;
 	}

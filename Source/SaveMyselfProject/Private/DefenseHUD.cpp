@@ -120,6 +120,10 @@ void ADefenseHUD::ShowStageClearWidget()
 {
 	if(!StageClearWidgetInstance && StageClearWidgetClass)
 	{
+		if(HPWidgetInstance) HPWidgetInstance->RemoveFromParent();
+		if(quickSlotWidgetInstance) quickSlotWidgetInstance->RemoveFromParent();
+		if(StageWidgetInstance) StageWidgetInstance->RemoveFromParent();
+
 		StageClearWidgetInstance = CreateWidget<UStageClearWidget>(GetWorld(), StageClearWidgetClass);
 		if(StageClearWidgetInstance) StageClearWidgetInstance->AddToViewport();
 	}
@@ -129,6 +133,10 @@ void ADefenseHUD::ShowTryAgainWidget()
 {
 	if(!TryAgainWidgetInstance && TryAgainWidgetClass)
 	{
+		if(HPWidgetInstance) HPWidgetInstance->RemoveFromParent();
+		if(quickSlotWidgetInstance) quickSlotWidgetInstance->RemoveFromParent();
+		if(StageWidgetInstance) StageWidgetInstance->RemoveFromParent();
+
 		TryAgainWidgetInstance = CreateWidget<UTryAgainWidget>(GetWorld(), TryAgainWidgetClass);
 		if(TryAgainWidgetInstance) TryAgainWidgetInstance->AddToViewport();
 	}

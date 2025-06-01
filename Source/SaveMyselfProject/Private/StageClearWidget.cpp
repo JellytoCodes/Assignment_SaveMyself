@@ -13,15 +13,14 @@ void UStageClearWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	//InputMode 전환
+	FInputModeUIOnly inputMode;
+	inputMode.SetWidgetToFocus(nullptr);
+	inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
 	if(PC)
 	{
-		FInputModeUIOnly inputMode;
-		inputMode.SetWidgetToFocus(TakeWidget());
-		inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-
 		PC->SetInputMode(inputMode);
-		PC->bShowMouseCursor = true;
 	}
 
 	if(ButtonNextStage && ImageNextStage)
@@ -55,6 +54,8 @@ void UStageClearWidget::OnTitleMenuClicked()
 {
 	auto gInstance = Cast<USaveMyselfGameInstance>(GetGameInstance());
 	if(!gInstance) return;
+
+	if(gInstance->GetNextStageID() == "EndGame") return;
 
 	USaveHelper::SaveStageData(gInstance->GetNextStageID());
 

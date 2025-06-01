@@ -57,6 +57,15 @@ private :
 	UPROPERTY(EditAnywhere, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	int32 DestroyedSpawnerCount = 0;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class USoundBase* DefeatSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class USoundBase* VictorySound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class UAudioComponent* SoundOutComp;
+
 	bool bHasEnded = false;
 
 	UPROPERTY()

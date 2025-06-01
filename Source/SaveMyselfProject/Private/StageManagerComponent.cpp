@@ -2,15 +2,30 @@
 
 #include "StageManagerComponent.h"
 #include "GameFramework/Actor.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 #include "MonsterSpawner.h"
 #include "SaveMyselfGameInstance.h"
 #include "DefenseCharacter.h"
-#include "Kismet/GameplayStatics.h"
 
 UStageManagerComponent::UStageManagerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	
+	SoundOutComp = CreateDefaultSubobject<UAudioComponent>(TEXT("SoundOutComp"));
+	SoundOutComp->bAutoActivate = true;
+	//패배 사운드 설정
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempDefeatSound
+	(TEXT("/Script/Engine.SoundWave'/Game/Asset/Sound/SW_DefeatSound.SW_DefeatSound'"));
+
+	if(tempDefeatSound.Succeeded()) DefeatSound = tempDefeatSound.Object;
+
+	//승리 사운드 설정
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempVictorySound
+	(TEXT("/Script/Engine.SoundWave'/Game/Asset/Sound/SW_VictorySound.SW_VictorySound'"));
+
+	if(tempVictorySound.Succeeded()) VictorySound = tempVictorySound.Object;
 }
 
 void UStageManagerComponent::BeginPlay()
@@ -70,6 +85,13 @@ void UStageManagerComponent::EndPhaseVictory()
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
 
+	if(!SoundOutComp->IsPlaying())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("VictorySound"));
+		SoundOutComp->SetSound(VictorySound);
+		SoundOutComp->Play();
+	}
+
 	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 	{
 		pPlayer->bEntranceShowMouseCursor();
@@ -84,6 +106,13 @@ void UStageManagerComponent::EndPhaseDefeat()
     CurrentStageState = EStageState::Defeat;
 	bHasEnded = true;
     OnStageStateChanged.Broadcast(CurrentStageState);
+
+	if(!SoundOutComp->IsPlaying())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DefeatSound"));
+		SoundOutComp->SetSound(DefeatSound);
+		SoundOutComp->Play();
+	}
 
 	if(ADefenseCharacter* pPlayer = Cast<ADefenseCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
 	{

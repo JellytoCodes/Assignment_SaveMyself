@@ -21,9 +21,10 @@ public :
 	virtual void Destroyed() override;
 
 	UFUNCTION()
-    void StartSpawning(); // 스폰 시작 신호
-    UFUNCTION()
-    void StopSpawning();  // 스폰 중지
+    void StartSpawning();
+  
+	UFUNCTION()
+    void StopSpawning();
 
 	void OnMonsterDied(AMonsterBase* Monster);
 
@@ -39,6 +40,9 @@ private :
 
 	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* SpawnerMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Monster", meta = (AllowPrivateAccess = "true"))
+	class UNiagaraComponent* SpawnedEffectComp;
 
 	class UStageManagerComponent* StageManager;
 

@@ -48,7 +48,6 @@ void AStructureItem::BeginPlay()
 	{
 		EnableItemData(getItemName);
 	}
-	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AStructureItem::OnStructureOverlap);
 }
 
 void AStructureItem::ReceiveDamage_Implementation(float Damage)
@@ -57,6 +56,7 @@ void AStructureItem::ReceiveDamage_Implementation(float Damage)
 	if(curHP > 0)
 	{
 		curHP -= Damage;
+		
 	}
 	else
 	{
@@ -78,13 +78,5 @@ void AStructureItem::EnableItemData(FName ItemID)
 			maxCoolTime = Data->MaxCoolTime;
 			curHP = structureHP;
 		}
-	}
-}
-
-void AStructureItem::OnStructureOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
-{
-	if(OtherActor && OtherActor != this && OtherActor->IsA<AStructureItem>())
-	{
-		UE_LOG(LogTemp, Log, TEXT("Do Not There Building"));
 	}
 }

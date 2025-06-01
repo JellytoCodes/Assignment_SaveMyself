@@ -9,6 +9,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MonsterBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraSystem.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 ATrapItem::ATrapItem()
 {
@@ -23,6 +26,12 @@ ATrapItem::ATrapItem()
 	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	ItemMesh->SetRelativeLocationAndRotation(FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f));
+
+	SpawnedEffectComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SpawnedEffectComp"));
+    SpawnedEffectComp->SetupAttachment(RootComponent);
+	SpawnedEffectComp->SetRelativeScale3D(FVector(1.3f));
+    SpawnedEffectComp->SetRelativeLocation(FVector(0.f, 0.f, 20.f));
+    SpawnedEffectComp->SetAutoActivate(false);
 
 	Tags.Add(FName("Trap"));
 }
@@ -101,7 +110,7 @@ void ATrapItem::HandleExplosiveTrap()
 	EffectExplosiveTrap();
 
 	FTimerHandle DestroyTimer;
-	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ATrapItem::DestroyTrap, .1f, false);
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ATrapItem::DestroyTrap, 1.f, false);
 }
 
 void ATrapItem::HandleBindingTrap()
@@ -109,7 +118,7 @@ void ATrapItem::HandleBindingTrap()
 	EffectBindingTrap();
 
 	FTimerHandle DestroyTimer;
-	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ATrapItem::DestroyTrap, .1f, false);
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ATrapItem::DestroyTrap, 1.f, false);
 }
 
 void ATrapItem::EffectExplosiveTrap()
@@ -153,9 +162,15 @@ void ATrapItem::DestroyTrap()
 
 void ATrapItem::OnTrapOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
+	if(bIsTriggered) return;
+
 	if(OtherActor && OtherActor->ActorHasTag("Monster"))
 	{
 		bIsTriggered = true;
+		BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		if(SpawnedEffectComp) SpawnedEffectComp->SetActive(true);
+
 		HandleTrapTriggered();
 	}
 }

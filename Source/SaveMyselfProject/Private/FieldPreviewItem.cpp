@@ -26,22 +26,21 @@ AFieldPreviewItem::AFieldPreviewItem()
 	PreviewMesh->SetupAttachment(RootComponent);
 	PreviewMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	ConstructorHelpers::FObjectFinder<UMaterialInterface> CanPlaceMaterialBP(TEXT("/Game/Asset/KayKit/DungeonElements/MaterialInstances/MI_Green.MI_Green"));
-	if(CanPlaceMaterialBP.Succeeded())
-	{
-		CanPlaceMaterial = CanPlaceMaterialBP.Object;
-	}
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> CanPlaceMaterialBP
+	(TEXT("/Game/Asset/KayKit/DungeonElements/MaterialInstances/MI_Green.MI_Green"));
 
-	ConstructorHelpers::FObjectFinder<UMaterialInterface> CannotPlaceMaterialBP(TEXT("/Game/Asset/KayKit/DungeonElements/MaterialInstances/MI_Red.MI_Red"));
-	if(CannotPlaceMaterialBP.Succeeded())
-	{
-		CannotPlaceMaterial = CannotPlaceMaterialBP.Object;
-	}
+	if(CanPlaceMaterialBP.Succeeded()) CanPlaceMaterial = CanPlaceMaterialBP.Object;
+
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> CannotPlaceMaterialBP
+	(TEXT("/Game/Asset/KayKit/DungeonElements/MaterialInstances/MI_Red.MI_Red"));
+
+	if(CannotPlaceMaterialBP.Succeeded()) CannotPlaceMaterial = CannotPlaceMaterialBP.Object;
 }
 
 void AFieldPreviewItem::BeginPlay()
 {
 	Super::BeginPlay();
+
 	SetGhostMaterial(true); // 최초엔 설치 가능 상태로
 }
 

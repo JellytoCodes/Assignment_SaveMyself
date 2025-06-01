@@ -4,10 +4,13 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Camera/CameraActor.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/DataTable.h"
+#include "Components/AudioComponent.h"
+
 #include "DefenseGameModeBase.h"
 #include "DefenseHUD.h"
 #include "PlayerItem.h"
@@ -38,6 +41,22 @@ ADefenseCharacter::ADefenseCharacter()
 	bUseControllerRotationPitch	= false;
 	bUseControllerRotationRoll	= false;
 	bUseControllerRotationYaw	= false;
+
+	SoundOutComp = CreateDefaultSubobject<UAudioComponent>(TEXT("SoundOutComp"));
+	SoundOutComp->SetupAttachment(RootComponent);
+	SoundOutComp->bAutoActivate = true;
+
+	//건축 완료 사운드 설정
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempConfirmSound
+	(TEXT("/Script/Engine.SoundWave'/Game/Asset/Sound/SW_BuildSound.SW_BuildSound'"));
+
+	if(tempConfirmSound.Succeeded()) ConfirmSound = tempConfirmSound.Object;
+
+	//무기 투척 사운드 설정
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempThrowSound
+	(TEXT("/Script/Engine.SoundWave'/Game/Asset/Sound/SW_ThrowWeapon.SW_ThrowWeapon'"));
+
+	if(tempThrowSound.Succeeded()) ThrowSound = tempThrowSound.Object;
 
 	//플레이어 바디 설정
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> PlayerMesh(TEXT("/Game/Asset/KayKit/Characters/barbarian.barbarian"));
@@ -90,6 +109,10 @@ void ADefenseCharacter::BeginPlay()
 		HUD->ShowPlayerHPWidget();
 		HUD->ShowPlayerQuickSlotWidget();
 	}
+
+	FActorSpawnParameters SpawnParams;
+	WinCamera = GetWorld()->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), SpawnParams);
+	DefeatCamera = GetWorld()->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), SpawnParams);
 }
 
 // Called every frame
@@ -186,6 +209,12 @@ void ADefenseCharacter::SpwanPlayerItem()
 		{
 			if(PreviewInstance)
 			{
+				if(!SoundOutComp->IsPlaying())
+				{
+					SoundOutComp->SetSound(ConfirmSound);
+					SoundOutComp->Play();
+				}
+				
 				PreviewInstance->ConfirmPlacement();
 
 				//설치 가능일 때만 수량 감소가 가능하도록 설정
@@ -195,9 +224,14 @@ void ADefenseCharacter::SpwanPlayerItem()
 			}
 
 			else
-			{
+			{	
+				if(!SoundOutComp->IsPlaying())
+				{
+					SoundOutComp->SetSound(ThrowSound);
+					SoundOutComp->Play();
+				}
 				ThrowWeapon();
-				
+
 				//무기를 던진 뒤 수량 감소 처리
 				HUD->GetQuicklotWidget()->UseQuickSlotItem(i);
 				return;	
@@ -264,8 +298,10 @@ void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
 	{
 		PlayerHP = 0;
 		bIsDeath = true;
+
+		SetViewDefeatCamera();
+
 		StageManager->CheckEndPhaseConditions(bIsDeath);
-		
 	}
 }
 
@@ -275,7 +311,47 @@ void ADefenseCharacter::SetVictory(bool isVictory)
 
 	UPlayerAnim* PlayerAnim = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
 	if(PlayerAnim) PlayerAnim->PlayVictoryMontage();
-	
+
+	SetViewWinCamera();
+}
+
+void ADefenseCharacter::SetViewWinCamera()
+{
+	FVector CharLoc = this->GetActorLocation();
+
+	FVector CamLoc = CharLoc + this->GetActorForwardVector() * 400.f + FVector(0.f, 50.f, 120.f);
+	FRotator CamRot = (CharLoc - CamLoc).Rotation();
+
+	if(WinCamera)
+	{
+		WinCamera->SetActorLocation(CamLoc);
+		WinCamera->SetActorRotation(CamRot);
+
+		auto PC = UGameplayStatics::GetPlayerController(this, 0);
+		if(PC)
+		{
+			PC->SetViewTargetWithBlend(WinCamera, .1f, EViewTargetBlendFunction::VTBlend_EaseInOut, 0.f, false);
+		}
+	}
+}
+
+void ADefenseCharacter::SetViewDefeatCamera()
+{
+	FVector StartLoc = this->GetActorLocation() + FVector(0.f, 0.f, 150.f);
+	FVector EndLoc = StartLoc + FVector(0.f, 0.f, 400.f);
+	FRotator CamRot = FRotator(-90.f, 0.f, 0.f);
+
+	if(DefeatCamera)
+	{
+		DefeatCamera->SetActorLocation(EndLoc);
+		DefeatCamera->SetActorRotation(CamRot);
+
+		auto PC = UGameplayStatics::GetPlayerController(this, 0);
+		if(PC)
+		{
+			PC->SetViewTargetWithBlend(DefeatCamera, .1f, EViewTargetBlendFunction::VTBlend_EaseInOut, 0.f, false);
+		}
+	}
 }
 
 void ADefenseCharacter::PlayerDead()

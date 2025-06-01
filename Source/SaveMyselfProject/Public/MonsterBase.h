@@ -44,6 +44,15 @@ protected :
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Nav")
 	class UNavigationInvokerComponent* NavInvoker;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundBase* DeadSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundBase* AttackSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class UAudioComponent* SoundOutComp;
+
 	//몬스터 공통 스탯
 	float maxHP;
 	float curHP;
@@ -82,7 +91,6 @@ public :
 
 	void Dead();
 	
-public : //Getter & Setter 관리
 	FORCEINLINE void SetTargetActor(AActor* NewTarget) { TargetActor = NewTarget; }
 	FORCEINLINE AActor* GetTargetActor() const { return TargetActor; }
 

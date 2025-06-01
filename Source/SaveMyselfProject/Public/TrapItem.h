@@ -30,8 +30,11 @@ public :
 
 private :
 	//BP에서 아이템 ID 관리
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemID", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo", meta = (AllowPrivateAccess = "true"))
 	FName getItemName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "ItemInfo", meta = (AllowPrivateAccess = "true"))
+	class UNiagaraComponent* SpawnedEffectComp;
 
 	//데이터 테이블 기반 아이템 정보
 	//comment : trapType에 따라 trapEffect 차별 적용
