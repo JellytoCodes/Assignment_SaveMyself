@@ -36,8 +36,6 @@ void USlotToolTipWidget::Setup(const FItemMasterDataRow& itemData)
 	if(TextWeight) TextWeight->SetText(FText::AsNumber(itemData.ItemWeight));
 
 	if(!TextType || !TextStat) return;
-
-	UE_LOG(LogTemp, Warning, TEXT("ItemType : %d"), itemData.ItemType);
 		
 	if(itemData.ItemType == EItemTypes::Weapon)
 	{

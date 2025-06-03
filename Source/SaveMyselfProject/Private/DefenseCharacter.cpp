@@ -280,7 +280,6 @@ void ADefenseCharacter::ThrowWeapon()
 
 	APlayerItem* SpawnedItem = 
 	GetWorld()->SpawnActor<APlayerItem>(ItemMasterDataRow->ItemClass, ItemSpawnLocation, ItemSpawnRotation, ItemSpawnPrams);
-	UE_LOG(LogTemp, Warning, TEXT("ThrowWeapon"));
 }
 
 void ADefenseCharacter::ReceiveDamage_Implementation(float Damage)
@@ -395,7 +394,7 @@ void ADefenseCharacter::SelectQuickSlot(int32 index)
 	{
 		playerItemID = NAME_None;
 
-		// 기존 프리뷰 제거
+		// 프리뷰 아이템 중복 스폰 방지
 		if (PreviewInstance)
 		{
 			PreviewInstance->Destroy();

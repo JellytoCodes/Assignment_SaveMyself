@@ -87,7 +87,6 @@ void UStageManagerComponent::EndPhaseVictory()
 
 	if(!SoundOutComp->IsPlaying())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("VictorySound"));
 		SoundOutComp->SetSound(VictorySound);
 		SoundOutComp->Play();
 	}
@@ -109,7 +108,6 @@ void UStageManagerComponent::EndPhaseDefeat()
 
 	if(!SoundOutComp->IsPlaying())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DefeatSound"));
 		SoundOutComp->SetSound(DefeatSound);
 		SoundOutComp->Play();
 	}

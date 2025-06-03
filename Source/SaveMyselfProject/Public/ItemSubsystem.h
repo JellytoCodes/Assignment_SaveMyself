@@ -21,23 +21,22 @@ class SAVEMYSELFPROJECT_API UItemSubsystem : public UGameInstanceSubsystem
 
 public :
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	const FItemMasterDataRow* GetItemMasterData(FName ItemID) const;
-	const FWeaponDataRow* GetItemWeaponData(FName ItemID) const;
-	const FStructureDataRow* GetItemStructureData(FName ItemID) const;
-	const FTrapDataRow* GetItemTrapData(FName ItemID) const;
+	
+	const FItemMasterDataRow* GetItemMasterData(FName itemID) const;
+	const FWeaponDataRow* GetItemWeaponData(FName itemID) const;
+	const FStructureDataRow* GetItemStructureData(FName itemID) const;
+	const FTrapDataRow* GetItemTrapData(FName itemID) const;
 
-protected :
-	UPROPERTY(EditDefaultsOnly, Category = "Data")
-	UDataTable* ItemMasterTable;
+private :
+	UPROPERTY(EditDefaultsOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
+	UDataTable* itemMasterTable;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Data")
-	UDataTable* ItemWeaponTable;
+	UPROPERTY(EditDefaultsOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
+	UDataTable* itemWeaponTable;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Data")
-	UDataTable* ItemStructureTable;
+	UPROPERTY(EditDefaultsOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
+	UDataTable* itemStructureTable;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Data")
-	UDataTable* ItemTrapTable;
-
-
+	UPROPERTY(EditDefaultsOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
+	UDataTable* itemTrapTable;
 };

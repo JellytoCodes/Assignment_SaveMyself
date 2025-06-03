@@ -12,52 +12,52 @@ void UItemSubsystem::Initialize(FSubsystemCollectionBase &Collection)
 	//Item Master Table Cast
 	UDataTable* itemMasterTableFinder = Cast<UDataTable>(
 	StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_ItemMasterDataRow.DT_ItemMasterDataRow")));
-	if(itemMasterTableFinder) ItemMasterTable = itemMasterTableFinder;
+	if(itemMasterTableFinder) itemMasterTable = itemMasterTableFinder;
 
 	//Item Weapon Table Cast
 	UDataTable* itemWeaponTableFinder= Cast<UDataTable>(
 	StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_WeaponDataRow.DT_WeaponDataRow")));
-	if(itemWeaponTableFinder) ItemWeaponTable = itemWeaponTableFinder;
+	if(itemWeaponTableFinder) itemWeaponTable = itemWeaponTableFinder;
 
 	//Item Structure Table Cast
 	UDataTable* itemStructureTableFinder= Cast<UDataTable>(StaticLoadObject(
 	UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_StructureDataRow.DT_StructureDataRow")));
-	if(itemStructureTableFinder) ItemStructureTable = itemStructureTableFinder;
+	if(itemStructureTableFinder) itemStructureTable = itemStructureTableFinder;
 
 	//Item Trap Table Cast
 	UDataTable* itemTrapTableFinder	= Cast<UDataTable>(
 	StaticLoadObject(UDataTable::StaticClass(), nullptr, TEXT("/Game/DataTable/DT_TrapDataRow.DT_TrapDataRow")));
-	if(itemTrapTableFinder)	ItemTrapTable = itemTrapTableFinder;
+	if(itemTrapTableFinder)	itemTrapTable = itemTrapTableFinder;
 }
 
-const FItemMasterDataRow *UItemSubsystem::GetItemMasterData(FName ItemID) const
+const FItemMasterDataRow *UItemSubsystem::GetItemMasterData(FName itemID) const
 {
-	if(!ItemMasterTable) return nullptr;
+	if(!itemMasterTable) return nullptr;
 
-	const FItemMasterDataRow* RowData = ItemMasterTable->FindRow<FItemMasterDataRow>(ItemID, TEXT("LookupMasterData"));
+	const FItemMasterDataRow* RowData = itemMasterTable->FindRow<FItemMasterDataRow>(itemID, TEXT("LookupMasterData"));
 	return RowData;
 }
 
-const FWeaponDataRow *UItemSubsystem::GetItemWeaponData(FName ItemID) const
+const FWeaponDataRow *UItemSubsystem::GetItemWeaponData(FName itemID) const
 {
-	if(!ItemWeaponTable) return nullptr;
-	const FWeaponDataRow* RowData = ItemWeaponTable->FindRow<FWeaponDataRow>(ItemID, TEXT("LookupWeaponData"));
+	if(!itemWeaponTable) return nullptr;
+	const FWeaponDataRow* RowData = itemWeaponTable->FindRow<FWeaponDataRow>(itemID, TEXT("LookupWeaponData"));
 	
 	return RowData;
 }
 
-const FStructureDataRow *UItemSubsystem::GetItemStructureData(FName ItemID) const
+const FStructureDataRow *UItemSubsystem::GetItemStructureData(FName itemID) const
 {	
-	if(!ItemStructureTable) return nullptr;
-	const FStructureDataRow* RowData = ItemStructureTable->FindRow<FStructureDataRow>(ItemID, TEXT("LookupStructureData"));
+	if(!itemStructureTable) return nullptr;
+	const FStructureDataRow* RowData = itemStructureTable->FindRow<FStructureDataRow>(itemID, TEXT("LookupStructureData"));
 	
 	return RowData;
 }
 
-const FTrapDataRow *UItemSubsystem::GetItemTrapData(FName ItemID) const
+const FTrapDataRow *UItemSubsystem::GetItemTrapData(FName itemID) const
 {	
-	if(!ItemTrapTable) return nullptr;
-	const FTrapDataRow* RowData = ItemTrapTable->FindRow<FTrapDataRow>(ItemID, TEXT("LookupTrapData"));
+	if(!itemTrapTable) return nullptr;
+	const FTrapDataRow* RowData = itemTrapTable->FindRow<FTrapDataRow>(itemID, TEXT("LookupTrapData"));
 	
 	return RowData;
 }

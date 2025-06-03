@@ -11,12 +11,10 @@
 void UPlayerQuickSlot::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 }
 
 void UPlayerQuickSlot::SetItemData(const FStorageArrRow* InData)
 {
-	UE_LOG(LogTemp, Log, TEXT("SetItemData : %d"), curQuickQuantity);
 	UItemSubsystem* ItemDB = GetGameInstance()->GetSubsystem<UItemSubsystem>();
 	if(!ItemDB) return;
 

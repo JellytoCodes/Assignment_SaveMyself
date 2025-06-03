@@ -58,19 +58,12 @@ void UStorageWidget::ItemRegist(UStorageSlot* pSlotData)
 
 	if(!defenseMode->GetBagAmount()) return;
 
-	if(ItemData.Quantity > 1)
-	{
-		ItemData.Quantity--;
-	}
+	if(ItemData.Quantity > 1) ItemData.Quantity--;
 	else
 	{
-		ItemData.Quantity--;
+		ItemData.Quantity = 0;
 		pSlotData->SetIsAmount(false);
 	}
 
-	if(pSlotData->ItemCountText)
-	{
-		pSlotData->ItemCountText->SetText(FText::AsNumber(ItemData.Quantity));
-		UE_LOG(LogTemp, Log, TEXT("Used %s : %d"), *ItemData.ItemID.ToString(), ItemData.Quantity);
-	}
+	if(pSlotData->ItemCountText) pSlotData->ItemCountText->SetText(FText::AsNumber(ItemData.Quantity));
 }
