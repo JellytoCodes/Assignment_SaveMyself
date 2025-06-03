@@ -38,5 +38,6 @@
 
 ## 🧑‍💻 Author
   **JellytoCodes** (Created as part of a 2025 semester-end solo project.)  
-  **개발 기간** : 2025.05.09 ~ 2025.06.02
+  **개발 기간** : 2025.05.09 ~ 2025.06.02  
+  
   **Thanks To. 강상용 교수님**  
