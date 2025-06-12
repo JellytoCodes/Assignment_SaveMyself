@@ -15,6 +15,7 @@ AWarehouse::AWarehouse()
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>("BoxCollision");
 	BoxCollision->SetGenerateOverlapEvents(true);
+	BoxCollision->SetBoxExtent(FVector(0.f, 0.f, 0.f));
 	BoxCollision->SetRelativeScale3D(FVector(9.f, 15.f, 1.f));
 	BoxCollision->BodyInstance.SetCollisionProfileName("Trigger");
 	RootComponent = BoxCollision;
