@@ -1,81 +1,48 @@
 # 🛡️ SaveMyself
-> 2025년 1학기 기말 과제 – UE5.4.4 기반 디펜스 생존 게임 프로젝트
+**Single-player Defence Survival Game** – Final project for 1st-year, Semester 1 (2025)
 
 ---
 
 <br>
 
-## 📌 프로젝트 개요
-**“플레이어가 직접 설계하는 디펜스를 만들어보고 싶다”**  
-이 아이디어를 중심으로 출발한 싱글 플레이어 디펜스 게임입니다.  
-매 스테이지마다 플레이어는 전략적으로 **아이템 구매**, **함정 설치**, **적 처치**를 통해 생존을 이어가야 합니다.
+## Project Overview
+> “플레이어가 직접 컨트롤하는 디펜스를 만들어보고 싶다”는 아이디어에서 시작된 **싱글 플레이어 생존 디펜스** 게임입니다. 각 스테이지마다  
+> 구조물·함정을 배치하고, 제한된 자원으로 아이템을 구매해 몰려오는 적을 모두 처치하면 다음 스테이지로 진입합니다.
+
+* **장르** : Defence / Survival  
+* **플랫폼** : Windows (UE 5.4.4)  
+* **개발 기간** : 2025-05-09 ~ 2025-06-02  
 
 ---
 
 <br>
 
-## 🎮 게임 컨셉
-한 나라에서 유일하게 살아남은 생존자가 되어  
-**절망적인 상황에서도 끝까지 살아남기 위한 투쟁**을 그리는 서사 기반 게임입니다.
+## Core Gameplay Features
+| 카테고리 | 설명 |
+|---------|------|
+| **Inventory** | 무게 기반 인벤토리, 드래그 & 드롭 지원 |
+| **Shop / Supply Depot** | 스테이지 전 아이템 구매, 실시간 잔액·무게 검증 |
+| **Structures & Traps** | Overlap 이벤트로 발동, 내구도·쿨타임 시스템 |
+| **Monster AI** | UAIPerception(Sight) + FSM로 타깃 추적·공격 |
+| **Stage Flow** | 준비 → 전투 → 결과(Result UI) → 다음 스테이지 |
+| **Save / Load** | UE `SaveGame` 클래스로 진행도·설정 저장 |
 
 ---
 
 <br>
 
-## 🧩 주요 시스템 구성
-
-### 🎒 인벤토리 & 상점 시스템
-- 인벤토리는 무게 기반으로 설계되어, **아이템 구매 시 무게를 고려**해야 함
-- 상점은 “물자 창고” 개념으로, 스테이지 전 준비 구간에서만 사용 가능
-
-### 🧱 구조물 및 함정 시스템
-- **구조물**은 몬스터가 공격 대상으로 인식 (Overlap 기반)
-- **함정**은 특정 조건에서 발동, 적 행동 제한 또는 피해
-
-### 👾 몬스터 AI 시스템
-- `AIPerceptionComponent`의 Sight 감지 기반
-- FSM(Finite State Machine) 설계를 통해 상태 전이 관리
-  - 예: Idle → Chase → Attack → Death
-
-### 🗺️ 스테이지 시스템
-- 정해진 라운드 수의 적 처치 시 스테이지 클리어
-- 실패 시 Retry, 성공 시 다음 스테이지 진행
-
-### 📊 전투 결과 및 UI 시스템
-- 각 전투 결과에 따라 결과창 출력
-- 성공/실패에 따라 버튼 기능 분기 (다음 스테이지 or 재도전)
-
-### 💾 저장/불러오기 시스템
-- `USaveGame` 기반의 구조 설계
-- 인벤토리, 스테이지 상태, 플레이어 정보 저장 및 로드
-
----
-
-## 🧠 기술 및 구조 설계
-
-- **Delegate & Event 기반 통신 구조**
-- **Subsystem 기반 데이터 관리**
-  - 예: 아이템 정보, 세이브/로드 처리
-- **FSM + Perception 기반 AI 상태 머신 설계**
-- **HUD 연동을 통한 실시간 UI 반영**
+## Technical Highlights
+* **Subsystem-oriented Architecture** – Item, Save, UI 등을 전용 Subsystem 으로 분리해 의존성 최소화  
+* **Event / Delegate Bus** – UI ↔ Gameplay 간 실시간 상태 동기화  
+* **Data-Driven Design** – 구조물·트랩·아이템을 `DataTable_JSON`에서 로드 :contentReference[oaicite:1]{index=1}  
+* **Modular AI** – Perception + FSM + BehaviorTree로 확장성 확보  
+* **HUD Framework** – 스테이지·HP·타이머 등 즉각 반영
 
 ---
 
 <br>
 
-## 🖼️ 스크린샷
-_(추후 업로드 예정)_
-
----
-
-<br>
-
-## 👨‍💻 개발자 정보
-
-- **Author**: JellytoCodes  
-- **기간**: 2025.05.09 ~ 2025.06.02  
-
-- **지도교수**: 강상용 교수님
-
----
-
+## Quick Start
+### Prerequisites
+* **Unreal Engine 5.4.4** (Binary or Source)  
+* **Visual Studio 2022** (+ “Game development with C++” workload)
