@@ -25,7 +25,7 @@
 | **Structures & Traps** | Overlap 이벤트로 발동, 내구도·쿨타임 시스템 |
 | **Monster AI** | UAIPerception(Sight) + FSM로 타깃 추적·공격 |
 | **Stage Flow** | 준비 → 전투 → 결과(Result UI) → 다음 스테이지 |
-| **Save / Load** | UE `SaveGame` 클래스로 진행도·설정 저장 |
+| **Save / Load** | UE `SaveGame` 클래스로 진행도 저장 |
 
 ---
 
@@ -34,7 +34,7 @@
 ## Technical Highlights
 * **Subsystem-oriented Architecture** – Item, Save, UI 등을 전용 Subsystem 으로 분리해 의존성 최소화  
 * **Event / Delegate Bus** – UI ↔ Gameplay 간 실시간 상태 동기화  
-* **Data-Driven Design** – 구조물·트랩·아이템을 `DataTable_JSON`에서 로드 :contentReference[oaicite:1]{index=1}  
+* **Data-Driven Design** – 구조물·트랩·아이템을 `DataTable_JSON`에서 로드
 * **Modular AI** – Perception + FSM + BehaviorTree로 확장성 확보  
 * **HUD Framework** – 스테이지·HP·타이머 등 즉각 반영
 
@@ -46,3 +46,10 @@
 ### Prerequisites
 * **Unreal Engine 5.4.4** (Binary or Source)  
 * **Visual Studio 2022** (+ “Game development with C++” workload)
+
+<br>
+
+## Author & Acknowledgements
+**JellytoCodes – Programmer**  
+**Thanks To. 강상용 교수님**  
+
